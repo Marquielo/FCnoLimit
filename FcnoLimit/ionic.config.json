@@ -1,0 +1,7 @@
+{
+  "name": "FcnoLimit",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
