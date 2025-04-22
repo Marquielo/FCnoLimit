@@ -1,0 +1,47 @@
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.navbar-nav {
+  width: 100%; /* Asegura que los botones ocupen todo el ancho del contenedor */
+  display: flex;
+  justify-content: space-between; /* Espacia uniformemente los botones */
+}
+
+.nav-item {
+  flex: 1; /* Cada botón ocupa el mismo espacio */
+  text-align: center; /* Centra el contenido dentro de cada botón */
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%; /* Asegura que los enlaces ocupen toda la altura del navbar */
+  padding: 10px 0; /* Ajusta el espaciado interno */
+  font-size: 1rem; /* Tamaño del texto */
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ff7e5f; /* Color de hover */
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler-icon {
+  background-color: white;
+}
+
+/* Animación para el despliegue desde la izquierda */
+.slide-in-left {
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.collapse.show.slide-in-left {
+  transform: translateX(0);
+}

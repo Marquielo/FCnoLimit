@@ -1,0 +1,36 @@
+.auth-toggle-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.auth-form {
+  max-width: 400px;
+  margin: 0 auto;
+  background: #222831;
+  padding: 32px 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+}
+
+.auth-form ion-item {
+  margin-bottom: 16px;
+  --background: #393e46;
+  --color: #fff;
+  border-radius: 8px;
+}
+
+.auth-form ion-label {
+  color: #fff;
+}
+
+.auth-form ion-input {
+  color: #fff;
+}
+
+@media (max-width: 500px) {
+  .auth-form {
+    padding: 16px 8px;
+  }
+}

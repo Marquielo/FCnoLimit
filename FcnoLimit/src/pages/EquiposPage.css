@@ -1,0 +1,16 @@
+.page-container {
+  padding: 32px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+}
+
+.page-container h1 {
+  color: #185a9d;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.page-container p {
+  color: #333;
+  font-size: 1.1rem;
+}
