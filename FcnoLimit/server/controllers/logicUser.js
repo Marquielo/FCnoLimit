@@ -5,7 +5,7 @@ const { signToken } = require('../utils/jwt');
 async function createUser(pool, { nombre_completo, correo, contraseña, rol }) {
   const hashedPassword = await bcrypt.hash(contraseña, 10);
   const result = await pool.query(
-    'INSERT INTO "fcnoLimit".usuarios (nombre_completo, correo, contraseña, rol) VALUES ($1, $2, $3, $4) RETURNING *',
+    'INSERT INTO "fcnolimit".usuarios (nombre_completo, correo, contraseña, rol) VALUES ($1, $2, $3, $4) RETURNING *',
     [nombre_completo, correo, hashedPassword, rol]
   );
   return result.rows[0];
@@ -13,7 +13,7 @@ async function createUser(pool, { nombre_completo, correo, contraseña, rol }) {
 
 // Lógica para login de usuario
 async function loginUser(pool, { correo, contraseña }) {
-  const result = await pool.query('SELECT * FROM "fcnoLimit".usuarios WHERE correo = $1', [correo]);
+  const result = await pool.query('SELECT * FROM "fcnolimit".usuarios WHERE correo = $1', [correo]);
   const user = result.rows[0];
   if (!user) return null;
   const valid = await bcrypt.compare(contraseña, user.contraseña);

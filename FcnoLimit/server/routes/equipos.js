@@ -9,7 +9,10 @@ module.exports = (pool) => {
   // Obtener todos los equipos (público)
   router.get('/', async (req, res) => {
     try {
-      const result = await pool.query('SELECT * FROM "fcnoLimit".equipos');
+      const result = await pool.query('SELECT * FROM "fcnolimit".equipos');
+      if (result.rows.length === 0) {
+        return res.status(404).json({ message: 'No hay equipos registrados.' });
+      }
       res.json(result.rows);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -27,7 +30,7 @@ module.exports = (pool) => {
     const { nombre, categoria, liga_id, imagen_url } = req.body;
     try {
       const result = await pool.query(
-        'INSERT INTO "fcnoLimit".equipos (nombre, categoria, liga_id, imagen_url) VALUES ($1, $2, $3, $4) RETURNING *',
+        'INSERT INTO "fcnolimit".equipos (nombre, categoria, liga_id, imagen_url) VALUES ($1, $2, $3, $4) RETURNING *',
         [nombre, categoria, liga_id, imagen_url]
       );
       res.status(201).json(result.rows[0]);
@@ -48,7 +51,7 @@ module.exports = (pool) => {
     const { nombre, categoria, liga_id, imagen_url } = req.body;
     try {
       const result = await pool.query(
-        'UPDATE "fcnoLimit".equipos SET nombre=$1, categoria=$2, liga_id=$3, imagen_url=$4 WHERE id=$5 RETURNING *',
+        'UPDATE "fcnolimit".equipos SET nombre=$1, categoria=$2, liga_id=$3, imagen_url=$4 WHERE id=$5 RETURNING *',
         [nombre, categoria, liga_id, imagen_url, id]
       );
       res.json(result.rows[0]);
@@ -61,7 +64,7 @@ module.exports = (pool) => {
   router.delete('/:id', authenticateToken, isAdmin, async (req, res) => {
     const { id } = req.params;
     try {
-      await pool.query('DELETE FROM "fcnoLimit".equipos WHERE id=$1', [id]);
+      await pool.query('DELETE FROM "fcnolimit".equipos WHERE id=$1', [id]);
       res.json({ message: 'Equipo eliminado' });
     } catch (error) {
       res.status(500).json({ error: error.message });

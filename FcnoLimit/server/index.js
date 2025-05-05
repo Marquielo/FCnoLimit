@@ -6,7 +6,10 @@ const { Pool } = require('pg');
 const app = express();
 const port = 3001;
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:8100',
+  credentials: true,
+}));
 app.use(express.json());
 
 // Configuración de la conexión a PostgreSQL
@@ -18,9 +21,9 @@ const pool = new Pool({
   port: 5432,
 });
 
-// Ruta de prueba
+// Endpoint de prueba
 app.get('/api/ping', (req, res) => {
-  res.json({ message: 'Servidor funcionando' });
+  res.json({ message: 'pong' });
 });
 
 // Importar y usar rutas
@@ -36,3 +39,6 @@ app.use('/api/estadisticas_jugador_partido', require('./routes/estadisticasJugad
 app.listen(port, () => {
   console.log(`Servidor backend escuchando en http://localhost:${port}`);
 });
+
+
+module.exports = (pool) => router;

@@ -1,47 +1,290 @@
-.navbar-brand {
-  font-size: 1.5rem;
-  font-weight: bold;
+.navbar {
+  background: #000 !important;
+  padding: 0.8rem 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.navbar-nav {
-  width: 100%; /* Asegura que los botones ocupen todo el ancho del contenedor */
+.navbar-brand {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--ion-color-light) !important;
   display: flex;
-  justify-content: space-between; /* Espacia uniformemente los botones */
+  align-items: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fff !important;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.25);
+}
+
+.navbar-header {
+  display: flex;
+  align-items: center;
+  padding-right: 2rem;
+  border-right: 1px ;
+  margin-right: 2rem;
+  height: 100%;
 }
 
 .nav-item {
-  flex: 1; /* Cada botón ocupa el mismo espacio */
-  text-align: center; /* Centra el contenido dentro de cada botón */
+  margin: 0 0.3rem;
+  position: relative;
 }
 
 .nav-link {
+  color: var(--ion-color-light) !important;
+  font-weight: 500;
+  padding: 0.7rem 1.2rem !important;
+  border-radius: 25px;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 100%; /* Asegura que los enlaces ocupen toda la altura del navbar */
-  padding: 10px 0; /* Ajusta el espaciado interno */
-  font-size: 1rem; /* Tamaño del texto */
-  transition: color 0.3s ease;
+  font-size: 0.95rem;
 }
 
 .nav-link:hover {
-  color: #ff7e5f; /* Color de hover */
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
 }
 
+.nav-link.active {
+  background-color: var(--ion-color-secondary);
+  color: var(--ion-color-secondary) !important;
+  box-shadow: 0 4px 15px rgba(255, 139, 61, 0.3);
+}
+
+/* Estilos para el botón hamburguesa */
 .navbar-toggler {
   border: none;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background-color: transparent;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+  outline: none;
 }
 
 .navbar-toggler-icon {
-  background-color: white;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+  width: 1.5em;
+  height: 1.5em;
 }
 
-/* Animación para el despliegue desde la izquierda */
-.slide-in-left {
-  transform: translateX(-100%);
-  transition: transform 0.3s ease-in-out;
+/* Efecto hover para el botón hamburguesa */
+.navbar-toggler:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-.collapse.show.slide-in-left {
-  transform: translateX(0);
+/* Animación para el menú desplegable */
+.navbar-collapse {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  transition: all 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .nav-link {
+    padding: 0.8rem 1rem !important;
+    margin: 0.3rem 0;
+  }
+  
+  .navbar-header {
+    border-right: none;
+    margin-right: 0;
+    padding-right: 0;
+  }
+
+  .navbar-collapse {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem;
+    background: var(--ion-color-dark-shade);
+    border-radius: 8px;
+    margin-top: 1rem;
+  }
+  
+  .navbar-nav {
+    flex-direction: column;
+    padding-left: 0;
+    gap: 0.5rem;
+  }
+}
+
+/* Fondo negro para el menú desplegable en móvil */
+@media (max-width: 991px) {
+  .navbar-collapse.show {
+    background: #000 !important;
+    padding: 1rem 0.5rem;
+    border-radius: 0 0 12px 12px;
+  }
+  .navbar-nav {
+    flex-direction: column;
+    align-items: stretch; /* Mantiene el ancho original de los botones */
+    justify-content: flex-start;
+    width: 100%;
+    gap: 0;
+    padding-left: 0;
+  }
+  .navbar-nav .nav-item {
+    width: 100%;
+    display: block;
+    margin: 0;
+  }
+  .navbar-nav .nav-link {
+    background: transparent !important;
+    color: #fff !important;
+    border-radius: 25px;
+    margin: 0.2rem 0;
+    font-weight: 600;
+    width: 100%;
+    text-align: left;
+    transition: background 0.2s, color 0.2s;
+    padding-left: 1.5rem !important;
+  }
+  .navbar-nav .nav-link:hover {
+    background: #ff9800 !important;
+    color: #fff !important;
+  }
+  .navbar-nav .nav-link.active {
+    background: transparent !important;
+    color: #fff !important;
+  }
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  color: #fff !important;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.25);
+}
+
+.brand-slogan {
+  font-size: 0.8rem;
+  font-weight: 400;
+  opacity: 0.8;
+  margin-top: 0.2rem;
+  color: #fff !important;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.25);
+}
+
+/* Elimina los estilos específicos de ms-lg-4 y usa los mismos que los demás nav-links */
+.navbar-nav.ms-lg-4 .nav-link {
+  color: var(--ion-color-light) !important;
+  font-weight: 500;
+  padding: 0.7rem 1.2rem !important;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+  background-color: transparent;
+  border: none;
+}
+
+.navbar-nav.ms-lg-4 .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  border: none;
+}
+
+.navbar-nav.ms-lg-4 .nav-link.active {
+  background-color: var(--ion-color-secondary);
+  color: var(--ion-color-black) !important;
+  box-shadow: 0 4px 15px rgba(255, 139, 61, 0.3);
+  border: none;
+}
+
+/* Ajuste responsive */
+@media (max-width: 991px) {
+  .navbar-nav.ms-lg-4 {
+    margin-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 0.5rem;
+  }
+}
+
+/* Estilos para los iconos en la barra de navegación */
+.nav-link ion-icon {
+  font-size: 1.4rem;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+  transition: all 0.3s ease;
+}
+
+/* Estilos para el icono del logo */
+.navbar-brand ion-icon {
+  font-size: 2.2rem;
+  color: var(--ion-color-secondary);
+  margin-right: 0.8rem;
+  animation: spin 20s linear infinite;
+}
+
+/* Efecto hover para los iconos en los links */
+.nav-link:hover ion-icon {
+  transform: translateY(-2px) scale(1.1);
+  color: var(--ion-color-secondary);
+}
+
+/* Estilo para iconos en items activos */
+.nav-link.active ion-icon {
+  color: var(--ion-color-black) !important;
+  transform: scale(1.1);
+}
+
+/* Animación de rotación suave para el icono del logo */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Ajustes responsive para los iconos */
+@media (max-width: 991px) {
+  .nav-link ion-icon {
+    font-size: 1.3rem;
+    margin-right: 0.7rem;
+  }
+  
+  .navbar-brand ion-icon {
+    font-size: 2rem;
+  }
+}
+
+/* Alineación vertical de iconos con texto */
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar-nav {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding-left: 1rem;
+}
+
+/* Solo para el botón Login en escritorio */
+.navbar-nav .nav-item:last-child .nav-link {
+  background: #ff9800 !important;
+  color: #fff !important;
+  border-radius: 30px;
+  font-weight: 700;
+  box-shadow: 0 0 16px 0 rgba(255, 152, 0, 0.25);
+  padding: 0.7rem 2.2rem !important;
+  margin-left: 1.5rem;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.navbar-nav .nav-item:last-child .nav-link:hover {
+  background: #ffa726 !important;
+  color: #fff !important;
+  box-shadow: 0 0 24px 0 rgba(255, 152, 0, 0.35);
 }

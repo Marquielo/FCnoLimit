@@ -14,3 +14,35 @@
   color: #555;
   font-size: 1.1rem;
 }
+
+.hero-section.comparativas-hero {
+  background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+  color: #fff;
+  padding: 4rem 0 2rem 0;
+  text-align: center;
+}
+
+.compare-section {
+  padding: 2rem 0;
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.compare-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 rgba(247, 151, 30, 0.15);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.compare-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 16px 40px 0 rgba(247, 151, 30, 0.25);
+}

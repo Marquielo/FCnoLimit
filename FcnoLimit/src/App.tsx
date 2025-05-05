@@ -12,13 +12,14 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, square, triangle } from 'ionicons/icons';
 import NavBar from './components/NavBar';
-import ClasificacionesPage from './pages/ClasificacionesPage';
 import EquiposPage from './pages/EquiposPage';
 import JugadoresPage from './pages/JugadoresPage';
 import ComparativasPage from './pages/ComparativasPage';
 import PartidosPage from './pages/PartidosPage';      
 import InicioPage from './pages/InicioPage';
 import AuthPage from './pages/AuthPage';
+import CampeonatosPage from './pages/CampeonatoPage';
+import NoticiasPage  from './pages/NoticiasPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 /* Core CSS required for Ionic components to work properly */
@@ -63,8 +64,8 @@ const App: React.FC = () => (
       <Route exact path="/auth">
         <AuthPage />
       </Route>
-      <Route exact path="/clasificaciones">
-        <ClasificacionesPage />
+      <Route exact path="/Campeonatos">
+        <CampeonatosPage />
       </Route>
       <Route exact path="/equipos">
         <EquiposPage />
@@ -77,6 +78,9 @@ const App: React.FC = () => (
       </Route>
       <Route exact path="/comparativas">
         <ComparativasPage />
+      </Route>
+      <Route exact path="/noticias">
+        <NoticiasPage />
       </Route>
       <Route exact path="/">
         <Redirect to="/inicio" />

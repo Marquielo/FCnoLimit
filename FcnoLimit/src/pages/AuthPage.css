@@ -1,36 +1,869 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Raleway:wght@700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@500;600&display=swap');
+
+:root {
+  --auth-gradient: linear-gradient(135deg, rgba(255, 139, 61, 0.9) 0%, rgba(255, 107, 0, 0.7) 100%);
+  --form-shadow: 0 10px 25px rgba(255, 139, 61, 0.15);
+}
+
+.auth-page {
+  background: var(--auth-gradient),
+              url('/assets/soccer-field.jpg');
+  background-size: cover;
+  background-position: center;
+  --background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
+.custom-title {
+  font-family: 'Teko', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 1rem 0;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  animation: fadeInDown 0.8s ease-out;
+  position: relative;
+}
+
+.auth-logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 4px 8px rgba(255, 139, 61, 0.3));
+  transition: transform 0.3s ease;
+}
+
+.auth-logo:hover {
+  transform: scale(1.05);
+}
+
+.logo-icon-container {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, #FF8B3D, #FF6B00);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 8px 16px rgba(255, 139, 61, 0.3);
+  position: relative;
+  animation: pulseIcon 2s infinite ease-in-out;
+}
+
+.logo-icon {
+  font-size: 3.5rem;
+  color: white;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.logo-icon-container::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  background: linear-gradient(135deg, #FF8B3D, #FF6B00);
+  border-radius: 50%;
+  z-index: -1;
+  opacity: 0.5;
+  filter: blur(8px);
+}
+
+.brand-title {
+  font-family: 'Teko', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--ion-color-secondary);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: linear-gradient(45deg, #FF8B3D, #FF6B00);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.brand-subtitle {
+  color: var(--ion-color-medium);
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Animaciones para el contenedor principal */
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.95); /* Más oscuro que antes */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: var(--form-shadow);
+  animation: slideInDown 0.6s ease-out;
+  min-height: 100%;
+}
+
+/* Animaciones para el formulario */
+.auth-form {
+  padding: 2rem;
+  background: rgba(28, 28, 28, 0.95); /* Más oscuro que antes */
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  position: relative;
+  animation: fadeScale 0.5s ease-out;
+}
+
+.auth-form form {
+  animation: slideUp 0.5s ease-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.auth-form form.slide-out {
+  animation: slideOutLeft 0.3s ease-out forwards;
+}
+
+.auth-form form.slide-in {
+  animation: slideInRight 0.3s ease-out forwards;
+}
+
+/* Animaciones para los campos de entrada */
+.custom-input {
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: slideInLeft 0.5s ease-out forwards;
+  --background: transparent;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --highlight-color-focused: #ffffff;
+}
+
+.custom-input:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.custom-input:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.custom-input:focus-within {
+  transform: scale(1.02);
+  transition: transform 0.3s ease;
+}
+
+/* Estilo para el input */
+.custom-input-field {
+  --color: #ffffff !important;
+  --placeholder-color: rgba(255, 255, 255, 0.6);
+  --placeholder-opacity: 0.7;
+}
+
+/* Estilo para cuando el input tiene texto */
+.custom-input-field.ion-touched {
+  --color: #ffffff !important;
+}
+
+/* Estilo mejorado para IonLabel y texto del input */
+.custom-input ion-label {
+  --color: #ffffff !important;
+  color: #ffffff !important;
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+  font-family: 'Montserrat', sans-serif !important;
+  opacity: 0.9 !important;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  text-transform: none;
+}
+
+/* Estilo cuando el input está enfocado */
+.custom-input.item-has-focus ion-label {
+  --color: #FF8B3D !important;
+  color: #FF8B3D !important;
+  font-weight: 500 !important;
+  opacity: 1 !important;
+  transform: translateY(-4px) scale(0.85);
+}
+
+/* Estilo para el icono dentro del label */
+.custom-input ion-label ion-icon {
+  color: #FF8B3D;
+  font-size: 1.1rem;
+  margin-right: 4px;
+}
+
+/* Ajustes responsive para el label */
+@media (max-width: 600px) {
+  .custom-input ion-label {
+    font-size: 0.95rem !important;
+  }
+}
+
+/* Animación para el botón */
+.submit-button {
+  opacity: 0;
+  animation: pulseIn 0.5s ease-out 0.3s forwards;
+}
+
+/* Animaciones para los botones de toggle */
 .auth-toggle-buttons {
+  margin: 2rem 0;
   display: flex;
   justify-content: center;
-  gap: 16px;
-  margin-bottom: 32px;
+  gap: 1rem;
 }
 
-.auth-form {
-  max-width: 400px;
-  margin: 0 auto;
-  background: #222831;
-  padding: 32px 24px;
-  border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+.auth-toggle-buttons ion-button {
+  --padding-start: 2rem;
+  --padding-end: 2rem;
+  --border-radius: 25px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 120px;
 }
 
+.auth-toggle-buttons ion-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(255, 139, 61, 0.2);
+  --background: var(--primary-color);
+}
+
+.auth-toggle-buttons ion-button[fill="outline"] {
+  --border-color: var(--ion-color-secondary);
+  --color: var(--ion-color-secondary);
+}
+
+/* Estilos mejorados para los campos de entrada */
 .auth-form ion-item {
-  margin-bottom: 16px;
-  --background: #393e46;
-  --color: #fff;
-  border-radius: 8px;
+  --background: rgba(45, 45, 45, 0.9);
+  --border-color: rgba(255, 139, 61, 0.3);
+  --border-radius: 15px;
+  --border-width: 2px;
+  --padding-start: 1.5rem;
+  --padding-end: 1.5rem;
+  --inner-padding-end: 1rem;
+  margin-bottom: 1.8rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: visible;
+}
+
+.auth-form ion-item::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #FF8B3D, #FF6B00);
+  border-radius: 16px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.auth-form ion-item:hover,
+.auth-form ion-item:focus-within {
+  --background: rgba(55, 55, 55, 0.95);
+  --border-color: transparent;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(255, 139, 61, 0.2);
+}
+
+.auth-form ion-item:hover::before,
+.auth-form ion-item:focus-within::before {
+  opacity: 1;
 }
 
 .auth-form ion-label {
-  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #ffffff;
+  opacity: 0.9;
+  margin-bottom: 0.5rem;
 }
 
 .auth-form ion-input {
-  color: #fff;
+  --padding-start: 1rem;
+  --padding-top: 1.8rem;
+  --padding-bottom: 1.2rem;
+  --placeholder-color: rgba(255, 255, 255, 0.6);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  color: #ffffff !important;
 }
 
-@media (max-width: 500px) {
+/* Estilo para el texto ingresado */
+.auth-form ion-input.has-value {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* Estilo para el placeholder */
+.auth-form ion-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  opacity: 0.7;
+  font-size: 1rem;
+}
+
+.auth-form ion-item.item-has-focus {
+  --highlight-background: transparent;
+}
+
+/* Estilos para los iconos dentro de los campos */
+.auth-form ion-item ion-icon {
+  font-size: 1.4rem;
+  color: #FF8B3D;
+  margin-right: 1rem;
+  transition: all 0.3s ease;
+}
+
+.auth-form ion-item:hover ion-icon,
+.auth-form ion-item:focus-within ion-icon {
+  transform: scale(1.1);
+  color: #FF6B00;
+}
+
+/* Animación para el focus */
+.auth-form ion-item.item-has-focus ion-label {
+  color: #FF8B3D;
+  transform: translateY(-4px) scale(0.85);
+  transition: all 0.3s ease;
+}
+
+/* Estilo para el placeholder */
+.auth-form ion-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  opacity: 0.7;
+  font-size: 1rem;
+}
+
+/* Estilo para el texto ingresado */
+.auth-form ion-input.has-value {
+  color: #333;
+  font-weight: 500;
+}
+
+.auth-form ion-button {
+  margin-top: 16px;
+  --border-radius: 8px;
+  height: 48px;
+  --background: var(--ion-color-secondary);
+  --background-hover: var(--ion-color-secondary-shade);
+  --background-activated: var(--ion-color-secondary-tint);
+}
+
+.auth-form ion-button[type="submit"] {
+  margin-top: 2rem;
+  --background: #FF8B3D;
+  --background-hover: #FF6B00;
+  --border-radius: 12px;
+  --padding-top: 1.25rem;
+  --padding-bottom: 1.25rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.auth-form ion-button[type="submit"]:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 139, 61, 0.3);
+}
+
+/* Animación para las etiquetas flotantes */
+.auth-form ion-item.item-has-focus ion-label,
+.auth-form ion-item.item-has-value ion-label {
+  transform: translateY(-5px) scale(0.8);
+  color: #FF8B3D;
+}
+
+/* Estilos para mensajes de error */
+.auth-form .error-message {
+  color: #ff4d4d;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+.auth-form .error-message.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Estilos para los iconos */
+ion-icon {
+  margin-right: 8px;
+  font-size: 1.2rem;
+  color: var(--ion-color-medium);
+}
+
+.custom-input ion-icon {
+  vertical-align: middle;
+}
+
+ion-item.item-has-focus ion-icon {
+  color: #FF8B3D;
+}
+
+.submit-button ion-icon {
+  font-size: 1.3rem;
+  color: white;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Definición de las animaciones */
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulseIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+@keyframes slideOutLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulseIcon {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Ajustes responsive */
+@media (max-width: 600px) {
+  .auth-container {
+    padding: 1rem;
+    margin: 0.5rem;
+    max-width: 100%;
+    min-height: calc(100vh - 2rem);
+  }
+  
   .auth-form {
-    padding: 16px 8px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+  }
+  
+  .auth-toggle-buttons {
+    margin: 1.5rem 0;
+    gap: 0.8rem;
+  }
+
+  .auth-toggle-buttons ion-button {
+    width: 100%;
+    --padding-top: 1rem;
+    --padding-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+
+  /* Mejoras en los campos de entrada */
+  .custom-input {
+    margin-bottom: 1rem;
+    --padding-start: 0.8rem;
+    --padding-end: 0.8rem;
+  }
+
+  .custom-input ion-label {
+    font-size: 0.95rem !important;
+  }
+
+  .custom-input.item-has-focus ion-label {
+    transform: translateY(-4px) scale(0.85);
+  }
+
+  ion-input {
+    --padding-top: 0.8rem;
+    --padding-bottom: 0.8rem;
+    font-size: 1rem;
+  }
+
+  /* Logo y título más compactos */
+  .logo-container {
+    margin-bottom: 1.5rem;
+  }
+
+  .logo-icon-container {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 1rem;
+  }
+
+  .logo-icon {
+    font-size: 2.5rem;
+  }
+
+  .brand-title {
+    font-size: 2.2rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .brand-subtitle {
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+  }
+
+  /* Botón de envío más accesible */
+  .auth-form ion-button[type="submit"] {
+    margin-top: 1.5rem;
+    --padding-top: 1rem;
+    --padding-bottom: 1rem;
+    font-size: 1rem;
+  }
+
+  /* Mejorar espaciado del formulario */
+  .auth-form form {
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Ajustes específicos para iPhone (667px) */
+@media screen and (max-width: 667px) {
+  .auth-container {
+    padding: 1rem;
+    margin: 0;
+    border-radius: 0;
+    min-height: 100vh;
+    justify-content: flex-start;
+  }
+
+  .logo-container {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .logo-icon-container {
+    width: 65px;
+    height: 65px;
+    margin-bottom: 1rem;
+  }
+
+  .logo-icon {
+    font-size: 2.2rem;
+  }
+
+  .brand-title {
+    font-size: 2rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .brand-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .auth-form {
+    padding: 1.2rem;
+    margin: 0;
+    border-radius: 12px;
+  }
+
+  .custom-input {
+    margin-bottom: 0.8rem;
+    --min-height: 45px;
+  }
+
+  .custom-input ion-label {
+    font-size: 0.9rem !important;
+  }
+
+  ion-input {
+    --padding-top: 0.6rem;
+    --padding-bottom: 0.6rem;
+    font-size: 0.95rem;
+  }
+
+  .auth-toggle-buttons {
+    margin: 1rem 0;
+    padding: 0 0.5rem;
+  }
+
+  .auth-toggle-buttons ion-button {
+    --padding-top: 0.8rem;
+    --padding-bottom: 0.8rem;
+    font-size: 0.85rem;
+    margin: 0;
+  }
+
+  .auth-form ion-button[type="submit"] {
+    margin-top: 1.2rem;
+    --padding-top: 0.8rem;
+    --padding-bottom: 0.8rem;
+    font-size: 0.95rem;
+  }
+
+  /* Ajustar el espaciado de los inputs */
+  .auth-form ion-item {
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+    --inner-padding-end: 0.8rem;
+    margin-bottom: 1.2rem;
+  }
+
+  /* Mejorar la legibilidad del texto */
+  .auth-form ion-label {
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .auth-form ion-input {
+    --padding-start: 2.8rem;
+    --padding-top: 2.4rem;
+    --padding-bottom: 0.8rem;
+    color: #ffffff !important;
+    font-size: 1.2rem;
+  }
+}
+
+/* Ajustes específicos para pantallas muy pequeñas */
+@media (max-width: 360px) {
+  .auth-container {
+    padding: 0.8rem;
+    margin: 0.3rem;
+  }
+
+  .brand-title {
+    font-size: 2rem;
+  }
+
+  .brand-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .auth-form {
+    padding: 1rem;
+  }
+
+  .custom-input {
+    margin-bottom: 0.8rem;
+  }
+}
+
+/* Mejoras en la orientación horizontal */
+@media (max-height: 600px) and (orientation: landscape) {
+  .auth-container {
+    padding: 0.8rem;
+  }
+
+  .logo-container {
+    margin-bottom: 1rem;
+  }
+
+  .logo-icon-container {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 0.5rem;
+  }
+
+  .brand-title {
+    font-size: 1.8rem;
+  }
+
+  .brand-subtitle {
+    display: none;
+  }
+
+  .auth-form {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .auth-logo {
+    width: 100px;
+    height: 100px;
+  }
+
+  .brand-title {
+    font-size: 2.8rem;
+  }
+
+  .brand-subtitle {
+    font-size: 1rem;
+  }
+
+  .logo-icon-container {
+    width: 80px;
+    height: 80px;
+  }
+
+  .logo-icon {
+    font-size: 2.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-logo {
+    width: 80px;
+    height: 80px;
+  }
+
+  .brand-title {
+    font-size: 2.4rem;
+  }
+
+  .brand-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .logo-icon-container {
+    width: 60px;
+    height: 60px;
+  }
+
+  .logo-icon {
+    font-size: 2.2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .auth-container {
+    padding-top: 60px;
+  }
+  
+  .auth-form {
+    padding: 32px;
   }
 }

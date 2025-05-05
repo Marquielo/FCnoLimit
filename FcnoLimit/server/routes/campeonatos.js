@@ -10,7 +10,7 @@ module.exports = (pool) => {
   // Obtener todos los campeonatos (público)
   router.get('/', async (req, res) => {
     try {
-      const result = await pool.query('SELECT * FROM "fcnoLimit".campeonatos');
+      const result = await pool.query('SELECT * FROM "fcnolimit".campeonatos');
       res.json(result.rows);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -35,7 +35,7 @@ module.exports = (pool) => {
       const { nombre, descripcion, fecha_inicio, fecha_fin } = req.body;
       try {
         const result = await pool.query(
-          'INSERT INTO "fcnoLimit".campeonatos (nombre, descripcion, fecha_inicio, fecha_fin) VALUES ($1, $2, $3, $4) RETURNING *',
+          'INSERT INTO "fcnolimit".campeonatos (nombre, descripcion, fecha_inicio, fecha_fin) VALUES ($1, $2, $3, $4) RETURNING *',
           [nombre, descripcion, fecha_inicio, fecha_fin]
         );
         res.status(201).json(result.rows[0]);
@@ -64,7 +64,7 @@ module.exports = (pool) => {
       const { nombre, descripcion, fecha_inicio, fecha_fin } = req.body;
       try {
         const result = await pool.query(
-          'UPDATE "fcnoLimit".campeonatos SET nombre=$1, descripcion=$2, fecha_inicio=$3, fecha_fin=$4 WHERE id=$5 RETURNING *',
+          'UPDATE "fcnolimit".campeonatos SET nombre=$1, descripcion=$2, fecha_inicio=$3, fecha_fin=$4 WHERE id=$5 RETURNING *',
           [nombre, descripcion, fecha_inicio, fecha_fin, id]
         );
         res.json(result.rows[0]);
@@ -90,7 +90,7 @@ module.exports = (pool) => {
     async (req, res) => {
       const { id } = req.params;
       try {
-        await pool.query('DELETE FROM "fcnoLimit".campeonatos WHERE id=$1', [id]);
+        await pool.query('DELETE FROM "fcnolimit".campeonatos WHERE id=$1', [id]);
         res.json({ message: 'Campeonato eliminado' });
       } catch (error) {
         res.status(500).json({ error: error.message });
