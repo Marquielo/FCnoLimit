@@ -1,0 +1,81 @@
+:root {
+  /* Paleta principal basada en #ffa726 */
+  --fcnolimit-primary: #ffa726;         /* Naranja ámbar (color principal) */
+  --fcnolimit-primary-light: #ffd95b;   /* Naranja claro */
+  --fcnolimit-primary-dark: #c77800;    /* Naranja oscuro */
+  
+  /* Colores complementarios */
+  --fcnolimit-secondary: #2979ff;       /* Azul brillante */
+  --fcnolimit-secondary-light: #75a7ff; /* Azul claro */
+  --fcnolimit-secondary-dark: #004ecb;  /* Azul oscuro */
+  
+  /* Fondos y contenedores */
+  --fcnolimit-bg-dark: #263238;         /* Fondo oscuro (gris azulado) */
+  --fcnolimit-bg-darker: #1c2a35;       /* Fondo más oscuro */
+  --fcnolimit-bg-light: #f5f5f5;        /* Fondo claro */
+  --fcnolimit-bg-white: #ffffff;        /* Fondo blanco */
+  
+  /* Colores de texto */
+  --fcnolimit-text-light: #ffffff;      /* Texto sobre fondos oscuros */
+  --fcnolimit-text-dark: #212121;       /* Texto sobre fondos claros */
+  --fcnolimit-text-muted: #9e9e9e;      /* Texto secundario o deshabilitado */
+  
+  /* Colores de estado */
+  --fcnolimit-success: #66bb6a;         /* Éxito (verde) */
+  --fcnolimit-error: #f44336;           /* Error (rojo) */
+  --fcnolimit-warning: #ffb74d;         /* Advertencia (ámbar claro) */
+  --fcnolimit-info: #29b6f6;            /* Información (azul claro) */
+  
+  /* Sombras y efectos */
+  --fcnolimit-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --fcnolimit-shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+  --fcnolimit-shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+  --fcnolimit-shadow-primary: 0 4px 12px rgba(255, 167, 38, 0.3);
+  --fcnolimit-shadow-secondary: 0 4px 12px rgba(41, 121, 255, 0.3);
+  
+  /* Bordes y radios */
+  --fcnolimit-border-radius-sm: 4px;
+  --fcnolimit-border-radius-md: 8px;
+  --fcnolimit-border-radius-lg: 12px;
+  --fcnolimit-border-radius-pill: 50px;
+  
+  /* Transiciones */
+  --fcnolimit-transition-fast: 0.2s ease;
+  --fcnolimit-transition-normal: 0.3s ease;
+  --fcnolimit-transition-slow: 0.5s ease;
+  
+  /* Espaciado */
+  --fcnolimit-spacing-xs: 0.25rem;
+  --fcnolimit-spacing-sm: 0.5rem;
+  --fcnolimit-spacing-md: 1rem;
+  --fcnolimit-spacing-lg: 1.5rem;
+  --fcnolimit-spacing-xl: 2rem;
+  
+  /* Mapeo para compatibilidad con variables existentes */
+  --primary: var(--fcnolimit-primary);
+  --primary-light: var(--fcnolimit-primary-light);
+  --primary-dark: var(--fcnolimit-primary-dark);
+  --secondary: var(--fcnolimit-secondary);
+  --secondary-light: var(--fcnolimit-secondary-light);
+  --secondary-dark: var(--fcnolimit-secondary-dark);
+  --neutral-dark: var(--fcnolimit-bg-dark);
+  --neutral-darker: var(--fcnolimit-bg-darker);
+  --text-on-dark: var(--fcnolimit-text-light);
+  --text-on-light: var(--fcnolimit-text-dark);
+}
+
+/* Reemplazar las variables de ionic por nuestras propias variables */
+:root {
+  --ion-color-primary: var(--fcnolimit-primary);
+  --ion-color-primary-rgb: 255, 167, 38;
+  --ion-color-primary-contrast: var(--fcnolimit-text-dark);
+  
+  --ion-color-secondary: var(--fcnolimit-secondary);
+  --ion-color-secondary-rgb: 41, 121, 255;
+  --ion-color-secondary-contrast: var(--fcnolimit-text-light);
+  
+  --ion-color-light: var(--fcnolimit-text-light);
+  --ion-color-medium: var(--fcnolimit-text-muted);
+  --ion-color-dark: var(--fcnolimit-bg-dark);
+  --ion-color-dark-shade: var(--fcnolimit-bg-darker);
+}
