@@ -68,5 +68,32 @@ module.exports = (pool) => {
     }
   });
 
+  // Buscar estadísticas de partido por id, partido_id o equipo_id (solo admin)
+  router.get('/buscar', authenticateToken, isAdmin, async (req, res) => {
+    const { id, partido_id, equipo_id } = req.query;
+    let query = 'SELECT * FROM "fcnolimit".estadisticas_partido WHERE 1=1';
+    const params = [];
+
+    if (id) {
+      params.push(id);
+      query += ` AND id = $${params.length}`;
+    }
+    if (partido_id) {
+      params.push(partido_id);
+      query += ` AND partido_id = $${params.length}`;
+    }
+    if (equipo_id) {
+      params.push(equipo_id);
+      query += ` AND equipo_id = $${params.length}`;
+    }
+
+    try {
+      const result = await pool.query(query, params);
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   return router;
 };

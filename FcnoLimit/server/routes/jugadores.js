@@ -68,6 +68,37 @@ module.exports = (pool) => {
     }
   });
 
+  // Buscar jugadores por id, usuario_id, equipo_id o posicion (solo admin)
+  router.get('/buscar', authenticateToken, isAdmin, async (req, res) => {
+    const { id, usuario_id, equipo_id, posicion } = req.query;
+    let query = 'SELECT * FROM "fcnolimit".jugadores WHERE 1=1';
+    const params = [];
+
+    if (id) {
+      params.push(id);
+      query += ` AND id = $${params.length}`;
+    }
+    if (usuario_id) {
+      params.push(usuario_id);
+      query += ` AND usuario_id = $${params.length}`;
+    }
+    if (equipo_id) {
+      params.push(equipo_id);
+      query += ` AND equipo_id = $${params.length}`;
+    }
+    if (posicion) {
+      params.push(`%${posicion}%`);
+      query += ` AND posicion ILIKE $${params.length}`;
+    }
+
+    try {
+      const result = await pool.query(query, params);
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   // Obtener todos los partidos (público)
   router.get('/partidos', async (req, res) => {
     try {

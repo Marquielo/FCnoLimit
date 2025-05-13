@@ -1,0 +1,71 @@
+.admin-dashboard-flex {
+  display: flex;
+  min-height: 80vh;
+  gap: 24px;
+  background: #f5f6fa;
+  border-radius: 16px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.admin-sidebar {
+  min-width: 220px;
+  background: #23272f;
+  padding: 1.5rem 1rem;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-sidebar .ion-button {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+  border-radius: 8px;
+}
+
+.admin-main-content {
+  flex: 1;
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.admin-main-content h2 {
+  margin-bottom: 1.5rem;
+  color: #222;
+  font-weight: 600;
+}
+
+.admin-main-content .ion-button {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+@media (max-width: 900px) {
+  .admin-dashboard-flex {
+    flex-direction: column;
+    gap: 0;
+  }
+  .admin-sidebar {
+    flex-direction: row;
+    min-width: unset;
+    margin-right: 0;
+    margin-bottom: 1rem;
+    border-radius: 12px 12px 0 0;
+    justify-content: flex-start;
+    overflow-x: auto;
+  }
+  .admin-sidebar .ion-button {
+    margin-right: 8px;
+    margin-bottom: 0;
+    min-width: 120px;
+  }
+  .admin-main-content {
+    border-radius: 0 0 16px 16px;
+    padding: 1rem;
+  }
+}

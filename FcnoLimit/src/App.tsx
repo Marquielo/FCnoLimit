@@ -1,25 +1,21 @@
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
-  IonIcon,
-  IonLabel,
   IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonTabs,
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
 import NavBar from './components/NavBar';
-import EquiposPage from './pages/EquiposPage';
-import JugadoresPage from './pages/JugadoresPage';
-import ComparativasPage from './pages/ComparativasPage';
-import PartidosPage from './pages/PartidosPage';      
-import InicioPage from './pages/InicioPage';
-import AuthPage from './pages/AuthPage';
-import CampeonatosPage from './pages/CampeonatoPage';
-import NoticiasPage  from './pages/NoticiasPage';
+import EquiposPage from './pages/equipos/EquiposPage';
+import JugadoresPage from './pages/jugadores/JugadoresPage';
+import ComparativasPage from './pages/estadisticas/ComparativasPage';
+import PartidosPage from './pages/partidos/PartidosPage';      
+import InicioPage from './pages/inicio/InicioPage';
+import AuthPage from './pages/auth/AuthPage';
+import CampeonatosPage from './pages/campeonato/CampeonatoPage';
+import NoticiasPage  from './pages/noticias/NoticiasPage';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import ProtectedRoute from './components/ProtectedRoute';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 /* Core CSS required for Ionic components to work properly */
@@ -55,40 +51,59 @@ import './theme/variables.css';
 setupIonicReact();
 
 const App: React.FC = () => (
-<IonApp>
-  <IonReactRouter>
-    <IonRouterOutlet>
-      <Route exact path="/inicio">
-        <InicioPage />
-      </Route>
-      <Route exact path="/auth">
-        <AuthPage />
-      </Route>
-      <Route exact path="/Campeonatos">
-        <CampeonatosPage />
-      </Route>
-      <Route exact path="/equipos">
-        <EquiposPage />
-      </Route>
-      <Route exact path="/jugadores">
-        <JugadoresPage />
-      </Route>
-      <Route exact path="/partidos">
-        <PartidosPage />
-      </Route>
-      <Route exact path="/comparativas">
-        <ComparativasPage />
-      </Route>
-      <Route exact path="/noticias">
-        <NoticiasPage />
-      </Route>
-      <Route exact path="/">
-        <Redirect to="/inicio" />
-      </Route>
-    </IonRouterOutlet>
-    <NavBar /> {/* Agregamos la barra de navegación */}
-  </IonReactRouter>
-</IonApp>
+  <IonApp>
+    <IonReactRouter>
+      <IonRouterOutlet>
+        {/* Rutas públicas */}
+        <Route exact path="/inicio">
+          <InicioPage />
+        </Route>
+        <Route exact path="/auth">
+          <AuthPage />
+        </Route>
+        {/* Rutas protegidas */}
+        <Route exact path="/campeonatos" render={() => (
+          <ProtectedRoute>
+            <CampeonatosPage />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/equipos" render={() => (
+          <ProtectedRoute>
+            <EquiposPage />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/jugadores" render={() => (
+          <ProtectedRoute>
+            <JugadoresPage />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/partidos" render={() => (
+          <ProtectedRoute>
+            <PartidosPage />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/comparativas" render={() => (
+          <ProtectedRoute>
+            <ComparativasPage />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/noticias" render={() => (
+          <ProtectedRoute>
+            <NoticiasPage />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/admin" render={() => (
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/">
+          <Redirect to="/inicio" />
+        </Route>
+      </IonRouterOutlet>
+      <NavBar />
+    </IonReactRouter>
+  </IonApp>
 );
 
 export default App;

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { IonPage, IonContent, IonIcon, IonSearchbar } from '@ionic/react';
 import { calendar, person, time, chevronBack, chevronForward } from 'ionicons/icons';
-import NavBar from '../components/NavBar';
-import Footer from '../components/Footer';
+import NavBar from '../../components/NavBar';
+import Footer from '../../components/Footer';
 import './NoticiasPage.css';
 
 const NoticiasPage: React.FC = () => {

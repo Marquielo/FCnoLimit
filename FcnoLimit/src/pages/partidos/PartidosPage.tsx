@@ -1,8 +1,8 @@
 import React from 'react';
 import { IonPage, IonContent, IonButton, IonIcon } from '@ionic/react';
 import { calendarOutline, footballOutline } from 'ionicons/icons';
-import NavBar from '../components/NavBar';
-import Footer from '../components/Footer';
+import NavBar from '../../components/NavBar';
+import Footer from '../../components/Footer';
 import './PartidosPage.css';
 
 const partidosEjemplo = [

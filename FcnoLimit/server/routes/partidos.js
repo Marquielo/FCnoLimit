@@ -120,5 +120,36 @@ module.exports = (pool) => {
     }
   );
 
+  // Buscar partidos por id, equipo_local_id, equipo_visitante_id o fecha (solo admin)
+  router.get('/buscar', authenticateToken, isAdmin, async (req, res) => {
+    const { id, equipo_local_id, equipo_visitante_id, fecha } = req.query;
+    let query = 'SELECT * FROM "fcnolimit".partidos WHERE 1=1';
+    const params = [];
+
+    if (id) {
+      params.push(id);
+      query += ` AND id = $${params.length}`;
+    }
+    if (equipo_local_id) {
+      params.push(equipo_local_id);
+      query += ` AND equipo_local_id = $${params.length}`;
+    }
+    if (equipo_visitante_id) {
+      params.push(equipo_visitante_id);
+      query += ` AND equipo_visitante_id = $${params.length}`;
+    }
+    if (fecha) {
+      params.push(fecha);
+      query += ` AND fecha = $${params.length}`;
+    }
+
+    try {
+      const result = await pool.query(query, params);
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   return router;
 };

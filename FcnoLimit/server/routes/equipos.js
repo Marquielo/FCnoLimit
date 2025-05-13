@@ -71,5 +71,36 @@ module.exports = (pool) => {
     }
   });
 
+  // Buscar equipos por id, nombre, categoria o liga_id (solo admin)
+  router.get('/buscar', authenticateToken, isAdmin, async (req, res) => {
+    const { id, nombre, categoria, liga_id } = req.query;
+    let query = 'SELECT * FROM "fcnolimit".equipos WHERE 1=1';
+    const params = [];
+
+    if (id) {
+      params.push(id);
+      query += ` AND id = $${params.length}`;
+    }
+    if (nombre) {
+      params.push(`%${nombre}%`);
+      query += ` AND nombre ILIKE $${params.length}`;
+    }
+    if (categoria) {
+      params.push(`%${categoria}%`);
+      query += ` AND categoria ILIKE $${params.length}`;
+    }
+    if (liga_id) {
+      params.push(liga_id);
+      query += ` AND liga_id = $${params.length}`;
+    }
+
+    try {
+      const result = await pool.query(query, params);
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   return router;
 };

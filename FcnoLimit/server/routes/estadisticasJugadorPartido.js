@@ -79,5 +79,32 @@ module.exports = (pool) => {
     }
   });
 
+  // Buscar estadísticas de jugador por id, partido_id o jugador_id (solo admin)
+  router.get('/buscar', authenticateToken, isAdmin, async (req, res) => {
+    const { id, partido_id, jugador_id } = req.query;
+    let query = 'SELECT * FROM "fcnolimit".estadisticas_jugador WHERE 1=1';
+    const params = [];
+
+    if (id) {
+      params.push(id);
+      query += ` AND id = $${params.length}`;
+    }
+    if (partido_id) {
+      params.push(partido_id);
+      query += ` AND partido_id = $${params.length}`;
+    }
+    if (jugador_id) {
+      params.push(jugador_id);
+      query += ` AND jugador_id = $${params.length}`;
+    }
+
+    try {
+      const result = await pool.query(query, params);
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   return router;
 };
