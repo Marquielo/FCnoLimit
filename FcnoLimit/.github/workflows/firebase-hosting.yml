@@ -20,7 +20,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '20' # Asegurando que sea Node.js 20 o superior
           cache: 'npm'
           cache-dependency-path: FcnoLimit/package-lock.json
           
@@ -48,7 +48,9 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_FCNOLIMIT }}'
           channelId: live
-          projectId: fcnolimit
+          projectId: fcnolimit-app # Asegúrate de que este ID coincida exactamente con tu proyecto en Firebase
           entryPoint: FcnoLimit
+          # Especificar una versión de Firebase CLI compatible
+          firebaseToolsVersion: '13.0.2' # Usar una versión específica de Firebase Tools compatible con Node.js 20
         # Si es un PR, se despliega en un canal de previsualización
         # Si es un push a main, se despliega al canal en vivo
