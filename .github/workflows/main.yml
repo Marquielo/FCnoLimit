@@ -63,11 +63,37 @@ jobs:
           ls -la
         working-directory: FcnoLimit
 
+      - name: 📋 Verificar configuración antes del despliegue
+        run: |
+          echo "Contenido del directorio actual:"
+          ls -la
+          
+          echo "Verificando firebase.json:"
+          cat firebase.json
+          
+          echo "Verificando directorios de build:"
+          if [ -d "build" ]; then
+            echo "Directorio build encontrado:"
+            ls -la build/
+          elif [ -d "dist" ]; then
+            echo "Directorio dist encontrado:"
+            ls -la dist/
+          else
+            echo "⚠️ No se encontró ni build ni dist"
+          fi
+        working-directory: FcnoLimit
+
       - name: 🚀 Instalar Firebase CLI compatible
         run: npm install -g firebase-tools@13.0.2
 
+      - name: 🔐 Configurar credenciales de Firebase
+        run: |
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_FCNOLIMIT }}' > $HOME/firebase-service-account.json
+          export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase-service-account.json
+        working-directory: FcnoLimit
+
       - name: 📤 Desplegar en Firebase Hosting
-        run: firebase deploy --only hosting --token "$FIREBASE_TOKEN" --project fcnolimit --non-interactive
+        run: firebase deploy --only hosting --project fcnolimit --non-interactive
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FCNOLIMIT }}
+          GOOGLE_APPLICATION_CREDENTIALS: $HOME/firebase-service-account.json
         working-directory: FcnoLimit
