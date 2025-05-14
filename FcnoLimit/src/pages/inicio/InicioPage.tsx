@@ -117,7 +117,7 @@ const InicioPage: React.FC = () => {
                 <span className="badge-label">Jugadores</span>
               </div>
               <div className="hero-badge">
-                <span className="badge-count">100+</span>
+                <span className="badge-count">120+</span>
                 <span className="badge-label">Partidos</span>
               </div>
               <div className="hero-badge">
