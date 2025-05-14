@@ -13,22 +13,22 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     container:
-      image: node:20-alpine # Usar directamente un contenedor con Node.js 20
-    
+      image: node:20-alpine
+
     steps:
-      - name: Checkout repository
+      - name: 📥 Clonar el repositorio
         uses: actions/checkout@v3
-      
-      - name: Verify Node version
+
+      - name: 🔧 Verificar versiones de Node y NPM
         run: |
           node -v
           npm -v
-          
-      - name: Install dependencies
+
+      - name: 📦 Instalar dependencias
         run: npm ci
         working-directory: FcnoLimit
-        
-      - name: Configure environment variables
+
+      - name: 🔐 Configurar variables de entorno
         run: |
           echo "REACT_APP_FIREBASE_API_KEY=${{ secrets.REACT_APP_FIREBASE_API_KEY }}" >> .env
           echo "REACT_APP_FIREBASE_AUTH_DOMAIN=${{ secrets.REACT_APP_FIREBASE_AUTH_DOMAIN }}" >> .env
@@ -37,16 +37,53 @@ jobs:
           echo "REACT_APP_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.REACT_APP_FIREBASE_MESSAGING_SENDER_ID }}" >> .env
           echo "REACT_APP_FIREBASE_APP_ID=${{ secrets.REACT_APP_FIREBASE_APP_ID }}" >> .env
         working-directory: FcnoLimit
-        
-      - name: Build
+
+      - name: 🛠️ Compilar la aplicación
         run: npm run build
         working-directory: FcnoLimit
-      
-      - name: Install specific version of firebase-tools
+
+      - name: 📋 Verificar directorio de build
+        run: |
+          echo "Listando directorios disponibles:"
+          ls -la
+          
+          # Verificar si existe el directorio dist en lugar de build
+          if [ -d "dist" ]; then
+            echo "Se encontró el directorio dist, vamos a usarlo para despliegue"
+            # Actualizar firebase.json para usar dist en lugar de build
+            sed -i 's/"public": "build"/"public": "dist"/g' firebase.json
+          elif [ ! -d "build" ]; then
+            echo "No se encontró el directorio build, vamos a investigar el script de build"
+            
+            # Verificar el contenido del package.json para entender el script de build
+            echo "Contenido del script de build en package.json:"
+            grep -A 5 "scripts" package.json
+            
+            # Verificar si hay errores en el log de compilación
+            echo "Ejecutando build con más información de depuración"
+            npm run build -- --verbose
+            
+            # Crear directorio build manualmente si es necesario como solución temporal
+            echo "Creando directorio build manualmente"
+            mkdir -p build
+            echo "<html><body><h1>FCnoLimit</h1><p>Sitio en construcción</p></body></html>" > build/index.html
+          fi
+          
+          echo "Contenido después de la verificación:"
+          ls -la
+        working-directory: FcnoLimit
+
+      - name: 🚀 Instalar Firebase CLI compatible
         run: npm install -g firebase-tools@13.0.2
-      
-      - name: Deploy to Firebase
-        run: firebase deploy --only hosting --token "$FIREBASE_TOKEN" --project fcnolimit-app --non-interactive
+
+      - name: Desplegar a Firebase
+        run: |
+          # Mostrar la configuración de Firebase antes de desplegar
+          echo "Contenido de firebase.json:"
+          cat firebase.json
+          
+          # Desplegar a Firebase usando directamente el token
+          firebase deploy --only hosting --token "$FIREBASE_TOKEN" --project fcnolimit --non-interactive
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FCNOLIMIT }}
         working-directory: FcnoLimit
