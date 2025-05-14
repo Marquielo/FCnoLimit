@@ -83,17 +83,10 @@ jobs:
           fi
         working-directory: FcnoLimit
 
-      - name: 🚀 Instalar Firebase CLI compatible
-        run: npm install -g firebase-tools@13.0.2
-
-      - name: 🔐 Configurar credenciales de Firebase
-        run: |
-          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_FCNOLIMIT }}' > $HOME/firebase-service-account.json
-          export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase-service-account.json
-        working-directory: FcnoLimit
-
       - name: 📤 Desplegar en Firebase Hosting
-        run: firebase deploy --only hosting --project fcnolimit --non-interactive
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: $HOME/firebase-service-account.json
-        working-directory: FcnoLimit
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_FCNOLIMIT }}'
+          channelId: live
+          projectId: fcnolimit
