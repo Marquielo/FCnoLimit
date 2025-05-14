@@ -87,6 +87,8 @@ jobs:
           echo "Contenido de firebase.json:"
           cat firebase.json
           
-          # Desplegar a Firebase
-          firebase deploy --only hosting --project fcnolimit --non-interactive
+          # Desplegar a Firebase usando el token
+          firebase deploy --only hosting --token "$FIREBASE_TOKEN" --project fcnolimit --non-interactive
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
         working-directory: FcnoLimit
