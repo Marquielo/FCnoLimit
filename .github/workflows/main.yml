@@ -38,6 +38,17 @@ jobs:
           echo "REACT_APP_FIREBASE_APP_ID=${{ secrets.REACT_APP_FIREBASE_APP_ID }}" >> .env
         working-directory: FcnoLimit
 
+      - name: 🔍 Verificar estructura del proyecto
+        run: |
+          echo "Estructura del repositorio:"
+          find . -type f -name "firebase.json" | sort
+          
+          echo "Contenido del directorio principal:"
+          ls -la
+          
+          echo "Contenido del directorio FcnoLimit:"
+          ls -la FcnoLimit/
+
       - name: 🛠️ Compilar la aplicación
         run: npm run build
         working-directory: FcnoLimit
@@ -90,3 +101,4 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_FCNOLIMIT }}'
           channelId: live
           projectId: fcnolimit
+          entryPoint: './FcnoLimit'  # Especifica la ruta donde se encuentra firebase.json
