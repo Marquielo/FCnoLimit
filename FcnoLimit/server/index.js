@@ -15,15 +15,25 @@ app.use(express.json());
 // Configuración de la conexión a PostgreSQL
 const pool = new Pool({
   user: 'postgres',
-  host: 'localhost',
-  database: 'fcnolimit',
-  password: 'familytrading',
+  host: '34.176.63.152', 
+  database: 'postgres',
+  password: 'PS,a.~QQ@skk#N>O', 
   port: 5432,
 });
 
 // Endpoint de prueba
 app.get('/api/ping', (req, res) => {
   res.json({ message: 'pong' });
+});
+
+// Endpoint para probar conexión a la base de datos en la nube
+app.get('/api/dbtest', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT NOW()');
+    res.json({ connected: true, time: result.rows[0].now });
+  } catch (err) {
+    res.status(500).json({ connected: false, error: err.message });
+  }
 });
 
 // Importar y usar rutas
