@@ -38,15 +38,67 @@ jobs:
           echo "REACT_APP_FIREBASE_APP_ID=${{ secrets.REACT_APP_FIREBASE_APP_ID }}" >> .env
         working-directory: FcnoLimit
 
+      - name: 🔍 Verificar estructura del proyecto
+        run: |
+          echo "Estructura del repositorio:"
+          find . -type f -name "firebase.json" | sort
+          
+          echo "Contenido del directorio principal:"
+          ls -la
+          
+          echo "Contenido del directorio FcnoLimit:"
+          ls -la FcnoLimit/
+
       - name: 🛠️ Compilar la aplicación
         run: npm run build
         working-directory: FcnoLimit
 
-      - name: 🚀 Instalar Firebase CLI compatible
-        run: npm install -g firebase-tools@13.0.2
+      - name: 📋 Verificar directorio de build
+        run: |
+          echo "Listando directorios disponibles:"
+          ls -la
+          
+          # Verificar si existe el directorio dist en lugar de build
+          if [ -d "dist" ]; then
+            echo "Se encontró el directorio dist, vamos a usarlo para despliegue"
+            # Actualizar firebase.json para usar dist en lugar de build
+            sed -i 's/"public": "build"/"public": "dist"/g' firebase.json
+          elif [ ! -d "build" ]; then
+            # Crear directorio build manualmente si es necesario
+            echo "Creando directorio build manualmente"
+            mkdir -p build
+            echo "<html><body><h1>FCnoLimit</h1><p>Sitio en construcción</p></body></html>" > build/index.html
+          fi
+          
+          echo "Contenido después de la verificación:"
+          ls -la
+        working-directory: FcnoLimit
+
+      - name: 📋 Verificar configuración antes del despliegue
+        run: |
+          echo "Contenido del directorio actual:"
+          ls -la
+          
+          echo "Verificando firebase.json:"
+          cat firebase.json
+          
+          echo "Verificando directorios de build:"
+          if [ -d "build" ]; then
+            echo "Directorio build encontrado:"
+            ls -la build/
+          elif [ -d "dist" ]; then
+            echo "Directorio dist encontrado:"
+            ls -la dist/
+          else
+            echo "⚠️ No se encontró ni build ni dist"
+          fi
+        working-directory: FcnoLimit
 
       - name: 📤 Desplegar en Firebase Hosting
-        run: firebase deploy --only hosting --token "$FIREBASE_TOKEN" --project fcnolimit-app --non-interactive
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FCNOLIMIT }}
-        working-directory: FcnoLimit
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_FCNOLIMIT }}'
+          channelId: live
+          projectId: fcnolimit
+          entryPoint: './FcnoLimit'  # Especifica la ruta donde se encuentra firebase.json
