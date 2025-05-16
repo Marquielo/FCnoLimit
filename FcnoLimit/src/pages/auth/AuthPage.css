@@ -9,6 +9,13 @@
   --form-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 /* Diseño general */
 .auth-page {
   --background: #e9e9e9;
@@ -538,10 +545,89 @@
   }
   
   .right-column {
-    padding: 1.5rem;
+    padding: 1rem;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1470&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
   }
   
   .form-container {
-    padding: 1rem 0;
+    padding: 1.5rem;
+    background: var(--fcnolimit-bg-white);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    border: 2px solid var(--fcnolimit-primary-dark);
+  }
+
+  .form-title {
+    color: var(--fcnolimit-primary-dark);
+    font-family: 'Teko', sans-serif;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .custom-input {
+    --background: rgba(255, 255, 255, 0.9);
+    --border-color: #d4d4d4;
+    --border-width: 2px;
+    --border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .submit-button {
+    --background: var(--fcnolimit-primary-dark);
+    height: 50px;
+    font-family: 'Teko', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+  }
+
+  .social-buttons {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 0.8rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+  }
+
+  .social-button {
+    border: 2px solid var(--fcnolimit-primary-dark);
+    transition: transform 0.3s ease;
+  }
+
+  .social-button:active {
+    transform: scale(0.95);
+  }
+
+  .separator {
+    color: var(--fcnolimit-primary-dark);
+    font-weight: 600;
+  }
+
+  .forgot-password a {
+    color: var(--fcnolimit-primary-dark);
+    font-weight: 600;
+  }
+
+  /* Efecto de pelota de fútbol en el fondo */
+  .right-column::after {
+    content: '';
+    position: fixed;
+    bottom: -50px;
+    right: -50px;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle at 30% 30%, white 2px, transparent 3px) 0 0,
+                radial-gradient(circle at 70% 70%, white 2px, transparent 3px) 8px 8px;
+    background-size: 16px 16px;
+    border-radius: 50%;
+    opacity: 0.1;
+    z-index: -1;
   }
 }
