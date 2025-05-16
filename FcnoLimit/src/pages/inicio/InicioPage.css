@@ -118,9 +118,7 @@ h2::after {
   transition: width 0.4s ease;
 }
 
-h2:hover::after {
-  width: 100%;
-}
+
 
 /* Variación para h2 con icono */
 h2 ion-icon {
