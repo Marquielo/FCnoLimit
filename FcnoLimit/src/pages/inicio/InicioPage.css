@@ -131,12 +131,7 @@ h2 ion-icon {
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.1));
 }
 
-/* Variante para encabezados sobre fondos oscuros */
-.dark-bg h2 {
-  background: linear-gradient(90deg, #ffffff 70%, var(--fcnolimit-primary-light) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+
 
 /* Efecto decorativo para algunos h2 */
 .section-header h2:before {

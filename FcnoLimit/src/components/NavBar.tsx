@@ -264,12 +264,6 @@ const NavBar: React.FC = () => {
           </div>
         </div>
       </nav>
-      
-      {/* Overlay para fondo oscuro en móvil */}
-      <div 
-        className={`navbar-overlay${isOpen ? " show" : ""}`} 
-        onClick={() => setIsOpen(false)}
-      ></div>
     </>
   );
 };
