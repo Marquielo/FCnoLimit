@@ -358,29 +358,77 @@
   left: 100%;
 }
 
-/* Separador O */
+/* Estilos para los botones de redes sociales */
+.social-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.social-button {
+  --border-radius: 50%;
+  --padding-start: 0;
+  --padding-end: 0;
+  width: 48px;
+  height: 48px;
+  transition: all 0.3s ease;
+}
+
+.social-button ion-icon {
+  font-size: 24px;
+}
+
+.social-button.google {
+  --background: #ffffff;
+  --color: #DB4437;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eaeaea;
+}
+
+.social-button.facebook {
+  --background: #ffffff;
+  --color: #3b5998;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eaeaea;
+}
+
+.social-button.apple {
+  --background: #ffffff;
+  --color: #000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eaeaea;
+}
+
+.social-button:hover {
+  --opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Separador "o" */
 .separator {
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 1.2rem 0;  /* Reducido de 1.5rem */
-  color: #999;
-  font-size: 0.9rem;
+  margin: 20px 0;
+  color: #777;
+  font-size: 14px;
 }
 
 .separator::before,
 .separator::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #eaeaea;
 }
 
 .separator::before {
-  margin-right: 1rem;
+  margin-right: 10px;
 }
 
 .separator::after {
-  margin-left: 1rem;
+  margin-left: 10px;
 }
 
 /* Botones de inicio de sesión social */
@@ -440,8 +488,6 @@
 .crear-cuenta .custom-input {
   margin-bottom: 1.2rem;
 }
-
-/* ...existing code... */
 
 /* Ajustes responsive */
 @media (max-width: 768px) {

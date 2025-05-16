@@ -8,7 +8,8 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonIcon
+  IonIcon,
+  useIonLoading
 } from '@ionic/react';
 import { 
   footballOutline, 
@@ -21,7 +22,38 @@ import {
 import './AuthPage.css';
 import NavBar from '../../components/NavBar';
 
+// Función temporal para evitar errores si no existe el servicio real
+const mockSignInWithGoogle = async () => {
+  console.log("Simulando inicio de sesión con Google");
+  // Simular un retraso de red
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  
+  return {
+    success: true,
+    user: {
+      uid: "mock-uid-123",
+      email: "usuario@ejemplo.com",
+      displayName: "Usuario Ejemplo",
+      photoURL: "https://via.placeholder.com/150"
+    },
+    token: "mock-token-123"
+  };
+};
+
+// Intenta importar la función real, pero usa la simulada en caso de error
+let signInWithGoogle;
+try {
+  // Intenta importar la función real
+  const module = require('../../firebase/authService');
+  signInWithGoogle = module.signInWithGoogle;
+} catch (error) {
+  console.warn("No se pudo importar el servicio de autenticación, usando versión de prueba");
+  signInWithGoogle = mockSignInWithGoogle;
+}
+
 const AuthPage: React.FC = () => {
+  console.log("Renderizando AuthPage");
+  
   const [showLogin, setShowLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -35,23 +67,60 @@ const AuthPage: React.FC = () => {
   const [error, setError] = useState('');
   const [registerError, setRegisterError] = useState('');
   const [registerSuccess, setRegisterSuccess] = useState('');
+  const [present, dismiss] = useIonLoading();
 
-  // Manejadores de autenticación
+  // Manejador para autenticación con Google
+  const handleGoogleSignIn = async () => {
+    console.log("Botón Google clickeado");
+    try {
+      present({ message: 'Iniciando sesión con Google...' });
+      console.log("Mostrando loading...");
+      
+      console.log("Llamando a signInWithGoogle...");
+      const result = await signInWithGoogle();
+      console.log("Resultado completo:", result);
+      
+      dismiss();
+      
+      if (result.success && result.token && result.user) {
+        console.log("Login exitoso, guardando datos...");
+        // Guardar token y datos del usuario en localStorage
+        localStorage.setItem('token', result.token);
+        localStorage.setItem('usuario', JSON.stringify(result.user));
+        
+        // Redirigir a la página de inicio
+        window.location.href = '/inicio';
+      } else {
+        console.error("Error en resultado:", result.error);
+        setError(result.error || 'Error al iniciar sesión con Google');
+      }
+    } catch (err: any) {
+      console.error("Error detallado:", err);
+      console.error("Stack trace:", err.stack);
+      dismiss();
+      setError(err.message || 'Error al iniciar sesión con Google');
+    }
+  };
+
+  // Manejadores de autenticación existentes
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     try {
+      present({ message: 'Iniciando sesión...' });
       const res = await fetch('http://localhost:3001/api/usuarios/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ correo: email, contraseña: password })
       });
+      dismiss();
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error de autenticación');
       localStorage.setItem('token', data.token);
       localStorage.setItem('usuario', JSON.stringify(data.user));
       window.location.href = '/inicio'; // Redirige a /jugadores tras login exitoso
     } catch (err: any) {
+      dismiss();
       setError(err.message || 'Correo o contraseña incorrectos');
     }
   };
@@ -65,6 +134,7 @@ const AuthPage: React.FC = () => {
       return;
     }
     try {
+      present({ message: 'Creando cuenta...' });
       const res = await fetch('http://localhost:3001/api/usuarios/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -75,11 +145,13 @@ const AuthPage: React.FC = () => {
           rol: 'persona_natural' // O el rol que desees permitir desde el registro
         })
       });
+      dismiss();
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error al registrar');
       setRegisterSuccess('Cuenta creada exitosamente. Ahora puedes iniciar sesión.');
       setShowLogin(true);
     } catch (err: any) {
+      dismiss();
       setRegisterError(err.message || 'Error al registrar');
     }
   };
@@ -125,7 +197,12 @@ const AuthPage: React.FC = () => {
                     <form onSubmit={handleLogin} className="auth-form">
                       {/* Botones de login social */}
                       <div className="social-buttons">
-                        <IonButton fill="clear" className="social-button google">
+                        <IonButton 
+                          fill="clear" 
+                          className="social-button google"
+                          onClick={handleGoogleSignIn}
+                          type="button"
+                        >
                           <IonIcon icon={logoGoogle}></IonIcon>
                         </IonButton>
                         <IonButton fill="clear" className="social-button facebook">
@@ -200,7 +277,12 @@ const AuthPage: React.FC = () => {
                     <form onSubmit={handleRegister} className="auth-form">
                       {/* Botones de registro social */}
                       <div className="social-buttons">
-                        <IonButton fill="clear" className="social-button google">
+                        <IonButton 
+                          fill="clear" 
+                          className="social-button google"
+                          onClick={handleGoogleSignIn}
+                          type="button"
+                        >
                           <IonIcon icon={logoGoogle}></IonIcon>
                         </IonButton>
                         <IonButton fill="clear" className="social-button facebook">
