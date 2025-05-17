@@ -21,6 +21,16 @@ const pool = new Pool({
   port: 5432,
 });
 
+// Verificar la contraseña de la base de datos en el inicio
+console.log('DB_PASSWORD:', process.env.DB_PASSWORD, '| Tipo:', typeof process.env.DB_PASSWORD);
+
+pool.connect()
+  .then(() => console.log('Conexión a PostgreSQL exitosa'))
+  .catch(err => {
+    console.error('Error al conectar a PostgreSQL:', err);
+    process.exit(1); // Detiene el proceso si falla la conexión
+  });
+
 // Endpoint de prueba
 app.get('/api/ping', (req, res) => {
   res.json({ message: 'pong' });
