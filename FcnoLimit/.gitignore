@@ -10,6 +10,8 @@ FcnoLimit/src/config/
 
 # dependencies
 /node_modules
+/server/node_modules
+/server/package-lock.json
 /.pnp
 .pnp.js
 
