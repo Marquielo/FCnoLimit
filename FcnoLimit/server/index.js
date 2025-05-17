@@ -1,6 +1,6 @@
-// index.js
 const express = require('express');
 const cors = require('cors');
+require('dotenv').config();
 const { Pool } = require('pg');
 
 const app = express();
@@ -12,12 +12,12 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Configuración de la conexión a PostgreSQL
+// Configuración de la conexión a PostgreSQL usando variable de entorno
 const pool = new Pool({
   user: 'postgres',
-  host: '34.176.63.152', 
+  host: '34.176.63.152',
   database: 'postgres',
-  password: 'PS,a.~QQ@skk#N>O', 
+  password: process.env.DB_PASSWORD, // <-- variable de entorno
   port: 5432,
 });
 
