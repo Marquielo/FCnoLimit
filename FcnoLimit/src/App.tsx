@@ -15,6 +15,7 @@ import AuthPage from './pages/auth/AuthPage';
 import CampeonatosPage from './pages/campeonato/CampeonatoPage';
 import NoticiasPage  from './pages/noticias/NoticiasPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import PerfilPage from './pages/perfil/PerfilPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -100,6 +101,11 @@ const App: React.FC = () => (
         <Route exact path="/">
           <Redirect to="/inicio" />
         </Route>
+        <Route exact path="/perfil" render={() => (
+          <ProtectedRoute>
+            <PerfilPage />
+          </ProtectedRoute>
+        )} />
       </IonRouterOutlet>
       <NavBar />
     </IonReactRouter>
