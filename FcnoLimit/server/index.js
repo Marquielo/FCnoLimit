@@ -11,7 +11,7 @@ app.use(cors({
   credentials: true,
 }));
 app.use(express.json());
-
+//dasjdasjdasjdjasdjasjdajsdjasdjasdjasjdajsd
 // Configuración de la conexión a PostgreSQL usando variable de entorno
 const pool = new Pool({
   user: 'postgres',
