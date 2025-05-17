@@ -28,7 +28,7 @@ pool.connect()
   .then(() => console.log('Conexión a PostgreSQL exitosa'))
   .catch(err => {
     console.error('Error al conectar a PostgreSQL:', err);
-    process.exit(1); // Detiene el proceso si falla la conexión
+    // NO hagas process.exit(1);
   });
 
 // Endpoint de prueba
