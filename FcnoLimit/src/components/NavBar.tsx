@@ -27,6 +27,7 @@ const NavBar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [popoverEvent, setPopoverEvent] = useState<MouseEvent | undefined>(undefined);
+  const [isClosing, setIsClosing] = useState(false);
   const navbarRef = useRef<HTMLDivElement>(null);
 
   const usuario = localStorage.getItem("usuario") ? JSON.parse(localStorage.getItem("usuario")!) : null;
@@ -70,9 +71,28 @@ const NavBar: React.FC = () => {
     { path: "/noticias", icon: newspaperSharp, text: "Noticias" },
   ];
 
+  // Nueva función para abrir el menú
+  const handleMenuOpen = () => {
+    setIsOpen(true);
+    setIsClosing(false);
+    document.body.style.overflow = 'hidden';
+  };
+
+  // Nueva función para cerrar el menú con animación
+  const handleMenuClose = () => {
+    setIsClosing(true);
+    document.body.style.overflow = '';
+    
+    // Esperamos a que termine la animación de cierre antes de ocultar completamente
+    setTimeout(() => {
+      setIsOpen(false);
+      setIsClosing(false);
+    }, 300);
+  };
+
   const handleNavClick = (path: string) => {
     history.push(path);
-    setIsOpen(false);
+    handleMenuClose();
   };
 
   const handleUserButtonClick = (e: React.MouseEvent) => {
@@ -84,7 +104,7 @@ const NavBar: React.FC = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("usuario");
     setShowUserMenu(false);
-    setIsOpen(false);
+    handleMenuClose();
     history.push("/auth");
   };
 
@@ -103,69 +123,132 @@ const NavBar: React.FC = () => {
               </div>
             </a>
           </div>
-          <button
-            className="navbar-toggler"
-            type="button"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-expanded={isOpen}
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className={`collapse navbar-collapse${isOpen ? " show" : ""}`}>
-            {/* Botón para cerrar menú en móvil */}
-            <button className="navbar-close-btn d-lg-none" onClick={() => setIsOpen(false)}>
-              <IonIcon icon={closeCircleOutline} />
+          
+          {/* Botón hamburguesa solo visible cuando el menú está cerrado */}
+          {!isOpen && (
+            <button 
+              className={`navbar-toggler`} 
+              type="button" 
+              onClick={handleMenuOpen}
+            >
+              <div className="hamburger-icon">
+                <span className="line line-1"></span>
+                <span className="line line-2"></span>
+                <span className="line line-3"></span>
+              </div>
             </button>
+          )}
+          
+          {/* Overlay para el fondo */}
+          <div 
+            className={`navbar-overlay${isOpen ? " show" : ""}${isClosing ? " closing" : ""}`} 
+            onClick={handleMenuClose}
+          ></div>
+          
+          <div className={`collapse navbar-collapse ${isOpen ? "show" : ""} ${isClosing ? "closing" : ""}`}>
+            {/* Header del menú móvil */}
+            <div className="mobile-menu-header d-lg-none">
+              <div className="mobile-logo">
+                <IonIcon icon={footballOutline} className="mobile-logo-icon" />
+                <span className="mobile-logo-text">FCnoLimit</span>
+              </div>
+              <button 
+                className="navbar-close-btn" 
+                onClick={handleMenuClose} 
+                aria-label="Cerrar menú"
+              ></button>
+            </div>
             
-            {/* Perfil de usuario en móvil */}
+            <div className="mobile-menu-content">
+              {/* Perfil de usuario en móvil */}
+              {usuario && (
+                <div className="user-profile-mobile d-lg-none">
+                  <div className="tar-mobile">
+                    <img
+                      src={`https://ui-avatars.com/api/?name=${encodeURIComponent(usuario.nombre_completo || "U")}&background=ff9800&color=fff&size=80`}
+                      alt="Avatar"
+                      width="85"
+                      height="85"
+                    />
+                  </div>
+                  <div className="user-name-mobile">{usuario.nombre_completo}</div>
+                  <div className="user-role-mobile">
+                    {usuario.rol === "administrador" ? "Administrador" : 
+                     usuario.rol === "jugador" ? "Jugador" : 
+                     usuario.rol === "persona_natural" ? "Perfil" : 
+                     usuario.rol === "entrenador" ? "Entrenador" : "Usuario"}
+                  </div>
+                </div>
+              )}
+              
+              {/* Título de sección principal */}
+              <div className="menu-section-title d-lg-none">Navegación</div>
+              
+              <ul className="navbar-nav">
+                {mainNavItems.map((item) => (
+                  <li className="nav-item" key={item.path}>
+                    <button
+                      className={`nav-link btn btn-link ${isActive(item.path) ? "active" : ""}`}
+                      onClick={() => handleNavClick(item.path)}
+                      type="button"
+                    >
+                      <IonIcon icon={item.icon} />
+                      <span>{item.text}</span>
+                    </button>
+                  </li>
+                ))}
+                {/* Mostrar botón Login solo si NO está logueado */}
+                {!usuario && (
+                  <li className="nav-item">
+                    <button
+                      className="nav-link btn btn-link"
+                      onClick={() => handleNavClick("/auth")}
+                      type="button"
+                    >
+                      <IonIcon icon={logInSharp} />
+                      <span>Login</span>
+                    </button>
+                  </li>
+                )}
+              </ul>
+            </div>
+            
+            {/* Acciones de usuario en móvil */}
             {usuario && (
-              <div className="user-profile-mobile d-lg-none">
-                <div className="user-avatar-mobile">
-                  <img
-                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(usuario.nombre_completo || "U")}&background=ff9800&color=fff&size=80`}
-                    alt="Avatar"
-                    width="80"
-                    height="80"
-                  />
-                </div>
-                <div className="user-name-mobile">{usuario.nombre_completo}</div>
-                <div className="user-role-mobile">
-                  {usuario.rol === "administrador" ? "Administrador" : 
-                   usuario.rol === "jugador" ? "Jugador" : 
-                   usuario.rol === "persona_natural" ? "Perfil" : 
-                   usuario.rol === "entrenador" ? "Entrenador" : "Usuario"}
-                </div>
+              <div className="user-actions-mobile d-lg-none">
+                <button 
+                  className="user-action-btn"
+                  onClick={() => {
+                    handleMenuClose();
+                    history.push("/perfil");
+                  }}
+                >
+                  <IonIcon icon={personCircleOutline} />
+                  <span>Mi perfil</span>
+                </button>
+                
+                {usuario.rol === "administrador" && (
+                  <button 
+                    className="user-action-btn"
+                    onClick={() => {
+                      handleMenuClose();
+                      history.push("/admin");
+                    }}
+                  >
+                    <IonIcon icon={settingsOutline} />
+                    <span>Admin</span>
+                  </button>
+                )}
+                
+                <button 
+                  className="user-action-btn logout-btn"
+                  onClick={handleLogout}
+                >
+                  <IonIcon icon={logOutOutline} />
+                  <span>Cerrar sesión</span>
+                </button>
               </div>
             )}
-            
-            <ul className="navbar-nav">
-              {mainNavItems.map((item) => (
-                <li className="nav-item" key={item.path}>
-                  <button
-                    className={`nav-link btn btn-link ${isActive(item.path) ? "active" : ""}`}
-                    onClick={() => handleNavClick(item.path)}
-                    type="button"
-                  >
-                    <IonIcon icon={item.icon} />
-                    <span>{item.text}</span>
-                  </button>
-                </li>
-              ))}
-              {/* Mostrar botón Login solo si NO está logueado */}
-              {!usuario && (
-                <li className="nav-item">
-                  <button
-                    className="nav-link btn btn-link"
-                    onClick={() => handleNavClick("/auth")}
-                    type="button"
-                  >
-                    <IonIcon icon={logInSharp} />
-                    <span>Login</span>
-                  </button>
-                </li>
-              )}
-            </ul>
             
             {/* Avatar y nombre como botón con menú (solo en desktop) */}
             {usuario && (
@@ -176,12 +259,12 @@ const NavBar: React.FC = () => {
                   fill="clear"
                 >
                   <img
-                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(usuario.nombre_completo || "U")}&background=ff9800&color=fff&rounded=true&size=32`}
+                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(usuario.nombre_completo || "U")}&background=ff9800&color=121921&rounded=true&size=32`}
                     alt="avatar"
                     className="user-avatar"
                     style={{ width: 32, height: 32, borderRadius: "50%" }}
                   />
-                  <span style={{ color: "#fff", fontWeight: 500, marginLeft: "0.5rem" }}>{usuario.nombre_completo}</span>
+                  <span style={{ color: "#121921", fontWeight: 500, marginLeft: "0.5rem" }}>{usuario.nombre_completo}</span>
                   <IonIcon icon={chevronForwardOutline} style={{ marginLeft: "0.5rem", fontSize: "0.8rem" }} />
                 </IonButton>
                 <IonPopover
@@ -190,9 +273,9 @@ const NavBar: React.FC = () => {
                   onDidDismiss={() => setShowUserMenu(false)}
                   className="user-popover"
                 >
-                  <div style={{ padding: "10px 15px", borderBottom: "1px solid #eee" }}>
-                    <h5 style={{ margin: 0, fontSize: "16px", fontWeight: 600 }}>{usuario.nombre_completo}</h5>
-                    <p style={{ margin: "5px 0 0", fontSize: "14px", color: "#666" }}>
+                  <div style={{ padding: "10px 15px", borderBottom: "1px solid rgba(255, 252, 252, 0.1)" }}>
+                    <h5 style={{ margin: 0, fontSize: "16px", fontWeight: 600, color: "#ffffff" }}>{usuario.nombre_completo}</h5>
+                    <p style={{ margin: "5px 0 0", fontSize: "14px", color: "rgba(255, 255, 255, 0.7)" }}>
                       {usuario.rol === "administrador" ? "Administrador" : 
                        usuario.rol === "jugador" ? "Jugador" : 
                        usuario.rol === "persona_natural" ? "Perfil" : 
@@ -205,7 +288,7 @@ const NavBar: React.FC = () => {
                       history.push("/perfil");
                     }}>
                       <IonIcon icon={personCircleOutline} slot="start" />
-                      Mi perfil
+                      <span style={{color: "#121921"}}>Mi perfil</span>
                     </IonItem>
                     {usuario.rol === "administrador" && (
                       <IonItem button onClick={() => {
@@ -213,52 +296,15 @@ const NavBar: React.FC = () => {
                         history.push("/admin");
                       }}>
                         <IonIcon icon={settingsOutline} slot="start" />
-                        Panel de administración
+                        <span style={{color: "#121921"}}>Panel de administración</span>
                       </IonItem>
                     )}
                     <IonItem button onClick={handleLogout}>
                       <IonIcon icon={logOutOutline} slot="start" />
-                      Cerrar sesión
+                      <span style={{color: "#de1111"}}>Cerrar sesión</span>
                     </IonItem>
                   </IonList>
                 </IonPopover>
-              </div>
-            )}
-            
-            {/* Acciones de usuario en móvil */}
-            {usuario && (
-              <div className="user-actions-mobile d-lg-none">
-                <button 
-                  className="user-action-btn"
-                  onClick={() => {
-                    setIsOpen(false);
-                    history.push("/perfil");
-                  }}
-                >
-                  <IonIcon icon={personCircleOutline} />
-                  <span>Mi perfil</span>
-                </button>
-                
-                {usuario.rol === "administrador" && (
-                  <button 
-                    className="user-action-btn"
-                    onClick={() => {
-                      setIsOpen(false);
-                      history.push("/admin");
-                    }}
-                  >
-                    <IonIcon icon={settingsOutline} />
-                    <span>Panel de administración</span>
-                  </button>
-                )}
-                
-                <button 
-                  className="user-action-btn logout-btn"
-                  onClick={handleLogout}
-                >
-                  <IonIcon icon={logOutOutline} />
-                  <span>Cerrar sesión</span>
-                </button>
               </div>
             )}
           </div>
