@@ -69,6 +69,8 @@ const AuthPage: React.FC = () => {
   const [registerSuccess, setRegisterSuccess] = useState('');
   const [present, dismiss] = useIonLoading();
 
+  const apiUrl = import.meta.env.VITE_API_URL; // URL del backend desde la variable de entorno
+
   // Manejador para autenticación con Google
   const handleGoogleSignIn = async () => {
     console.log("Botón Google clickeado");
@@ -108,17 +110,19 @@ const AuthPage: React.FC = () => {
     setError('');
     try {
       present({ message: 'Iniciando sesión...' });
-      const res = await fetch('http://localhost:3001/api/usuarios/login', {
+
+      const res = await fetch(`${apiUrl}/api/usuarios/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ correo: email, contraseña: password })
+        body: JSON.stringify({ correo: email, contraseña: password }),
       });
+
       dismiss();
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error de autenticación');
       localStorage.setItem('token', data.token);
       localStorage.setItem('usuario', JSON.stringify(data.user));
-      window.location.href = '/inicio'; // Redirige a /jugadores tras login exitoso
+      window.location.href = '/inicio'; // Redirige a /inicio tras login exitoso
     } catch (err: any) {
       dismiss();
       setError(err.message || 'Correo o contraseña incorrectos');
@@ -135,7 +139,7 @@ const AuthPage: React.FC = () => {
     }
     try {
       present({ message: 'Creando cuenta...' });
-      const res = await fetch('http://localhost:3001/api/usuarios/register', {
+      const res = await fetch(`${apiUrl}/api/usuarios/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
