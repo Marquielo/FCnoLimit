@@ -805,6 +805,48 @@ ion-button[class*="login"] ion-icon,
   }
 }
 
+/* Ajuste de la navegación para pantallas medianas */
+@media (max-width: 1280px) {
+  .navbar .brand-slogan {
+    font-size: 0.7rem;
+  }
+  
+  .navbar-nav .nav-link {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.9rem;
+  }
+  
+  .navbar-nav .nav-link ion-icon {
+    font-size: 1rem;
+    margin-right: 3px;
+  }
+}
+
+/* Ajuste adicional para pantallas un poco más pequeñas */
+@media (max-width: 1120px) {
+  .navbar .brand-slogan {
+    display: none !important;
+  }
+  
+  .navbar-nav .nav-link span {
+    display: none;
+  }
+  
+  .navbar-nav .nav-link ion-icon {
+    margin-right: 0;
+    font-size: 1.2rem;
+  }
+  
+  .navbar-nav .nav-link {
+    padding: 0.5rem 0.4rem;
+  }
+  
+  .user-button {
+    padding-left: 0.3rem !important;
+    padding-right: 0.3rem !important;
+  }
+}
+
 /* Asegurar estilos de desktop */
 @media (min-width: 992px) {
   .navbar-collapse {
@@ -861,5 +903,89 @@ ion-button[class*="login"] ion-icon,
   /* Asegurar que las características móviles no aparezcan en desktop */
   .mobile-menu-header, .menu-section-title, .user-profile-mobile, .user-actions-mobile {
     display: none !important;
+  }
+}
+
+/* Añadir una clase para mostrar tooltips en modo iconos */
+.nav-tooltip {
+  position: relative;
+}
+
+.nav-tooltip:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  z-index: 1000;
+}
+
+/* Añade estos estilos para la adaptabilidad del botón de usuario */
+
+@media (max-width: 1200px) {
+  .user-button .user-name {
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (max-width: 1120px) {
+  .user-button .user-name {
+    display: none;
+  }
+  
+  .user-button .user-dropdown-icon {
+    display: none;
+  }
+  
+  .user-button {
+    margin-left: 8px;
+  }
+}
+
+/* Arreglo para modo móvil y tablet */
+@media (max-width: 991px) {
+  .navbar-collapse.show {
+    width: 100%;
+    max-width: 320px;
+  }
+  
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+/* Ajuste específico para el ancho de 1233px donde se detecta el problema */
+@media (max-width: 1245px) and (min-width: 1220px) {
+  .navbar-nav {
+    gap: 0.5rem !important;
+  }
+  
+  .navbar-nav .nav-link {
+    padding: 0.5rem 0.5rem !important;
+    font-size: 0.85rem;
+  }
+  
+  .user-button {
+    padding-left: 0.2rem !important;
+    padding-right: 0.2rem !important;
+  }
+  
+  .user-button .user-name {
+    max-width: 120px;
+  }
+  
+  .navbar-header {
+    padding-right: 1rem;
+    margin-right: 1rem;
   }
 }
