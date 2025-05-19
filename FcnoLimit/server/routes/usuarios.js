@@ -28,7 +28,7 @@ module.exports = (pool) => {
   });
 
   // Obtener todos los usuarios (solo admin)
-  router.get('/', authenticateToken, isAdmin, async (req, res) => {
+  router.get('/', async (req, res) => {
     try {
       const result = await pool.query('SELECT * FROM "fcnolimit".usuarios');
       res.json(result.rows);

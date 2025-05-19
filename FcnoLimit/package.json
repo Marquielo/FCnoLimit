@@ -6,7 +6,7 @@
   "scripts": {
     "start": "concurrently \"npm run start:ionic\" \"npm run start:server\"",
     "start:ionic": "ionic serve",
-    "start:server": "node server/index.js",
+    "start:server": "cd server && node index.js",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test.e2e": "cypress run",

@@ -1,14 +1,18 @@
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
 const { Pool } = require('pg');
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3001;
 
 app.use(cors({
-  origin: 'http://localhost:8100',
-  credentials: true,
+  origin: [
+    'http://localhost:8100', // Para desarrollo local
+    'https://fcnolimit.firebaseapp.com', // Dominio de Firebase Hosting
+    'https://fcnolimit.web.app'          // Dominio alternativo de Firebase Hosting
+  ],
+  credentials: true, // Si necesitas enviar cookies o encabezados de autenticación
 }));
 app.use(express.json());
 // Configuración de la conexión a PostgreSQL usando variable de entorno
@@ -22,7 +26,7 @@ const pool = new Pool({
 });
 
 // Verificar la contraseña de la base de datos en el inicio
-console.log('DB_PASSWORD:', process.env.DB_PASSWORD, '| Tipo:', typeof process.env.DB_PASSWORD);
+console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
 
 pool.connect()
   .then(() => console.log('Conexión a PostgreSQL exitosa'))
