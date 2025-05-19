@@ -60,6 +60,45 @@ const NavBar: React.FC = () => {
     };
   }, [isOpen]);
 
+  // Añade este fragmento antes del export default NavBar
+  useEffect(() => {
+    // Función para agregar tooltips y clases a elementos de navegación
+    const addTooltipsAndClasses = () => {
+      // Agregar tooltips a los elementos de navegación
+      const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+      navLinks.forEach(link => {
+        const span = link.querySelector('span');
+        if (span) {
+          link.classList.add('nav-tooltip');
+          link.setAttribute('data-tooltip', span.textContent || '');
+        }
+      });
+      
+      // Agregar clases al botón de usuario
+      const userButton = document.querySelector('.user-button');
+      const userName = userButton?.querySelector('span');
+      const dropdownIcon = userButton?.querySelector('ion-icon[icon="chevron-forward-outline"]');
+      
+      if (userName) {
+        userName.classList.add('user-name');
+      }
+      
+      if (dropdownIcon) {
+        dropdownIcon.classList.add('user-dropdown-icon');
+      }
+    };
+    
+    // Ejecutar después de que el componente se monte
+    addTooltipsAndClasses();
+    
+    // Volver a ejecutar si la ventana cambia de tamaño
+    window.addEventListener('resize', addTooltipsAndClasses);
+    
+    return () => {
+      window.removeEventListener('resize', addTooltipsAndClasses);
+    };
+  }, []);
+
   const isActive = (path: string) => location.pathname === path;
 
   const mainNavItems = [
@@ -275,7 +314,7 @@ const NavBar: React.FC = () => {
                 >
                   <div style={{ padding: "10px 15px", borderBottom: "1px solid rgba(255, 252, 252, 0.1)" }}>
                     <h5 style={{ margin: 0, fontSize: "16px", fontWeight: 600, color: "#ffffff" }}>{usuario.nombre_completo}</h5>
-                    <p style={{ margin: "5px 0 0", fontSize: "14px", color: "rgba(255, 255, 255, 0.7)" }}>
+                    <p style={{ margin: "5px 0 0", fontSize: "14px", color: "rgba(10, 10, 10, 0.7)" }}>
                       {usuario.rol === "administrador" ? "Administrador" : 
                        usuario.rol === "jugador" ? "Jugador" : 
                        usuario.rol === "persona_natural" ? "Perfil" : 
