@@ -4,21 +4,21 @@ require('dotenv').config();
 const { Pool } = require('pg');
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 app.use(cors({
   origin: 'http://localhost:8100',
   credentials: true,
 }));
 app.use(express.json());
-//dasjdasjdasjdjasdjasjdajsdjasdjasdjasjdajsd
 // Configuración de la conexión a PostgreSQL usando variable de entorno
 const pool = new Pool({
-  user: 'postgres',
-  host: '34.176.63.152',
-  database: 'postgres',
-  password: process.env.DB_PASSWORD, // <-- variable de entorno
-  port: 5432,
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false
 });
 
 // Verificar la contraseña de la base de datos en el inicio
@@ -56,8 +56,9 @@ app.use('/api/partidos', require('./routes/partidos')(pool));
 app.use('/api/estadisticas_partido', require('./routes/estadisticasPartido')(pool));
 app.use('/api/estadisticas_jugador_partido', require('./routes/estadisticasJugadorPartido')(pool));
 
+const PORT = process.env.PORT || 3001;
 app.listen(port, () => {
-  console.log(`Servidor backend escuchando en http://localhost:${port}`);
+  console.log(`Servidor escuchando en el puerto ${port}`);
 });
 
 
