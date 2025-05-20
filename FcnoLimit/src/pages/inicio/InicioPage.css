@@ -2665,12 +2665,20 @@ h2 ion-icon {
 }
 
 
+<<<<<<< HEAD
 
 
 
 /* Fondos específicos que deben permanecer oscuros por diseño */
 >>>>>>> parent of 7e7cbf2 (cambios)
 
+=======
+
+
+
+/* Fondos específicos que deben permanecer oscuros por diseño */
+
+>>>>>>> parent of 7e7cbf2 (cambios)
 .cta-section,
 .community-card {
   background: var(--fcnolimit-bg-dark);
