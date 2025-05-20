@@ -6,17 +6,14 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3001;
 
-const allowedOrigins = process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : [];
-
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('No permitido por la política CORS'));
-    }
-  },
-  credentials: true,
+  origin: [
+    'http://localhost:5000', // Para desarrollo local
+    'http://localhost:8100', // Si usas Ionic o un puerto diferente
+    'https://fcnolimit.firebaseapp.com', // Dominio de Firebase Hosting
+    'https://fcnolimit.web.app'          // Dominio alternativo de Firebase Hosting
+  ],
+  credentials: true, // Si necesitas enviar cookies o encabezados de autenticación
 }));
 app.use(express.json());
 // Configuración de la conexión a PostgreSQL usando variable de entorno
