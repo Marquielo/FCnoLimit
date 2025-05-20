@@ -90,6 +90,9 @@ module.exports = (pool) => {
       }
 
       const result = await pool.query(query, params);
+      if (!result.rows[0]) {
+        return res.status(404).json({ error: 'Usuario no encontrado o no actualizado' });
+      }
       res.json(result.rows[0]);
     } catch (error) {
       res.status(500).json({ error: error.message });
