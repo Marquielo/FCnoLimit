@@ -8,7 +8,8 @@ const port = process.env.PORT || 3001;
 
 app.use(cors({
   origin: [
-    'http://localhost:8100', // Para desarrollo local
+    'http://localhost:5000', // Para desarrollo local
+    'http://localhost:8100', // Si usas Ionic o un puerto diferente
     'https://fcnolimit.firebaseapp.com', // Dominio de Firebase Hosting
     'https://fcnolimit.web.app'          // Dominio alternativo de Firebase Hosting
   ],
