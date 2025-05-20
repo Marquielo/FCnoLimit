@@ -44,16 +44,17 @@ const AuthPage: React.FC = () => {
   const [present, dismiss] = useIonLoading();
   const [passwordsMatch, setPasswordsMatch] = useState(true);
 
-  const apiUrl = import.meta.env.VITE_API_URL || '';
-  const cleanApiUrl = apiUrl.replace(/^=/, '').replace(/\/$/, '');
-  
-  console.log("API URL original:", apiUrl); 
-  console.log("API URL limpia:", cleanApiUrl);
+  // URL fija para producción cuando hay problemas con las variables de entorno
+  const apiBaseUrl = 'https://fcnolimit-back.onrender.com/api';
+  // Si prefieres seguir usando variables de entorno pero con fallback a la URL fija:
+  // const apiBaseUrl = import.meta.env.VITE_API_URL || 'https://fcnolimit-back.onrender.com';
+
+  console.log("API URL base:", apiBaseUrl);
 
   // Función para probar la conexión a la base de datos
   const testDbConnection = async () => {
     try {
-      const response = await fetch(`${cleanApiUrl}/dbtest`);
+      const response = await fetch(`${apiBaseUrl}/dbtest`);
       const data = await response.json();
       console.log('Conexión a la base de datos:', data);
       return data;
@@ -82,9 +83,9 @@ const AuthPage: React.FC = () => {
       present({ message: 'Iniciando sesión...' });
 
       // Log para ver exactamente qué URL se está usando
-      console.log("Haciendo fetch a:", `${cleanApiUrl}/usuarios/login`);
+      console.log("Haciendo fetch a:", `${apiBaseUrl}/usuarios/login`);
       
-      const res = await fetch(`${cleanApiUrl}/usuarios/login`, {
+      const res = await fetch(`${apiBaseUrl}/usuarios/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ correo: email, contraseña: password }),
@@ -122,7 +123,7 @@ const AuthPage: React.FC = () => {
     }
     try {
       present({ message: 'Creando cuenta...' });
-      const res = await fetch(`${cleanApiUrl}/usuarios/register`, {
+      const res = await fetch(`${apiBaseUrl}/usuarios/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
