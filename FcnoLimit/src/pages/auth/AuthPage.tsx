@@ -21,8 +21,11 @@ import {
 } from 'ionicons/icons';
 import './AuthPage.css';
 import NavBar from '../../components/NavBar';
+import { useHistory } from 'react-router-dom';
 
 const AuthPage: React.FC = () => {
+  const history = useHistory();
+  
   console.log("Renderizando AuthPage");
   
   const [showLogin, setShowLogin] = useState(true);
@@ -74,7 +77,7 @@ const AuthPage: React.FC = () => {
       if (!res.ok) throw new Error(data.error || 'Error de autenticación');
       localStorage.setItem('token', data.token);
       localStorage.setItem('usuario', JSON.stringify(data.user));
-      window.location.href = '/inicio';
+      history.push('/inicio'); // <--- Usa el router en vez de window.location.href
     } catch (err: any) {
       dismiss();
       setError(err.message === 'Failed to fetch'
