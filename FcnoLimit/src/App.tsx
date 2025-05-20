@@ -59,12 +59,8 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonRouterOutlet>
         {/* Rutas públicas */}
-        <Route exact path="/inicio">
-          <InicioPage />
-        </Route>
-        <Route exact path="/auth">
-          <AuthPage />
-        </Route>
+        <Route exact path="/inicio" component={InicioPage} />
+        <Route exact path="/auth" component={AuthPage} />
         {/* Rutas protegidas */}
         <Route exact path="/campeonatos" render={() => (
           <ProtectedRoute>
