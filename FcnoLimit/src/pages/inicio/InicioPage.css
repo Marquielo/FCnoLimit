@@ -4247,3 +4247,386 @@ h2 ion-icon {
     padding-bottom: 0.5rem;
   }
 }
+
+/* Diseño para la sección de destacados del momento con clases únicas */
+.fcnl-highlights-wrapper {
+  padding: 60px 0;
+  background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.06) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.fcnl-highlights-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: linear-gradient(90deg, 
+    var(--ion-color-primary) 0%, 
+    var(--ion-color-secondary) 50%, 
+    var(--ion-color-tertiary) 100%);
+  opacity: 0.7;
+}
+
+.fcnl-highlights-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.fcnl-highlights-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.fcnl-highlights-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  color: var(--ion-color-dark);
+  position: relative;
+}
+
+.fcnl-highlights-icon {
+  font-size: 24px;
+  margin-right: 12px;
+  color: var(--ion-color-primary);
+  background: rgba(var(--ion-color-primary-rgb), 0.12);
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.fcnl-highlights-view-all {
+  display: flex;
+  align-items: center;
+  color: var(--ion-color-primary);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 15px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background-color: rgba(var(--ion-color-primary-rgb), 0.08);
+  transition: all 0.2s ease;
+}
+
+.fcnl-highlights-view-all:hover {
+  background-color: rgba(var(--ion-color-primary-rgb), 0.15);
+}
+
+.fcnl-highlights-view-all ion-icon {
+  margin-left: 6px;
+  transition: transform 0.2s ease;
+}
+
+.fcnl-highlights-view-all:hover ion-icon {
+  transform: translateX(3px);
+}
+
+/* Estilo del Swiper */
+.fcnl-highlights-swiper {
+  padding: 10px 5px 50px !important;
+  overflow: visible !important;
+}
+
+.fcnl-highlight-item {
+  background-color: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.fcnl-highlight-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.12);
+}
+
+.fcnl-highlight-image {
+  position: relative;
+  padding-top: 60%;
+  overflow: hidden;
+}
+
+.fcnl-highlight-image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.fcnl-highlight-item:hover .fcnl-highlight-image img {
+  transform: scale(1.05);
+}
+
+.fcnl-highlight-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: 6px 12px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 20px;
+  z-index: 2;
+}
+
+.fcnl-highlight-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0) 40%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.fcnl-highlight-item:hover .fcnl-highlight-overlay {
+  opacity: 1;
+}
+
+.fcnl-highlight-play {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--ion-color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 0 8px rgba(var(--ion-color-primary-rgb), 0.3);
+}
+
+.fcnl-highlight-item:hover .fcnl-highlight-play {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 12px rgba(var(--ion-color-primary-rgb), 0.4);
+}
+
+.fcnl-highlight-play ion-icon {
+  font-size: 24px;
+  color: white;
+}
+
+.fcnl-highlight-content {
+  padding: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.fcnl-highlight-title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: var(--ion-color-dark);
+}
+
+.fcnl-highlight-desc {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #666;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.fcnl-highlight-footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fcnl-highlight-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 13px;
+  color: #777;
+}
+
+.fcnl-highlight-match, 
+.fcnl-highlight-date {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.fcnl-highlight-match ion-icon,
+.fcnl-highlight-date ion-icon {
+  font-size: 16px;
+  color: var(--ion-color-medium);
+}
+
+.fcnl-highlight-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--ion-color-primary);
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.fcnl-highlight-button:hover {
+  background-color: var(--ion-color-primary-shade);
+}
+
+.fcnl-highlight-button ion-icon {
+  transition: transform 0.2s ease;
+}
+
+.fcnl-highlight-button:hover ion-icon {
+  transform: translateX(3px);
+}
+
+/* Personalización de los bullets de paginación */
+.fcnl-highlights-swiper .swiper-pagination {
+  bottom: 15px !important;
+}
+
+.fcnl-highlights-swiper .swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background-color: rgba(var(--ion-color-dark-rgb), 0.3);
+  transition: all 0.3s ease;
+  opacity: 1;
+}
+
+.fcnl-highlights-swiper .swiper-pagination-bullet-active {
+  width: 24px;
+  border-radius: 4px;
+  background-color: var(--ion-color-primary);
+}
+
+/* Variantes según tipo de destacado */
+.fcnl-highlight-goal .fcnl-highlight-play {
+  background: linear-gradient(135deg, #ff4e50, #f9d423);
+  box-shadow: 0 0 0 8px rgba(255, 78, 80, 0.3);
+}
+
+.fcnl-highlight-goal:hover .fcnl-highlight-play {
+  box-shadow: 0 0 0 12px rgba(255, 78, 80, 0.4);
+}
+
+.fcnl-highlight-tournament .fcnl-highlight-play {
+  background: linear-gradient(135deg, #4776E6, #8E54E9);
+  box-shadow: 0 0 0 8px rgba(71, 118, 230, 0.3);
+}
+
+.fcnl-highlight-tournament:hover .fcnl-highlight-play {
+  box-shadow: 0 0 0 12px rgba(71, 118, 230, 0.4);
+}
+
+.fcnl-highlight-player .fcnl-highlight-play {
+  background: linear-gradient(135deg, #11998e, #38ef7d);
+  box-shadow: 0 0 0 8px rgba(17, 153, 142, 0.3);
+}
+
+.fcnl-highlight-player:hover .fcnl-highlight-play {
+  box-shadow: 0 0 0 12px rgba(17, 153, 142, 0.4);
+}
+
+/* Personalización según tipo de destacado */
+.fcnl-highlight-badge.goal-badge {
+  background: linear-gradient(90deg, #ff4e50, #f9d423);
+}
+
+.fcnl-highlight-badge.tournament-badge {
+  background: linear-gradient(90deg, #4776E6, #8E54E9);
+}
+
+.fcnl-highlight-badge.player-badge {
+  background: linear-gradient(90deg, #11998e, #38ef7d);
+}
+
+/* Media Queries para adaptabilidad */
+@media (max-width: 991px) {
+  .fcnl-highlights-wrapper {
+    padding: 50px 0;
+  }
+  
+  .fcnl-highlights-title {
+    font-size: 24px;
+  }
+  
+  .fcnl-highlight-title {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 767px) {
+  .fcnl-highlights-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .fcnl-highlights-view-all {
+    align-self: flex-start;
+  }
+  
+  .fcnl-highlight-content {
+    padding: 18px;
+  }
+  
+  .fcnl-highlight-desc {
+    margin-bottom: 16px;
+  }
+}
+
+/* Animaciones para los highlight-items */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fcnl-highlights-swiper .swiper-slide {
+  opacity: 0;
+  animation: fadeInUp 0.5s forwards;
+}
+
+.fcnl-highlights-swiper .swiper-slide:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.fcnl-highlights-swiper .swiper-slide:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.fcnl-highlights-swiper .swiper-slide:nth-child(3) {
+  animation-delay: 0.5s;
+}

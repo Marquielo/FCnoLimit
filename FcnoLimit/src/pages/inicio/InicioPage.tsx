@@ -429,14 +429,14 @@ const InicioPage: React.FC = () => {
         </div>
 
         {/* Destacados del momento - Slider con nuevo diseño */}
-        <div className="highlights-wrapper">
-          <div className="highlights-container">
-            <div className="highlights-header">
-              <h2 className="highlights-title">
-                <IonIcon icon={flameOutline} className="highlights-icon" />
+        <div className="fcnl-highlights-wrapper">
+          <div className="fcnl-highlights-container">
+            <div className="fcnl-highlights-header">
+              <h2 className="fcnl-highlights-title">
+                <IonIcon icon={flameOutline} className="fcnl-highlights-icon" />
                 <span>Destacados del momento</span>
               </h2>
-              <a href="/destacados" className="highlights-view-all">
+              <a href="/destacados" className="fcnl-highlights-view-all">
                 Todos los destacados <IonIcon icon={arrowForward} />
               </a>
             </div>
@@ -453,28 +453,28 @@ const InicioPage: React.FC = () => {
                 clickable: true,
                 dynamicBullets: true,
               }}
-              className="highlights-swiper"
+              className="fcnl-highlights-swiper"
             >
               <SwiperSlide>
-                <div className="highlight-item">
-                  <div className="highlight-item-image">
+                <div className="fcnl-highlight-item fcnl-highlight-goal">
+                  <div className="fcnl-highlight-image">
                     <img src="/assets/highlights/goal.jpg" alt="Gol destacado" />
-                    <div className="highlight-item-badge">Gol de la semana</div>
-                    <div className="highlight-item-overlay">
-                      <div className="highlight-item-play">
+                    <div className="fcnl-highlight-badge goal-badge">Gol de la semana</div>
+                    <div className="fcnl-highlight-overlay">
+                      <div className="fcnl-highlight-play">
                         <IonIcon icon={flameSharp} />
                       </div>
                     </div>
                   </div>
-                  <div className="highlight-item-content">
-                    <h3 className="highlight-item-title">Golazo de Carlos Méndez desde media cancha</h3>
-                    <p className="highlight-item-desc">Un impresionante gol que dio la victoria a su equipo en el último minuto del partido en una jugada que será recordada por mucho tiempo.</p>
-                    <div className="highlight-item-footer">
-                      <div className="highlight-item-meta">
-                        <span className="highlight-item-match"><IonIcon icon={footballOutline} /> Leones FC vs Águilas</span>
-                        <span className="highlight-item-date"><IonIcon icon={calendarOutline} /> 10 de Mayo, 2025</span>
+                  <div className="fcnl-highlight-content">
+                    <h3 className="fcnl-highlight-title">Golazo de Carlos Méndez desde media cancha</h3>
+                    <p className="fcnl-highlight-desc">Un impresionante gol que dio la victoria a su equipo en el último minuto del partido en una jugada que será recordada por mucho tiempo.</p>
+                    <div className="fcnl-highlight-footer">
+                      <div className="fcnl-highlight-meta">
+                        <span className="fcnl-highlight-match"><IonIcon icon={footballOutline} /> Leones FC vs Águilas</span>
+                        <span className="fcnl-highlight-date"><IonIcon icon={calendarOutline} /> 10 de Mayo, 2025</span>
                       </div>
-                      <a href="/highlights/1" className="highlight-item-button">
+                      <a href="/highlights/1" className="fcnl-highlight-button">
                         Ver video <IonIcon icon={arrowForward} />
                       </a>
                     </div>
@@ -483,25 +483,25 @@ const InicioPage: React.FC = () => {
               </SwiperSlide>
               
               <SwiperSlide>
-                <div className="highlight-item">
-                  <div className="highlight-item-image">
+                <div className="fcnl-highlight-item fcnl-highlight-tournament">
+                  <div className="fcnl-highlight-image">
                     <img src="/assets/highlights/tournament.jpg" alt="Torneo destacado" />
-                    <div className="highlight-item-badge">Torneo destacado</div>
-                    <div className="highlight-item-overlay">
-                      <div className="highlight-item-play">
+                    <div className="fcnl-highlight-badge tournament-badge">Torneo destacado</div>
+                    <div className="fcnl-highlight-overlay">
+                      <div className="fcnl-highlight-play">
                         <IonIcon icon={trophySharp} />
                       </div>
                     </div>
                   </div>
-                  <div className="highlight-item-content">
-                    <h3 className="highlight-item-title">Copa Primavera 2025</h3>
-                    <p className="highlight-item-desc">El torneo más esperado de la temporada con la participación de 16 equipos de primer nivel. Compite por premios exclusivos y el prestigioso trofeo de campeón.</p>
-                    <div className="highlight-item-footer">
-                      <div className="highlight-item-meta">
-                        <span className="highlight-item-match"><IonIcon icon={peopleOutline} /> 16 equipos</span>
-                        <span className="highlight-item-date"><IonIcon icon={calendarOutline} /> Inicia: 5 de junio</span>
+                  <div className="fcnl-highlight-content">
+                    <h3 className="fcnl-highlight-title">Copa Primavera 2025</h3>
+                    <p className="fcnl-highlight-desc">El torneo más esperado de la temporada con la participación de 16 equipos de primer nivel. Compite por premios exclusivos y el prestigioso trofeo de campeón.</p>
+                    <div className="fcnl-highlight-footer">
+                      <div className="fcnl-highlight-meta">
+                        <span className="fcnl-highlight-match"><IonIcon icon={peopleOutline} /> 16 equipos</span>
+                        <span className="fcnl-highlight-date"><IonIcon icon={calendarOutline} /> Inicia: 5 de junio</span>
                       </div>
-                      <a href="/highlights/2" className="highlight-item-button">
+                      <a href="/highlights/2" className="fcnl-highlight-button">
                         Más información <IonIcon icon={arrowForward} />
                       </a>
                     </div>
@@ -510,25 +510,25 @@ const InicioPage: React.FC = () => {
               </SwiperSlide>
               
               <SwiperSlide>
-                <div className="highlight-item">
-                  <div className="highlight-item-image">
+                <div className="fcnl-highlight-item fcnl-highlight-player">
+                  <div className="fcnl-highlight-image">
                     <img src="/assets/highlights/player.jpg" alt="Jugador destacado" />
-                    <div className="highlight-item-badge">Jugador destacado</div>
-                    <div className="highlight-item-overlay">
-                      <div className="highlight-item-play">
+                    <div className="fcnl-highlight-badge player-badge">Jugador destacado</div>
+                    <div className="fcnl-highlight-overlay">
+                      <div className="fcnl-highlight-play">
                         <IonIcon icon={personOutline} />
                       </div>
                     </div>
                   </div>
-                  <div className="highlight-item-content">
-                    <h3 className="highlight-item-title">Laura Gutiérrez: La revelación del mes</h3>
-                    <p className="highlight-item-desc">Con 6 goles y 14 asistencias, se ha convertido en la jugadora más valiosa de la liga. Su visión de juego y capacidad de definición la destacan en cada partido.</p>
-                    <div className="highlight-item-footer">
-                      <div className="highlight-item-meta">
-                        <span className="highlight-item-match"><IonIcon icon={shirtOutline} /> Mediocampista - Delfines</span>
-                        <span className="highlight-item-date"><IonIcon icon={starOutline} /> MVP Mayo 2025</span>
+                  <div className="fcnl-highlight-content">
+                    <h3 className="fcnl-highlight-title">Laura Gutiérrez: La revelación del mes</h3>
+                    <p className="fcnl-highlight-desc">Con 6 goles y 14 asistencias, se ha convertido en la jugadora más valiosa de la liga. Su visión de juego y capacidad de definición la destacan en cada partido.</p>
+                    <div className="fcnl-highlight-footer">
+                      <div className="fcnl-highlight-meta">
+                        <span className="fcnl-highlight-match"><IonIcon icon={shirtOutline} /> Mediocampista - Delfines</span>
+                        <span className="fcnl-highlight-date"><IonIcon icon={starOutline} /> MVP Mayo 2025</span>
                       </div>
-                      <a href="/highlights/3" className="highlight-item-button">
+                      <a href="/highlights/3" className="fcnl-highlight-button">
                         Ver perfil <IonIcon icon={arrowForward} />
                       </a>
                     </div>
