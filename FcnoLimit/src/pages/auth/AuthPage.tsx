@@ -45,7 +45,7 @@ const AuthPage: React.FC = () => {
   const [passwordsMatch, setPasswordsMatch] = useState(true);
 
   // URL fija para producción cuando hay problemas con las variables de entorno
-  const apiBaseUrl = 'https://fcnolimit-back.onrender.com/api';
+  const apiBaseUrl = 'https://fcnolimit-back.onrender.com';
   // Si prefieres seguir usando variables de entorno pero con fallback a la URL fija:
   // const apiBaseUrl = import.meta.env.VITE_API_URL || 'https://fcnolimit-back.onrender.com';
 
