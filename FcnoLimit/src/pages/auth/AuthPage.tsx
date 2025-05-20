@@ -48,6 +48,8 @@ const AuthPage: React.FC = () => {
   if (!apiUrl) {
     console.warn('VITE_API_URL no está definida. Verifica tu archivo .env y el build.');
   }
+  
+  console.log("API URL:", apiUrl); // Mostrará la URL de la API en la consola
 
   // Función para probar la conexión a la base de datos
   const testDbConnection = async () => {
@@ -77,14 +79,20 @@ const AuthPage: React.FC = () => {
     e.preventDefault();
     setError('');
     try {
+      console.log("Iniciando proceso de login");
       present({ message: 'Iniciando sesión...' });
 
+      // Log para ver exactamente qué URL se está usando
+      console.log("Haciendo fetch a:", `${apiUrl}/usuarios/login`);
+      
       const res = await fetch(`${apiUrl}/usuarios/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ correo: email, contraseña: password }),
       });
 
+      console.log("Respuesta recibida, status:", res.status);
+      
       let data;
       try {
         data = await res.json();
