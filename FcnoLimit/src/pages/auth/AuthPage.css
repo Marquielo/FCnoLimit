@@ -651,3 +651,12 @@
     z-index: -1;
   }
 }
+
+/* Nueva clase para el mensaje de error de contraseña */
+.password-mismatch {
+  color: #ff4961;
+  font-size: 0.8rem;
+  margin-top: 5px;
+  text-align: left;
+  padding-left: 10px;
+}

@@ -42,6 +42,7 @@ const AuthPage: React.FC = () => {
   const [registerError, setRegisterError] = useState('');
   const [registerSuccess, setRegisterSuccess] = useState('');
   const [present, dismiss] = useIonLoading();
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
 
   const apiUrl = import.meta.env.VITE_API_URL;
   if (!apiUrl) {
@@ -78,7 +79,7 @@ const AuthPage: React.FC = () => {
     try {
       present({ message: 'Iniciando sesión...' });
 
-      const res = await fetch(`${apiUrl}/api/usuarios/login`, {
+      const res = await fetch(`${apiUrl}/usuarios/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ correo: email, contraseña: password }),
@@ -142,6 +143,26 @@ const AuthPage: React.FC = () => {
         ? 'No se pudo conectar con el servidor. Intenta de nuevo en unos segundos.'
         : err.message || 'Error al registrar');
     }
+  };
+
+  // Añadir esta función para verificar en tiempo real
+  const validatePasswords = (password: string, confirmPassword: string) => {
+    if (confirmPassword && password !== confirmPassword) {
+      setPasswordsMatch(false);
+    } else {
+      setPasswordsMatch(true);
+    }
+  };
+
+  // Modificar estas funciones para validar en tiempo real
+  const handleRegisterPasswordChange = (value: string) => {
+    setRegisterPassword(value);
+    validatePasswords(value, registerConfirmPassword);
+  };
+
+  const handleConfirmPasswordChange = (value: string) => {
+    setRegisterConfirmPassword(value);
+    validatePasswords(registerPassword, value);
   };
 
   return (
@@ -319,7 +340,7 @@ const AuthPage: React.FC = () => {
                             type={showRegisterPassword ? 'text' : 'password'}
                             placeholder="Contraseña"
                             value={registerPassword}
-                            onIonChange={e => setRegisterPassword(e.detail.value!)}
+                            onIonChange={e => handleRegisterPasswordChange(e.detail.value!)}
                             required
                             className="custom-input-field"
                           ></IonInput>
@@ -341,7 +362,7 @@ const AuthPage: React.FC = () => {
                             type={showRegisterConfirmPassword ? 'text' : 'password'}
                             placeholder="Confirmar Contraseña"
                             value={registerConfirmPassword}
-                            onIonChange={e => setRegisterConfirmPassword(e.detail.value!)}
+                            onIonChange={e => handleConfirmPasswordChange(e.detail.value!)}
                             required
                             className="custom-input-field"
                           ></IonInput>
@@ -355,6 +376,10 @@ const AuthPage: React.FC = () => {
                           <IonIcon icon={showRegisterConfirmPassword ? eyeOutline : eyeOffOutline}></IonIcon>
                         </button>
                       </div>
+                      
+                      {!passwordsMatch && registerConfirmPassword && (
+                        <div className="password-mismatch">Las contraseñas no coinciden</div>
+                      )}
                       
                       {registerError && <div className="error-message">{registerError}</div>}
                       {registerSuccess && <div className="success-message">{registerSuccess}</div>}
