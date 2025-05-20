@@ -45,13 +45,17 @@ const AuthPage: React.FC = () => {
   const [passwordsMatch, setPasswordsMatch] = useState(true);
 
   // Modifica cómo obtienes la URL de la API
-  const apiBaseUrl = import.meta.env.VITE_API_URL;
+  const apiBaseUrl = import.meta.env.VITE_API_URL || 'https://fcnolimit-back.onrender.com';
   console.log("API URL base definida:", apiBaseUrl);
+
+  // Asegúrate de que no haya caracteres problemáticos en la URL
+  const cleanApiUrl = apiBaseUrl.toString().replace(/^=/, '');
+  console.log("URL limpia a usar en las peticiones:", cleanApiUrl);
 
   // Función para probar la conexión a la base de datos
   const testDbConnection = async () => {
     try {
-      const response = await fetch(`${apiBaseUrl}/dbtest`);
+      const response = await fetch(`${cleanApiUrl}/dbtest`);
       const data = await response.json();
       console.log('Conexión a la base de datos:', data);
       return data;
@@ -80,7 +84,7 @@ const AuthPage: React.FC = () => {
       present({ message: 'Iniciando sesión...' });
 
       // Construir la URL cuidadosamente
-      const loginUrl = `${apiBaseUrl}/usuarios/login`;
+      const loginUrl = `${cleanApiUrl}/usuarios/login`;
       console.log("URL completa para login:", loginUrl);
       
       const res = await fetch(loginUrl, {
@@ -121,7 +125,7 @@ const AuthPage: React.FC = () => {
     }
     try {
       present({ message: 'Creando cuenta...' });
-      const res = await fetch(`${apiBaseUrl}/usuarios/register`, {
+      const res = await fetch(`${cleanApiUrl}/usuarios/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
