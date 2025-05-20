@@ -30,13 +30,24 @@ jobs:
 
       - name: 🔐 Configurar variables de entorno
         run: |
-          echo "VITE_API_URL=https://fcnolimit-back.onrender.com" >> .env
+          # URL de API separada y fija para evitar cualquier contaminación con otras variables
+          echo "VITE_API_URL=https://fcnolimit-back.onrender.com" > .env
+          # Añadir las demás variables en líneas separadas
           echo "VITE_FIREBASE_API_KEY=${{ secrets.REACT_APP_FIREBASE_API_KEY }}" >> .env
           echo "VITE_FIREBASE_AUTH_DOMAIN=${{ secrets.REACT_APP_FIREBASE_AUTH_DOMAIN }}" >> .env
           echo "VITE_FIREBASE_PROJECT_ID=${{ secrets.REACT_APP_FIREBASE_PROJECT_ID }}" >> .env
           echo "VITE_FIREBASE_STORAGE_BUCKET=${{ secrets.REACT_APP_FIREBASE_STORAGE_BUCKET }}" >> .env
           echo "VITE_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.REACT_APP_FIREBASE_MESSAGING_SENDER_ID }}" >> .env
           echo "VITE_FIREBASE_APP_ID=${{ secrets.REACT_APP_FIREBASE_APP_ID }}" >> .env
+          # Verificar el contenido del archivo .env (sin mostrar valores sensibles)
+          echo "Archivo .env creado con éxito. Mostrando solo nombres de variables:"
+          grep -o "^VITE_[^=]*" .env
+        working-directory: FcnoLimit
+
+      - name: 🔍 Verificar variables de entorno
+        run: |
+          echo "Verificando VITE_API_URL (solo mostrando el valor):"
+          grep "VITE_API_URL" .env | cut -d '=' -f2
         working-directory: FcnoLimit
 
       - name: 🔍 Verificar estructura del proyecto

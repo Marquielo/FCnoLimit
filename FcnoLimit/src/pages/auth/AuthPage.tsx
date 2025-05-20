@@ -44,9 +44,9 @@ const AuthPage: React.FC = () => {
   const [present, dismiss] = useIonLoading();
   const [passwordsMatch, setPasswordsMatch] = useState(true);
 
-  // Modifica cómo obtienes la URL de la API
-  const apiBaseUrl = import.meta.env.VITE_API_URL || 'https://fcnolimit-back.onrender.com';
-  console.log("API URL base definida:", apiBaseUrl);
+  // Modifica cómo obtienes la URL de la API para forzar el valor correcto
+  const apiBaseUrl = 'https://fcnolimit-back.onrender.com';
+  console.log("API URL base fija:", apiBaseUrl);
 
   // Asegúrate de que no haya caracteres problemáticos en la URL
   const cleanApiUrl = apiBaseUrl.toString().replace(/^=/, '');
@@ -84,7 +84,7 @@ const AuthPage: React.FC = () => {
       present({ message: 'Iniciando sesión...' });
 
       // Construir la URL cuidadosamente
-      const loginUrl = `${cleanApiUrl}/api/usuarios/login`;
+      const loginUrl = `${apiBaseUrl}/api/usuarios/login`;
       console.log("URL completa para login:", loginUrl);
       
       const res = await fetch(loginUrl, {
@@ -125,7 +125,7 @@ const AuthPage: React.FC = () => {
     }
     try {
       present({ message: 'Creando cuenta...' });
-      const res = await fetch(`${cleanApiUrl}/api/usuarios/register`, {
+      const res = await fetch(`${apiBaseUrl}/api/usuarios/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
