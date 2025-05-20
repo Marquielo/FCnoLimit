@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl = import.meta.env.VITE_API_URL; // Debe ser: https://fcnolimit-back.onrender.com/api
 
 const api = axios.create({
   baseURL: apiUrl,
@@ -20,3 +20,6 @@ api.interceptors.request.use((config) => {
 });
 
 export default api;
+
+// Uso correcto:
+// api.post('/usuarios/login', data); // Esto hará la petición a https://fcnolimit-back.onrender.com/api/usuarios/login

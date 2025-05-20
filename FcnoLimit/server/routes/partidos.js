@@ -89,6 +89,9 @@ module.exports = (pool) => {
           WHERE id=$11 RETURNING *`,
           [equipo_local_id, equipo_visitante_id, goles_local, goles_visitante, fecha, estadio, liga_id, administrador_id, estado, jugado_en, id]
         );
+        if (!result.rows[0]) {
+          return res.status(404).json({ error: 'Partido no encontrado o no actualizado' });
+        }
         res.json(result.rows[0]);
       } catch (error) {
         res.status(500).json({ error: error.message });
