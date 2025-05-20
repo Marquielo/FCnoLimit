@@ -56,15 +56,7 @@ const AuthPage: React.FC = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validación básica
-    if (!email || !password) {
-      setError('Por favor completa todos los campos');
-      return;
-    }
-    
     setError('');
-    
     try {
       present({ message: 'Iniciando sesión...' });
 
@@ -77,29 +69,16 @@ const AuthPage: React.FC = () => {
       let data;
       try {
         data = await res.json();
-      } catch (error) {
-        console.error('Error al procesar la respuesta JSON:', error);
+      } catch {
         data = {};
       }
 
       dismiss();
-      
-      if (!res.ok) {
-        throw new Error(data.error || 'Error de autenticación');
-      }
-      
-      console.log('Login exitoso, guardando datos y redirigiendo...');
-      
-      // Guardar los datos del usuario en localStorage
+      if (!res.ok) throw new Error(data.error || 'Error de autenticación');
       localStorage.setItem('token', data.token);
       localStorage.setItem('usuario', JSON.stringify(data.user));
-      
-      // Redirección usando el enrutador de React
-      console.log('Redirigiendo a /inicio...');
-      history.push('/inicio');
-      
+      history.push('/inicio'); // <--- Usa el router en vez de window.location.href
     } catch (err: any) {
-      console.error('Error durante el login:', err);
       dismiss();
       setError(err.message === 'Failed to fetch'
         ? 'No se pudo conectar con el servidor. Intenta de nuevo en unos segundos.'
@@ -185,11 +164,7 @@ const AuthPage: React.FC = () => {
                 {showLogin ? (
                   <>
                     <h2 className="form-title">Iniciar Sesión</h2>
-                    <form 
-                      onSubmit={handleLogin} 
-                      className="auth-form"
-                      autoComplete="off"  // Añadir este atributo para evitar problemas con el autocompletado
-                    >
+                    <form onSubmit={handleLogin} className="auth-form">
                       {/* Botones de login social */}
                       <div className="social-buttons">
                         <IonButton 
@@ -254,19 +229,7 @@ const AuthPage: React.FC = () => {
                       
                       {error && <div className="error-message">{error}</div>}
                       
-                      <IonButton 
-                        expand="block" 
-                        type="submit" 
-                        className="submit-button" 
-                        onClick={(e) => {
-                          // Asegura que el evento se propaga correctamente
-                          if (!email || !password) {
-                            e.preventDefault();
-                            setError('Por favor completa todos los campos');
-                            return;
-                          }
-                        }}
-                      >
+                      <IonButton expand="block" type="submit" className="submit-button">
                         Iniciar Sesión
                       </IonButton>
                       

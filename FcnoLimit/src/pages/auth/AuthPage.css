@@ -352,56 +352,168 @@
 
 /* Botón de envío rediseñado */
 .submit-button {
-  margin-top: 24px;
-  height: 48px;
-  --background: var(--ion-color-primary);
-  --background-activated: var(--ion-color-primary-shade);
-  --background-focused: var(--ion-color-primary-shade);
-  --background-hover: var(--ion-color-primary-tint);
+  --background: var(--fcnolimit-primary-dark);
+  --background-activated: #e05e5e;
+  --border-radius: 6px;
   --color: white;
   font-weight: 600;
-  font-size: 16px;
-  border-radius: 8px;
+  margin-top: 1.8rem;
+  height: 48px;  /* Reducido de 54px */
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  --box-shadow: 0 4px 10px rgba(var(--fcnolimit-primary-dark-rgb), 0.3);
+  width: 100%;
+  max-width: 100%;
   position: relative;
-  overflow: visible;
-  z-index: 2;
-  cursor: pointer;
+  overflow: hidden;
 }
 
-.submit-button::after {
-  content: "";
+.submit-button::before {
+  content: '';
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: transparent;
-  z-index: -1;
-  border-radius: 8px;
-}
-
-.submit-button:active::after {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-/* Mejorar los estilos del formulario para evitar problemas de eventos */
-.auth-form {
+  left: -100%;
   width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: skewX(-15deg);
+  transition: all 0.5s;
 }
 
-/* Mensaje de error más destacado */
-.error-message {
-  color: var(--ion-color-danger);
-  margin: 16px 0;
-  padding: 10px;
-  background-color: rgba(var(--ion-color-danger-rgb), 0.1);
-  border-radius: 4px;
-  font-size: 14px;
+.submit-button:hover::before {
+  left: 100%;
+}
+
+/* Estilos para los botones de redes sociales */
+.social-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.social-button {
+  --border-radius: 50%;
+  --padding-start: 0;
+  --padding-end: 0;
+  width: 48px;
+  height: 48px;
+  transition: all 0.3s ease;
+}
+
+.social-button ion-icon {
+  font-size: 24px;
+}
+
+.social-button.google {
+  --background: #ffffff;
+  --color: #DB4437;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eaeaea;
+}
+
+.social-button.facebook {
+  --background: #ffffff;
+  --color: #3b5998;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eaeaea;
+}
+
+.social-button.apple {
+  --background: #ffffff;
+  --color: #000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eaeaea;
+}
+
+.social-button:hover {
+  --opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Separador "o" */
+.separator {
+  display: flex;
+  align-items: center;
   text-align: center;
+  margin: 20px 0;
+  color: #777;
+  font-size: 14px;
+}
+
+.separator::before,
+.separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.separator::before {
+  margin-right: 10px;
+}
+
+.separator::after {
+  margin-left: 10px;
+}
+
+/* Botones de inicio de sesión social */
+.social-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.social-button {
+  flex: 1;
+  margin: 0 0.5rem;
+  --padding-start: 0;
+  --padding-end: 0;
+  --background: #f7f8fa;
+  --color: #555;
+  height: 40px;  /* Reducido de 44px */
+  font-size: 1.5rem;
+}
+
+.social-button:first-child {
+  margin-left: 0;
+}
+
+.social-button:last-child {
+  margin-right: 0;
+}
+
+.social-button.google {
+  --color: #DB4437;
+}
+
+.social-button.facebook {
+  --color: #4267B2;
+}
+
+.social-button.apple {
+  --color: #000000;
+}
+
+.crear-cuenta {
+  text-align: center;
+  max-width: 480px;
+  background-color: #ffffff;
+  position: relative;
+}
+
+
+
+.crear-cuenta .form-title {
+  margin-bottom: 1.8rem;
+  position: relative;
+}
+
+
+
+.crear-cuenta .custom-input {
+  margin-bottom: 1.2rem;
 }
 
 /* Ajustes responsive */
