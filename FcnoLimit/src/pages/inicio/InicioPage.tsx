@@ -44,6 +44,7 @@ const swiperParams = {
 const InicioPage: React.FC = () => {
   const history = useHistory();
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
   
   // Efecto para animaciones al hacer scroll
   useEffect(() => {
@@ -83,6 +84,25 @@ const InicioPage: React.FC = () => {
       clearInterval(interval);
     };
   }, []);
+
+  // Ajustar la función handleAccordionClick
+  const handleAccordionClick = (index: number) => {
+    if (activeAccordion === index) {
+      // Si ya está activo, cerrarlo
+      setActiveAccordion(null);
+    } else {
+      // Si no está activo, abrirlo
+      setActiveAccordion(index);
+      
+      // Opcional: hacer scroll suave hacia el acordeón que se abre
+      setTimeout(() => {
+        const element = document.querySelector(`.standings-accordion:nth-child(${index + 1})`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }, 100);
+    }
+  };
 
   return (
     <IonPage>
@@ -685,7 +705,8 @@ const InicioPage: React.FC = () => {
             <div className="standings-tab">Torneo Verano</div>
           </div>
           
-          <div className="standings-table-container">
+          {/* Vista para escritorio - tabla completa */}
+          <div className="standings-table-container desktop-only">
             <table className="standings-table">
               <thead>
                 <tr>
@@ -816,8 +837,431 @@ const InicioPage: React.FC = () => {
               </tbody>
             </table>
           </div>
-        </div>
+          
+          {/* Vista para móvil - acordeones */}
+          <div className="standings-accordion-container mobile-only">
+            {/* Equipo 1 - Leones FC */}
+            <div className="standings-accordion">
+              <div 
+                className={`standings-accordion-header ${activeAccordion === 0 ? 'active' : ''}`} 
+                onClick={() => handleAccordionClick(0)}
+              >
+                <div className="accordion-rank">
+                  <div className="accordion-position promotion-position">1</div>
+                </div>
+                <div className="accordion-team-info">
+                  <div className="team-logo-container">
+                    <img src="/assets/teams/leones.png" alt="Leones FC" />
+                  </div>
+                  <span className="accordion-team-name">Leones FC</span>
+                </div>
+                <div className="accordion-summary">
+                  <div className="accordion-points">25</div>
+                  <div className="accordion-toggle">
+                    <IonIcon icon={arrowForward} className="toggle-icon" />
+                  </div>
+                </div>
+              </div>
+              <div 
+                className={`standings-accordion-content ${activeAccordion === 0 ? 'active' : ''}`}
+                style={{ maxHeight: activeAccordion === 0 ? '500px' : '0px' }}
+              >
+                <div className="accordion-content-inner">
+                  <div className="accordion-main-stats">
+                    <div className="main-stat-item">
+                      <div className="stat-value">10</div>
+                      <div className="stat-label">PJ</div>
+                    </div>
+                    <div className="main-stat-item">
+                      <div className="stat-value wins">8</div>
+                      <div className="stat-label">G</div>
+                    </div>
+                    <div className="main-stat-item">
+                      <div className="stat-value draws">1</div>
+                      <div className="stat-label">E</div>
+                    </div>
+                    <div className="main-stat-item">
+                      <div className="stat-value losses">1</div>
+                      <div className="stat-label">P</div>
+                    </div>
+                  </div>
+                  
+                  <div className="accordion-secondary-stats">
+                    <div className="secondary-stats-row">
+                      <div className="secondary-stat">
+                        <span className="stat-label">Goles a favor:</span>
+                        <span className="stat-value">24</span>
+                      </div>
+                      <div className="secondary-stat">
+                        <span className="stat-label">Goles en contra:</span>
+                        <span className="stat-value">8</span>
+                      </div>
+                    </div>
+                    <div className="secondary-stat diff">
+                      <span className="stat-label">Diferencia de goles:</span>
+                      <span className="stat-value positive">+16</span>
+                    </div>
+                  </div>
+                  
+                  <div className="accordion-form-section">
+                    <div className="form-title">Últimos partidos</div>
+                    <div className="form-indicators">
+                      <span className="form-result win">G</span>
+                      <span className="form-result win">G</span>
+                      <span className="form-result win">G</span>
+                      <span className="form-result draw">E</span>
+                      <span className="form-result win">G</span>
+                    </div>
+                  </div>
+                  
+                  <div className="accordion-actions">
+                    <a href="/equipo/leones" className="accordion-team-link">
+                      <span>Ver perfil completo</span>
+                      <IonIcon icon={arrowForward} />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Equipo 2 - Águilas */}
+            <div className="standings-accordion">
+              <div 
+                className={`standings-accordion-header ${activeAccordion === 1 ? 'active' : ''}`} 
+                onClick={() => handleAccordionClick(1)}
+              >
+                <div className="accordion-rank">
+                  <div className="accordion-position promotion-position">2</div>
+                </div>
+                <div className="accordion-team-info">
+                  <div className="team-logo-container">
+                    <img src="/assets/teams/aguilas.png" alt="Águilas" />
+                  </div>
+                  <span className="accordion-team-name">Águilas</span>
+                </div>
+                <div className="accordion-summary">
+                  <div className="accordion-points">21</div>
+                  <div className="accordion-toggle">
+                    <IonIcon icon={arrowForward} className="toggle-icon" />
+                  </div>
+                </div>
+              </div>
+              <div 
+                className={`standings-accordion-content ${activeAccordion === 1 ? 'active' : ''}`}
+                style={{ maxHeight: activeAccordion === 1 ? '500px' : '0px' }}
+              >
+                <div className="accordion-content-inner">
+                  <div className="accordion-main-stats">
+                    <div className="main-stat-item">
+                      <div className="stat-value">10</div>
+                      <div className="stat-label">PJ</div>
+                    </div>
+                    <div className="main-stat-item">
+                      <div className="stat-value wins">6</div>
+                      <div className="stat-label">G</div>
+                    </div>
+                    <div className="main-stat-item">
+                      <div className="stat-value draws">3</div>
+                      <div className="stat-label">E</div>
+                    </div>
+                    <div className="main-stat-item">
+                      <div className="stat-value losses">1</div>
+                      <div className="stat-label">P</div>
+                    </div>
+                  </div>
+                  
+                  <div className="accordion-secondary-stats">
+                    <div className="secondary-stats-row">
+                      <div className="secondary-stat">
+                        <span className="stat-label">Goles a favor:</span>
+                        <span className="stat-value">18</span>
+                      </div>
+                      <div className="secondary-stat">
+                        <span className="stat-label">Goles en contra:</span>
+                        <span className="stat-value">9</span>
+                      </div>
+                    </div>
+                    <div className="secondary-stat diff">
+                      <span className="stat-label">Diferencia de goles:</span>
+                      <span className="stat-value positive">+9</span>
+                    </div>
+                  </div>
+                  
+                  <div className="accordion-form-section">
+                    <div className="form-title">Últimos partidos</div>
+                    <div className="form-indicators">
+                      <span className="form-result win">G</span>
+                      <span className="form-result draw">E</span>
+                      <span className="form-result win">G</span>
+                      <span className="form-result win">G</span>
+                      <span className="form-result draw">E</span>
+                    </div>
+                  </div>
+                  
+                  <div className="accordion-actions">
+                    <a href="/equipo/aguilas" className="accordion-team-link">
+                      <span>Ver perfil completo</span>
+                      <IonIcon icon={arrowForward} />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
 
+            {/* Equipo 3 - Titanes */}
+            <div className="standings-accordion">
+              <div 
+                className={`standings-accordion-header ${activeAccordion === 2 ? 'active' : ''}`} 
+                onClick={() => handleAccordionClick(2)}
+              >
+                <div className="accordion-rank">
+                  <div className="accordion-position">3</div>
+                </div>
+                <div className="accordion-team-info">
+                  <div className="team-logo-container">
+                    <img src="/assets/teams/titanes.png" alt="Titanes" />
+                  </div>
+                  <span className="accordion-team-name">Titanes</span>
+                </div>
+                <div className="accordion-summary">
+                  <div className="accordion-points">20</div>
+                  <div className="accordion-toggle">
+                    <IonIcon icon={arrowForward} className="toggle-icon" />
+                  </div>
+                </div>
+              </div>
+              <div 
+                className={`standings-accordion-content ${activeAccordion === 2 ? 'active' : ''}`}
+                style={{ maxHeight: activeAccordion === 2 ? '500px' : '0px' }}
+              >
+                <div className="accordion-content-inner">
+                  <div className="accordion-main-stats">
+                    <div className="main-stat-item">
+                      <div className="stat-value">10</div>
+                      <div className="stat-label">PJ</div>
+                    </div>
+                    <div className="main-stat-item">
+                      <div className="stat-value wins">6</div>
+                      <div className="stat-label">G</div>
+                    </div>
+                    <div className="main-stat-item">
+                      <div className="stat-value draws">2</div>
+                      <div className="stat-label">E</div>
+                    </div>
+                    <div className="main-stat-item">
+                      <div className="stat-value losses">2</div>
+                      <div className="stat-label">P</div>
+                    </div>
+                  </div>
+                  
+                  <div className="accordion-secondary-stats">
+                    <div className="secondary-stats-row">
+                      <div className="secondary-stat">
+                        <span className="stat-label">Goles a favor:</span>
+                        <span className="stat-value">20</span>
+                      </div>
+                      <div className="secondary-stat">
+                        <span className="stat-label">Goles en contra:</span>
+                        <span className="stat-value">12</span>
+                      </div>
+                    </div>
+                    <div className="secondary-stat diff">
+                      <span className="stat-label">Diferencia de goles:</span>
+                      <span className="stat-value positive">+8</span>
+                    </div>
+                  </div>
+                  
+                  <div className="accordion-form-section">
+                    <div className="form-title">Últimos partidos</div>
+                    <div className="form-indicators">
+                      <span className="form-result loss">P</span>
+                      <span className="form-result win">G</span>
+                      <span className="form-result win">G</span>
+                      <span className="form-result draw">E</span>
+                      <span className="form-result win">G</span>
+                    </div>
+                  </div>
+                  
+                  <div className="accordion-actions">
+                    <a href="/equipo/titanes" className="accordion-team-link">
+                      <span>Ver perfil completo</span>
+                      <IonIcon icon={arrowForward} />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Equipo 4 - Delfines */}
+            <div className="standings-accordion">
+              <div 
+                className={`standings-accordion-header ${activeAccordion === 3 ? 'active' : ''}`} 
+                onClick={() => handleAccordionClick(3)}
+              >
+                <div className="accordion-rank">
+                  <div className="accordion-position">4</div>
+                </div>
+                <div className="accordion-team-info">
+                  <div className="team-logo-container">
+                    <img src="/assets/teams/delfines.png" alt="Delfines" />
+                  </div>
+                  <span className="accordion-team-name">Delfines</span>
+                </div>
+                <div className="accordion-summary">
+                  <div className="accordion-points">18</div>
+                  <div className="accordion-toggle">
+                    <IonIcon icon={arrowForward} className="toggle-icon" />
+                  </div>
+                </div>
+              </div>
+              <div 
+                className={`standings-accordion-content ${activeAccordion === 3 ? 'active' : ''}`}
+                style={{ maxHeight: activeAccordion === 3 ? '500px' : '0px' }}
+              >
+                <div className="accordion-content-inner">
+                  <div className="accordion-main-stats">
+                    <div className="main-stat-item">
+                      <div className="stat-value">10</div>
+                      <div className="stat-label">PJ</div>
+                    </div>
+                    <div className="main-stat-item">
+                      <div className="stat-value wins">5</div>
+                      <div className="stat-label">G</div>
+                    </div>
+                    <div className="main-stat-item">
+                      <div className="stat-value draws">3</div>
+                      <div className="stat-label">E</div>
+                    </div>
+                    <div className="main-stat-item">
+                      <div className="stat-value losses">2</div>
+                      <div className="stat-label">P</div>
+                    </div>
+                  </div>
+                  
+                  <div className="accordion-secondary-stats">
+                    <div className="secondary-stats-row">
+                      <div className="secondary-stat">
+                        <span className="stat-label">Goles a favor:</span>
+                        <span className="stat-value">15</span>
+                      </div>
+                      <div className="secondary-stat">
+                        <span className="stat-label">Goles en contra:</span>
+                        <span className="stat-value">10</span>
+                      </div>
+                    </div>
+                    <div className="secondary-stat diff">
+                      <span className="stat-label">Diferencia de goles:</span>
+                      <span className="stat-value positive">+5</span>
+                    </div>
+                  </div>
+                  
+                  <div className="accordion-form-section">
+                    <div className="form-title">Últimos partidos</div>
+                    <div className="form-indicators">
+                      <span className="form-result win">G</span>
+                      <span className="form-result win">G</span>
+                      <span className="form-result draw">E</span>
+                      <span className="form-result loss">P</span>
+                      <span className="form-result draw">E</span>
+                    </div>
+                  </div>
+                  
+                  <div className="accordion-actions">
+                    <a href="/equipo/delfines" className="accordion-team-link">
+                      <span>Ver perfil completo</span>
+                      <IonIcon icon={arrowForward} />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Equipo 5 - Guerreros */}
+            <div className="standings-accordion">
+              <div 
+                className={`standings-accordion-header ${activeAccordion === 4 ? 'active' : ''}`} 
+                onClick={() => handleAccordionClick(4)}
+              >
+                <div className="accordion-rank">
+                  <div className="accordion-position">5</div>
+                </div>
+                <div className="accordion-team-info">
+                  <div className="team-logo-container">
+                    <img src="/assets/teams/guerreros.png" alt="Guerreros" />
+                  </div>
+                  <span className="accordion-team-name">Guerreros</span>
+                </div>
+                <div className="accordion-summary">
+                  <div className="accordion-points">15</div>
+                  <div className="accordion-toggle">
+                    <IonIcon icon={arrowForward} className="toggle-icon" />
+                  </div>
+                </div>
+              </div>
+              <div 
+                className={`standings-accordion-content ${activeAccordion === 4 ? 'active' : ''}`}
+                style={{ maxHeight: activeAccordion === 4 ? '500px' : '0px' }}
+              >
+                <div className="accordion-content-inner">
+                  <div className="accordion-main-stats">
+                    <div className="main-stat-item">
+                      <div className="stat-value">10</div>
+                      <div className="stat-label">PJ</div>
+                    </div>
+                    <div className="main-stat-item">
+                      <div className="stat-value wins">4</div>
+                      <div className="stat-label">G</div>
+                    </div>
+                    <div className="main-stat-item">
+                      <div className="stat-value draws">3</div>
+                      <div className="stat-label">E</div>
+                    </div>
+                    <div className="main-stat-item">
+                      <div className="stat-value losses">3</div>
+                      <div className="stat-label">P</div>
+                    </div>
+                  </div>
+                  
+                  <div className="accordion-secondary-stats">
+                    <div className="secondary-stats-row">
+                      <div className="secondary-stat">
+                        <span className="stat-label">Goles a favor:</span>
+                        <span className="stat-value">14</span>
+                      </div>
+                      <div className="secondary-stat">
+                        <span className="stat-label">Goles en contra:</span>
+                        <span className="stat-value">12</span>
+                      </div>
+                    </div>
+                    <div className="secondary-stat diff">
+                      <span className="stat-label">Diferencia de goles:</span>
+                      <span className="stat-value positive">+2</span>
+                    </div>
+                  </div>
+                  
+                  <div className="accordion-form-section">
+                    <div className="form-title">Últimos partidos</div>
+                    <div className="form-indicators">
+                      <span className="form-result win">G</span>
+                      <span className="form-result loss">P</span>
+                      <span className="form-result draw">E</span>
+                      <span className="form-result win">G</span>
+                      <span className="form-result loss">P</span>
+                    </div>
+                  </div>
+                  
+                  <div className="accordion-actions">
+                    <a href="/equipo/guerreros" className="accordion-team-link">
+                      <span>Ver perfil completo</span>
+                      <IonIcon icon={arrowForward} />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         <Footer />
       </IonContent>
     </IonPage>
