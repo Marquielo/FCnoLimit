@@ -55,7 +55,7 @@ const AuthPage: React.FC = () => {
   // Función para probar la conexión a la base de datos
   const testDbConnection = async () => {
     try {
-      const response = await fetch(`${cleanApiUrl}/dbtest`);
+      const response = await fetch(`${cleanApiUrl}/api/dbtest`);
       const data = await response.json();
       console.log('Conexión a la base de datos:', data);
       return data;
