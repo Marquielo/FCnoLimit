@@ -22,35 +22,6 @@ import {
 import './AuthPage.css';
 import NavBar from '../../components/NavBar';
 
-// Función temporal para evitar errores si no existe el servicio real
-const mockSignInWithGoogle = async () => {
-  console.log("Simulando inicio de sesión con Google");
-  // Simular un retraso de red
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
-  return {
-    success: true,
-    user: {
-      uid: "mock-uid-123",
-      email: "usuario@ejemplo.com",
-      displayName: "Usuario Ejemplo",
-      photoURL: "https://via.placeholder.com/150"
-    },
-    token: "mock-token-123"
-  };
-};
-
-// Intenta importar la función real, pero usa la simulada en caso de error
-let signInWithGoogle;
-try {
-  // Intenta importar la función real
-  const module = require('../../firebase/authService');
-  signInWithGoogle = module.signInWithGoogle;
-} catch (error) {
-  console.warn("No se pudo importar el servicio de autenticación, usando versión de prueba");
-  signInWithGoogle = mockSignInWithGoogle;
-}
-
 const AuthPage: React.FC = () => {
   console.log("Renderizando AuthPage");
   
@@ -69,42 +40,17 @@ const AuthPage: React.FC = () => {
   const [registerSuccess, setRegisterSuccess] = useState('');
   const [present, dismiss] = useIonLoading();
 
-  const apiUrl = import.meta.env.VITE_API_URL; // URL del backend desde la variable de entorno
+  const apiUrl = import.meta.env.VITE_API_URL;
+  if (!apiUrl) {
+    console.warn('VITE_API_URL no está definida. Verifica tu archivo .env y el build.');
+  }
 
-  // Manejador para autenticación con Google
-  const handleGoogleSignIn = async () => {
-    console.log("Botón Google clickeado");
-    try {
-      present({ message: 'Iniciando sesión con Google...' });
-      console.log("Mostrando loading...");
-      
-      console.log("Llamando a signInWithGoogle...");
-      const result = await signInWithGoogle();
-      console.log("Resultado completo:", result);
-      
-      dismiss();
-      
-      if (result.success && result.token && result.user) {
-        console.log("Login exitoso, guardando datos...");
-        // Guardar token y datos del usuario en localStorage
-        localStorage.setItem('token', result.token);
-        localStorage.setItem('usuario', JSON.stringify(result.user));
-        
-        // Redirigir a la página de inicio
-        window.location.href = '/inicio';
-      } else {
-        console.error("Error en resultado:", result.error);
-        setError(result.error || 'Error al iniciar sesión con Google');
-      }
-    } catch (err: any) {
-      console.error("Error detallado:", err);
-      console.error("Stack trace:", err.stack);
-      dismiss();
-      setError(err.message || 'Error al iniciar sesión con Google');
-    }
+  // Elimina Google SignIn simulado y su botón funcional
+  // Si quieres dejar el botón, puedes deshabilitarlo así:
+  const handleGoogleSignIn = () => {
+    setError('Inicio de sesión con Google no disponible.');
   };
 
-  // Manejadores de autenticación existentes
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -117,15 +63,23 @@ const AuthPage: React.FC = () => {
         body: JSON.stringify({ correo: email, contraseña: password }),
       });
 
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        data = {};
+      }
+
       dismiss();
-      const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error de autenticación');
       localStorage.setItem('token', data.token);
       localStorage.setItem('usuario', JSON.stringify(data.user));
-      window.location.href = '/inicio'; // Redirige a /inicio tras login exitoso
+      window.location.href = '/inicio';
     } catch (err: any) {
       dismiss();
-      setError(err.message || 'Correo o contraseña incorrectos');
+      setError(err.message === 'Failed to fetch'
+        ? 'No se pudo conectar con el servidor. Intenta de nuevo en unos segundos.'
+        : err.message || 'Correo o contraseña incorrectos');
     }
   };
 
@@ -146,17 +100,26 @@ const AuthPage: React.FC = () => {
           nombre_completo: registerName || registerEmail.split('@')[0],
           correo: registerEmail,
           contraseña: registerPassword,
-          rol: 'persona_natural' // O el rol que desees permitir desde el registro
+          rol: 'persona_natural'
         })
       });
+
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        data = {};
+      }
+
       dismiss();
-      const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error al registrar');
       setRegisterSuccess('Cuenta creada exitosamente. Ahora puedes iniciar sesión.');
       setShowLogin(true);
     } catch (err: any) {
       dismiss();
-      setRegisterError(err.message || 'Error al registrar');
+      setRegisterError(err.message === 'Failed to fetch'
+        ? 'No se pudo conectar con el servidor. Intenta de nuevo en unos segundos.'
+        : err.message || 'Error al registrar');
     }
   };
 
@@ -206,13 +169,14 @@ const AuthPage: React.FC = () => {
                           className="social-button google"
                           onClick={handleGoogleSignIn}
                           type="button"
+                          disabled
                         >
                           <IonIcon icon={logoGoogle}></IonIcon>
                         </IonButton>
-                        <IonButton fill="clear" className="social-button facebook">
+                        <IonButton fill="clear" className="social-button facebook" disabled>
                           <IonIcon icon={logoFacebook}></IonIcon>
                         </IonButton>
-                        <IonButton fill="clear" className="social-button apple">
+                        <IonButton fill="clear" className="social-button apple" disabled>
                           <IonIcon icon={logoApple}></IonIcon>
                         </IonButton>
                       </div>
@@ -286,13 +250,14 @@ const AuthPage: React.FC = () => {
                           className="social-button google"
                           onClick={handleGoogleSignIn}
                           type="button"
+                          disabled
                         >
                           <IonIcon icon={logoGoogle}></IonIcon>
                         </IonButton>
-                        <IonButton fill="clear" className="social-button facebook">
+                        <IonButton fill="clear" className="social-button facebook" disabled>
                           <IonIcon icon={logoFacebook}></IonIcon>
                         </IonButton>
-                        <IonButton fill="clear" className="social-button apple">
+                        <IonButton fill="clear" className="social-button apple" disabled>
                           <IonIcon icon={logoApple}></IonIcon>
                         </IonButton>
                       </div>
