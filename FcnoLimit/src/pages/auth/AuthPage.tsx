@@ -46,10 +46,7 @@ const AuthPage: React.FC = () => {
 
   // URL fija para producción cuando hay problemas con las variables de entorno
   const apiBaseUrl = 'https://fcnolimit-back.onrender.com';
-  // Si prefieres seguir usando variables de entorno pero con fallback a la URL fija:
-  // const apiBaseUrl = import.meta.env.VITE_API_URL || 'https://fcnolimit-back.onrender.com';
-
-  console.log("API URL base:", apiBaseUrl);
+  console.log("API URL base definida:", apiBaseUrl);
 
   // Función para probar la conexión a la base de datos
   const testDbConnection = async () => {
@@ -82,10 +79,11 @@ const AuthPage: React.FC = () => {
       console.log("Iniciando proceso de login");
       present({ message: 'Iniciando sesión...' });
 
-      // Log para ver exactamente qué URL se está usando
-      console.log("Haciendo fetch a:", `${apiBaseUrl}/usuarios/login`);
+      // Construir la URL cuidadosamente
+      const loginUrl = `${apiBaseUrl}/usuarios/login`;
+      console.log("URL completa para login:", loginUrl);
       
-      const res = await fetch(`${apiBaseUrl}/usuarios/login`, {
+      const res = await fetch(loginUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ correo: email, contraseña: password }),
