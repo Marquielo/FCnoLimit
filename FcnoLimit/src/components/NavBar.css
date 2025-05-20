@@ -997,7 +997,6 @@ ion-button[class*="login"] ion-icon,
 
 /* Ajuste específico para el menú móvil */
 .mobile-menu-content .navbar-nav .nav-link {
-  display: flex;
   align-items: center;
 }
 
