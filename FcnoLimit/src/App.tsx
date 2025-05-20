@@ -49,10 +49,13 @@ import '@ionic/react/css/palettes/dark.system.css';
 /* Theme variables */
 import './styles/variables.css';
 
-setupIonicReact();
+setupIonicReact({
+  mode: 'md',
+  animated: true
+});
 
 const App: React.FC = () => (
-  <IonApp>
+  <IonApp className="light-theme">
     <IonReactRouter>
       <IonRouterOutlet>
         {/* Rutas públicas */}

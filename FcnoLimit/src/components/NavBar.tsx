@@ -232,7 +232,7 @@ const NavBar: React.FC = () => {
                       type="button"
                     >
                       <IonIcon icon={item.icon} />
-                      <span>{item.text}</span>
+                      <span className="nav-text-visible">{item.text}</span>
                     </button>
                   </li>
                 ))}
@@ -263,7 +263,7 @@ const NavBar: React.FC = () => {
                   }}
                 >
                   <IonIcon icon={personCircleOutline} />
-                  <span>Mi perfil</span>
+                  <span className="user-action-text">Mi perfil</span>
                 </button>
                 
                 {usuario.rol === "administrador" && (
@@ -275,7 +275,7 @@ const NavBar: React.FC = () => {
                     }}
                   >
                     <IonIcon icon={settingsOutline} />
-                    <span>Admin</span>
+                    <span className="user-action-text">Admin</span>
                   </button>
                 )}
                 
@@ -284,7 +284,7 @@ const NavBar: React.FC = () => {
                   onClick={handleLogout}
                 >
                   <IonIcon icon={logOutOutline} />
-                  <span>Cerrar sesión</span>
+                  <span className="user-action-text">Cerrar sesión</span>
                 </button>
               </div>
             )}

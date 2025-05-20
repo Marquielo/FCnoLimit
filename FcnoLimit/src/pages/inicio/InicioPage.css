@@ -2670,6 +2670,8 @@ h2 ion-icon {
   gap: 0.8rem;
 }
 
+
+
 .highlights-swiper {
   padding-bottom: 60px !important;
 }
@@ -3518,4 +3520,51 @@ h2 ion-icon {
   .fcnl-subscribe-box h3 {
     font-size: 1.5rem;
   }
+}
+
+/* FORZAR MODO CLARO EN TODAS LAS SECCIONES DE INICIO */
+.hero-section, 
+.upcoming-tournament-banner, 
+.services-section, 
+.community-section,
+.standings-section,
+.facilities-section,
+.partners-section,
+.features-section-wrapper,
+.highlights-wrapper,
+.fcnl-news-wrapper,
+.cta-section {
+  background-color: #ffffff !important;
+  color: #121921 !important;
+}
+
+/* Corregir elementos que puedan tener tema oscuro */
+.hero-section .main-title,
+.hero-section .hero-subtitle,
+.hero-section .badge-label,
+.hero-section .top-badge {
+  color: #ffffff !important; /* Mantener texto blanco para legibilidad en hero */
+}
+
+/* Asegurar que los iconos en la hero section sean visibles */
+.hero-section ion-icon {
+  color: #ffffff !important;
+}
+
+.hero-section .badge-count {
+  color: var(--fcnolimit-primary) !important;
+}
+
+/* Fondos específicos que deben permanecer oscuros por diseño */
+.hero-section,
+.cta-section,
+.community-card {
+  color: #ffffff !important; /* Mantener texto claro para estos elementos específicos */
+}
+
+/* Asegurar fondos adecuados para secciones alternas */
+.features-section-wrapper,
+.highlights-wrapper,
+.fcnl-news-wrapper {
+  background-color: #f8f9fa !important;
 }

@@ -234,6 +234,10 @@
   border: none;
   box-shadow: none;
   transition: all 0.3s ease;
+  width: 100% !important;
+  --min-height: 52px;
+  margin-bottom: 15px;
+  transition: none !important;
 }
 
 /* Ajustamos el tamaño de los campos para que sean más bajos */
@@ -247,6 +251,12 @@
   --padding-top: 10px;     /* Reducido de 14px */
   --padding-bottom: 10px;  /* Reducido de 14px */
   height: 42px;           /* Altura explícita más baja */
+  width: 100% !important;
+  height: 50px !important;
+  min-height: 50px !important;
+  max-height: 50px !important;
+  font-size: 16px !important;
+  transition: none !important;
 }
 
 /* Mejoramos la visualización del placeholder */
@@ -259,14 +269,24 @@
 .password-container {
   position: relative;
   margin-bottom: 1.5rem;
+  width: 100% !important;
+  margin-bottom: 15px;
 }
 
-.password-container .custom-input {
-  margin-bottom: 0;
-  --border-color: #e0e0e0;
-  --border-width: 1px;
-  --border-style: solid;
-  --border-radius: 6px;
+/* Asegurar que el botón de toggle no afecte el tamaño */
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  z-index: 10;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Reposicionamos el botón del ojo para la nueva altura */

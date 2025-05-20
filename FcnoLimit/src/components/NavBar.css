@@ -251,9 +251,6 @@
   color: #121921;
 }
 
-
-
-
 /* Dropdown menus */
 .dropdown-menu {
   background-color: var(--fcnolimit-bg-dark);
@@ -988,4 +985,36 @@ ion-button[class*="login"] ion-icon,
     padding-right: 1rem;
     margin-right: 1rem;
   }
+}
+
+/* Asegurar que el texto en los elementos nav-link sea visible */
+.navbar-nav .nav-link span {
+  display: inline-block;
+  margin-left: 10px;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Ajuste específico para el menú móvil */
+.mobile-menu-content .navbar-nav .nav-link {
+  display: flex;
+  align-items: center;
+}
+
+.mobile-menu-content .navbar-nav .nav-link ion-icon {
+  min-width: 24px;
+}
+
+.mobile-menu-content .navbar-nav .nav-link span {
+  display: inline-block;
+  visibility: visible;
+  opacity: 1;
+  margin-left: 10px;
+}
+
+.nav-text-visible {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin-left: 10px;
 }

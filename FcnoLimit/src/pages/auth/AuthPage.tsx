@@ -188,14 +188,16 @@ const AuthPage: React.FC = () => {
                       <div className="separator">o</div>
                       
                       {/* Campo de Email */}
-                      <IonItem className="custom-input">
+                      <IonItem className="custom-input" lines="full">
                         <IonInput
+                          className="custom-input-field"
                           type="email"
                           placeholder="Email"
                           value={email}
                           onIonChange={e => setEmail(e.detail.value!)}
                           required
-                          className="custom-input-field"
+                          clearInput={false}
+                          mode="ios"
                         ></IonInput>
                       </IonItem>
                       
