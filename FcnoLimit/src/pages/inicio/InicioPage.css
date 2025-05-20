@@ -3532,19 +3532,14 @@ h2 ion-icon {
 .partners-section,
 .features-section-wrapper,
 .highlights-wrapper,
-.fcnl-news-wrapper,
-.cta-section {
+.fcnl-news-wrapper{
   background-color: #ffffff !important;
   color: #121921 !important;
 }
 
 
-
-
-
 /* Fondos específicos que deben permanecer oscuros por diseño */
 
-.cta-section,
 .community-card {
   color: #ffffff !important; /* Mantener texto claro para estos elementos específicos */
 }
