@@ -77,7 +77,7 @@ const AuthPage: React.FC = () => {
       if (!res.ok) throw new Error(data.error || 'Error de autenticación');
       localStorage.setItem('token', data.token);
       localStorage.setItem('usuario', JSON.stringify(data.user));
-      history.push(''); // <--- Usa el router en vez de window.location.href
+      history.push('/inicio'); // <--- Usa el router en vez de window.location.href
     } catch (err: any) {
       dismiss();
       setError(err.message === 'Failed to fetch'
