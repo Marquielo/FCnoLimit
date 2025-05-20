@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   IonPage, 
   IonContent, 
@@ -47,6 +47,24 @@ const AuthPage: React.FC = () => {
   if (!apiUrl) {
     console.warn('VITE_API_URL no está definida. Verifica tu archivo .env y el build.');
   }
+
+  // Función para probar la conexión a la base de datos
+  const testDbConnection = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/dbtest`);
+      const data = await response.json();
+      console.log('Conexión a la base de datos:', data);
+      return data;
+    } catch (error) {
+      console.error('Error al probar la conexión a la base de datos:', error);
+      return null;
+    }
+  };
+
+  // Ejecutar la prueba al cargar el componente
+  useEffect(() => {
+    testDbConnection();
+  }, []);
 
   // Elimina Google SignIn simulado y su botón funcional
   // Si quieres dejar el botón, puedes deshabilitarlo así:
