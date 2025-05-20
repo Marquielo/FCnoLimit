@@ -75,18 +75,9 @@ const AuthPage: React.FC = () => {
 
       dismiss();
       if (!res.ok) throw new Error(data.error || 'Error de autenticación');
-      
-      // Asegurarse de que data.user existe antes de guardarlo
-      if (data && data.token && data.user) {
-        // Guardar los datos del usuario en localStorage
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('usuario', JSON.stringify(data.user));
-        
-        // Redirección usando el enrutador de React
-        history.push('/inicio');
-      } else {
-        throw new Error('Respuesta incompleta del servidor');
-      }
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('usuario', JSON.stringify(data.user));
+      history.push('/inicio'); // <--- Usa el router en vez de window.location.href
     } catch (err: any) {
       dismiss();
       setError(err.message === 'Failed to fetch'
