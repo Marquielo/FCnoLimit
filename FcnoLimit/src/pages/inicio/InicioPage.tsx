@@ -9,12 +9,12 @@ import 'swiper/css/autoplay';
 // Import Swiper modules
 import { Pagination, Autoplay } from 'swiper/modules';
 
-import { 
-  footballOutline, peopleOutline, trophyOutline, statsChartOutline, 
+import {
+  footballOutline, peopleOutline, trophyOutline, statsChartOutline,
   arrowForward, calendarOutline, timeOutline, locationOutline,
   flameOutline, starOutline, personOutline, eyeOutline, // Reemplazar searchOutline con eyeOutline
   ribbonOutline, pulseOutline, checkmarkCircleOutline,
-  footballSharp, 
+  footballSharp,
   bulbOutline, // Usar un ícono alternativo para whistle
   shirtOutline, stopwatchOutline,
   trophySharp, megaphoneOutline, flameSharp, podiumOutline,
@@ -45,7 +45,7 @@ const InicioPage: React.FC = () => {
   const history = useHistory();
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
-  
+
   // Efecto para animaciones al hacer scroll
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -55,30 +55,30 @@ const InicioPage: React.FC = () => {
         }
       });
     }, { threshold: 0.1 });
-    
+
     const hiddenElements = document.querySelectorAll('.animate-on-scroll');
     hiddenElements.forEach(el => observer.observe(el));
-    
+
     // Actualizar cuenta regresiva para el próximo gran torneo
     const eventDate = new Date('2025-05-13T09:00:00');
-    
+
     const updateCountdown = () => {
       const now = new Date();
       const difference = eventDate.getTime() - now.getTime();
-      
+
       if (difference > 0) {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
         const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-        
+
         setCountdown({ days, hours, minutes, seconds });
       }
     };
-    
+
     updateCountdown();
     const interval = setInterval(updateCountdown, 1000);
-    
+
     return () => {
       hiddenElements.forEach(el => observer.unobserve(el));
       clearInterval(interval);
@@ -93,7 +93,7 @@ const InicioPage: React.FC = () => {
     } else {
       // Si no está activo, abrirlo
       setActiveAccordion(index);
-      
+
       // Opcional: hacer scroll suave hacia el acordeón que se abre
       setTimeout(() => {
         const element = document.querySelector(`.standings-accordion:nth-child(${index + 1})`);
@@ -125,12 +125,12 @@ const InicioPage: React.FC = () => {
                 Torneos 2025
               </div>
             </div>
-            
+
             <h1 className="main-title" data-text="FCnoLimit">
               <span>FC</span>noLimit
             </h1>
             <p className="hero-subtitle">Tu pasión por el fútbol no tiene límites</p>
-            
+
             <div className="hero-badges">
               <div className="hero-badge">
                 <span className="badge-count">250+</span>
@@ -145,7 +145,7 @@ const InicioPage: React.FC = () => {
                 <span className="badge-label">Torneos</span>
               </div>
             </div>
-            
+
             <div className="hero-buttons">
               <IonButton className="primary-btn" onClick={() => history.push('/registro')}>
                 <IonIcon icon={personOutline} slot="start" />
@@ -157,7 +157,7 @@ const InicioPage: React.FC = () => {
               </IonButton>
             </div>
           </div>
-          
+
           <div className="hero-scroll-indicator">
             <div className="mouse">
               <div className="wheel"></div>
@@ -213,34 +213,34 @@ const InicioPage: React.FC = () => {
                 Ver calendario completo <IonIcon icon={arrowForward} />
               </a>
             </div>
-            
+
             <div className="matches-slider">
               <div className="match-card">
                 <div className="match-card-header">
                   <div className="match-league">Liga Municipal • Jornada 5</div>
                   <div className="match-date">Hoy • 17:00</div>
                 </div>
-                
+
                 <div className="match-teams">
                   <div className="team">
                     <div className="team-logo">
-                      <img src="/assets/teams/leones.png" alt="Leones FC" />
+                      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Paris_Saint-Germain_F.C..svg/180px-Paris_Saint-Germain_F.C..svg.png" alt="Manchester City" />
                     </div>
-                    <div className="team-name">Leones FC</div>
+                    <div className="team-name">Manchester City</div>
                   </div>
-                  
+
                   <div className="match-vs">
                     <div className="vs-badge">VS</div>
                   </div>
-                  
+
                   <div className="team">
                     <div className="team-logo">
-                      <img src="/assets/teams/aguilas.png" alt="Águilas" />
+                      <img src="https://cdn-icons-png.flaticon.com/512/824/824725.png" alt="Liverpool" />
                     </div>
-                    <div className="team-name">Águilas</div>
+                    <div className="team-name">Manchester United</div>
                   </div>
                 </div>
-                
+
                 <div className="match-info">
                   <div className="match-info-item">
                     <IonIcon icon={locationOutline} />
@@ -250,34 +250,39 @@ const InicioPage: React.FC = () => {
                     Detalles <IonIcon icon={arrowForward} />
                   </a>
                 </div>
+
+                {/* Nueva imagen de fondo para el partido */}
+                <div className="match-background-image">
+                  <img src="https://images.pexels.com/photos/270085/pexels-photo-270085.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Stadium background" />
+                </div>
               </div>
-              
+
               <div className="match-card">
                 <div className="match-card-header">
                   <div className="match-league">Liga Amateur • Jornada 7</div>
                   <div className="match-date">Mañana • 19:30</div>
                 </div>
-                
+
                 <div className="match-teams">
                   <div className="team">
                     <div className="team-logo">
-                      <img src="/assets/teams/delfines.png" alt="Delfines" />
+                      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/180px-FC_Barcelona_%28crest%29.svg.png" alt="Barcelona" />
                     </div>
-                    <div className="team-name">Delfines</div>
+                    <div className="team-name">FC Barcelona</div>
                   </div>
-                  
+
                   <div className="match-vs">
                     <div className="vs-badge">VS</div>
                   </div>
-                  
+
                   <div className="team">
                     <div className="team-logo">
-                      <img src="/assets/teams/rayos.png" alt="Rayos" />
+                      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/180px-Real_Madrid_CF.svg.png" alt="Real Madrid" />
                     </div>
-                    <div className="team-name">Rayos</div>
+                    <div className="team-name">Real Madrid</div>
                   </div>
                 </div>
-                
+
                 <div className="match-info">
                   <div className="match-info-item">
                     <IonIcon icon={locationOutline} />
@@ -287,34 +292,39 @@ const InicioPage: React.FC = () => {
                     Detalles <IonIcon icon={arrowForward} />
                   </a>
                 </div>
+
+                {/* Nueva imagen de fondo para el segundo partido */}
+                <div className="match-background-image">
+                  <img src="https://images.pexels.com/photos/3148452/pexels-photo-3148452.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Stadium background" />
+                </div>
               </div>
-              
+
               <div className="match-card">
                 <div className="match-card-header">
                   <div className="match-league">Copa FCnoLimit • Cuartos</div>
                   <div className="match-date">Sábado • 10:00</div>
                 </div>
-                
+
                 <div className="match-teams">
                   <div className="team">
                     <div className="team-logo">
-                      <img src="/assets/teams/titanes.png" alt="Titanes" />
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/FC_Internazionale_Milano_2021.svg/180px-FC_Internazionale_Milano_2021.svg.png" alt="Atlético de Madrid" />
                     </div>
-                    <div className="team-name">Titanes</div>
+                    <div className="team-name">Inter Milan</div>
                   </div>
-                  
+
                   <div className="match-vs">
                     <div className="vs-badge">VS</div>
                   </div>
-                  
+
                   <div className="team">
                     <div className="team-logo">
-                      <img src="/assets/teams/guerreros.png" alt="Guerreros" />
+                      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/180px-Chelsea_FC.svg.png" alt="Chelsea" />
                     </div>
-                    <div className="team-name">Guerreros</div>
+                    <div className="team-name">Chelsea</div>
                   </div>
                 </div>
-                
+
                 <div className="match-info">
                   <div className="match-info-item">
                     <IonIcon icon={locationOutline} />
@@ -323,6 +333,11 @@ const InicioPage: React.FC = () => {
                   <a href="/partidos/125" className="match-details-btn">
                     Detalles <IonIcon icon={arrowForward} />
                   </a>
+                </div>
+
+                {/* Nueva imagen de fondo para el tercer partido */}
+                <div className="match-background-image">
+                  <img src="https://images.pexels.com/photos/2291006/pexels-photo-2291006.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Stadium background" />
                 </div>
               </div>
             </div>
@@ -335,7 +350,7 @@ const InicioPage: React.FC = () => {
           <div className="features-section animate-on-scroll">
             <h2 className="section-title">Tu experiencia futbolística completa</h2>
             <p className="section-subtitle">Todo lo que necesitas para disfrutar del fútbol amateur</p>
-            
+
             <div className="features-grid">
               <div className="feature-card">
                 <div className="feature-icon-container">
@@ -358,7 +373,7 @@ const InicioPage: React.FC = () => {
                   <li><IonIcon icon={checkmarkCircleOutline} /> Resúmenes post-partido</li>
                 </ul>
               </div>
-              
+
               <div className="feature-card">
                 <div className="feature-icon-container">
                   <div className="feature-icon-wrapper">
@@ -440,8 +455,8 @@ const InicioPage: React.FC = () => {
                 Todos los destacados <IonIcon icon={arrowForward} />
               </a>
             </div>
-            
-            <Swiper 
+
+            <Swiper
               spaceBetween={25}
               slidesPerView={1}
               breakpoints={{
@@ -481,7 +496,7 @@ const InicioPage: React.FC = () => {
                   </div>
                 </div>
               </SwiperSlide>
-              
+
               <SwiperSlide>
                 <div className="fcnl-highlight-item fcnl-highlight-tournament">
                   <div className="fcnl-highlight-image">
@@ -508,7 +523,7 @@ const InicioPage: React.FC = () => {
                   </div>
                 </div>
               </SwiperSlide>
-              
+
               <SwiperSlide>
                 <div className="fcnl-highlight-item fcnl-highlight-player">
                   <div className="fcnl-highlight-image">
@@ -544,7 +559,7 @@ const InicioPage: React.FC = () => {
           <div className="cta-content">
             <h2>¿Listo para llevar tu pasión al siguiente nivel?</h2>
             <p>Únete a FCnoLimit y disfruta del fútbol amateur como nunca antes</p>
-            
+
             <div className="cta-benefits">
               <div className="cta-benefit">
                 <IonIcon icon={shirtOutline} />
@@ -559,7 +574,7 @@ const InicioPage: React.FC = () => {
                 <span>Compite por premios reales</span>
               </div>
             </div>
-            
+
             <IonButton className="primary-btn large-btn" onClick={() => history.push('/registro')}>
               Comenzar ahora <IonIcon slot="end" icon={arrowForward} />
             </IonButton>
@@ -578,7 +593,7 @@ const InicioPage: React.FC = () => {
                 Ver todas las noticias <IonIcon icon={arrowForward} />
               </a>
             </div>
-            
+
             <div className="fcnl-news-grid">
               <article className="fcnl-news-item">
                 <div className="fcnl-news-image-wrapper">
@@ -673,7 +688,7 @@ const InicioPage: React.FC = () => {
                 </div>
               </article>
             </div>
-            
+
             <div className="fcnl-subscribe-box">
               <div className="fcnl-subscribe-content">
                 <h3>No te pierdas ninguna noticia</h3>
@@ -686,7 +701,7 @@ const InicioPage: React.FC = () => {
             </div>
           </section>
         </div>
-        
+
         {/* Tabla de clasificación */}
         <div className="content-section standings-section animate-on-scroll">
           <div className="section-header">
@@ -698,13 +713,13 @@ const InicioPage: React.FC = () => {
               Ver completa <IonIcon icon={arrowForward} />
             </a>
           </div>
-          
+
           <div className="standings-tabs">
             <div className="standings-tab active">Liga Amateur</div>
             <div className="standings-tab">Copa FCnoLimit</div>
             <div className="standings-tab">Torneo Verano</div>
           </div>
-          
+
           {/* Vista para escritorio - tabla completa */}
           <div className="standings-table-container desktop-only">
             <table className="standings-table">
@@ -727,8 +742,10 @@ const InicioPage: React.FC = () => {
                 <tr className="promotion-zone">
                   <td>1</td>
                   <td className="team-cell">
-                    <img src="/assets/teams/leones.png" alt="Leones FC" />
-                    <span>Leones FC</span>
+                    <div className="team-logo">
+                      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/180px-Manchester_City_FC_badge.svg.png" alt="Manchester City" />
+                    </div>
+                    <span>Manchester City</span>
                   </td>
                   <td>10</td>
                   <td>8</td>
@@ -749,8 +766,10 @@ const InicioPage: React.FC = () => {
                 <tr className="promotion-zone">
                   <td>2</td>
                   <td className="team-cell">
-                    <img src="/assets/teams/aguilas.png" alt="Águilas" />
-                    <span>Águilas</span>
+                    <div className="team-logo">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/FC_Internazionale_Milano_2021.svg/180px-FC_Internazionale_Milano_2021.svg.png" alt="Liverpool" />
+                    </div>
+                    <span>Inter Milan</span>
                   </td>
                   <td>10</td>
                   <td>6</td>
@@ -771,8 +790,10 @@ const InicioPage: React.FC = () => {
                 <tr>
                   <td>3</td>
                   <td className="team-cell">
-                    <img src="/assets/teams/titanes.png" alt="Titanes" />
-                    <span>Titanes</span>
+                    <div className="team-logo">
+                      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/180px-FC_Barcelona_%28crest%29.svg.png" alt="Barcelona" />
+                    </div>
+                    <span>FC Barcelona</span>
                   </td>
                   <td>10</td>
                   <td>6</td>
@@ -793,8 +814,10 @@ const InicioPage: React.FC = () => {
                 <tr>
                   <td>4</td>
                   <td className="team-cell">
-                    <img src="/assets/teams/delfines.png" alt="Delfines" />
-                    <span>Delfines</span>
+                    <div className="team-logo">
+                      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/180px-Manchester_United_FC_crest.svg.png" alt="Manchester United" />
+                    </div>
+                    <span>Manchester United</span>
                   </td>
                   <td>10</td>
                   <td>5</td>
@@ -815,8 +838,10 @@ const InicioPage: React.FC = () => {
                 <tr>
                   <td>5</td>
                   <td className="team-cell">
-                    <img src="/assets/teams/guerreros.png" alt="Guerreros" />
-                    <span>Guerreros</span>
+                    <div className="team-logo">
+                      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/180px-Chelsea_FC.svg.png" alt="Chelsea" />
+                    </div>
+                    <span>Chelsea</span>
                   </td>
                   <td>10</td>
                   <td>4</td>
@@ -837,13 +862,13 @@ const InicioPage: React.FC = () => {
               </tbody>
             </table>
           </div>
-          
+
           {/* Vista para móvil - acordeones */}
           <div className="standings-accordion-container mobile-only">
             {/* Equipo 1 - Leones FC */}
             <div className="standings-accordion">
-              <div 
-                className={`standings-accordion-header ${activeAccordion === 0 ? 'active' : ''}`} 
+              <div
+                className={`standings-accordion-header ${activeAccordion === 0 ? 'active' : ''}`}
                 onClick={() => handleAccordionClick(0)}
               >
                 <div className="accordion-rank">
@@ -851,9 +876,9 @@ const InicioPage: React.FC = () => {
                 </div>
                 <div className="accordion-team-info">
                   <div className="team-logo-container">
-                    <img src="/assets/teams/leones.png" alt="Leones FC" />
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/180px-Manchester_City_FC_badge.svg.png" alt="Manchester City" />
                   </div>
-                  <span className="accordion-team-name">Leones FC</span>
+                  <span className="accordion-team-name">Manchester City</span>
                 </div>
                 <div className="accordion-summary">
                   <div className="accordion-points">25</div>
@@ -862,7 +887,7 @@ const InicioPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <div 
+              <div
                 className={`standings-accordion-content ${activeAccordion === 0 ? 'active' : ''}`}
                 style={{ maxHeight: activeAccordion === 0 ? '500px' : '0px' }}
               >
@@ -881,28 +906,13 @@ const InicioPage: React.FC = () => {
                       <div className="stat-label">E</div>
                     </div>
                     <div className="main-stat-item">
-                      <div className="stat-value losses">1</div>
-                      <div className="stat-label">P</div>
-                    </div>
-                  </div>
-                  
-                  <div className="accordion-secondary-stats">
-                    <div className="secondary-stats-row">
-                      <div className="secondary-stat">
-                        <span className="stat-label">Goles a favor:</span>
-                        <span className="stat-value">24</span>
-                      </div>
-                      <div className="secondary-stat">
-                        <span className="stat-label">Goles en contra:</span>
-                        <span className="stat-value">8</span>
-                      </div>
                     </div>
                     <div className="secondary-stat diff">
                       <span className="stat-label">Diferencia de goles:</span>
                       <span className="stat-value positive">+16</span>
                     </div>
                   </div>
-                  
+
                   <div className="accordion-form-section">
                     <div className="form-title">Últimos partidos</div>
                     <div className="form-indicators">
@@ -913,7 +923,7 @@ const InicioPage: React.FC = () => {
                       <span className="form-result win">G</span>
                     </div>
                   </div>
-                  
+
                   <div className="accordion-actions">
                     <a href="/equipo/leones" className="accordion-team-link">
                       <span>Ver perfil completo</span>
@@ -923,11 +933,11 @@ const InicioPage: React.FC = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Equipo 2 - Águilas */}
             <div className="standings-accordion">
-              <div 
-                className={`standings-accordion-header ${activeAccordion === 1 ? 'active' : ''}`} 
+              <div
+                className={`standings-accordion-header ${activeAccordion === 1 ? 'active' : ''}`}
                 onClick={() => handleAccordionClick(1)}
               >
                 <div className="accordion-rank">
@@ -935,9 +945,9 @@ const InicioPage: React.FC = () => {
                 </div>
                 <div className="accordion-team-info">
                   <div className="team-logo-container">
-                    <img src="/assets/teams/aguilas.png" alt="Águilas" />
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/05/Liverpool_FC_crest.svg/180px-Liverpool_FC_crest.svg.png" alt="Liverpool" />
                   </div>
-                  <span className="accordion-team-name">Águilas</span>
+                  <span className="accordion-team-name">Liverpool</span>
                 </div>
                 <div className="accordion-summary">
                   <div className="accordion-points">21</div>
@@ -946,9 +956,9 @@ const InicioPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <div 
+              <div
                 className={`standings-accordion-content ${activeAccordion === 1 ? 'active' : ''}`}
-                style={{ maxHeight: activeAccordion === 1 ? '500px' : '0px' }}
+                style={{ maxHeight: activeAccordion === 1 ? '500px' : '0' }}
               >
                 <div className="accordion-content-inner">
                   <div className="accordion-main-stats">
@@ -969,7 +979,7 @@ const InicioPage: React.FC = () => {
                       <div className="stat-label">P</div>
                     </div>
                   </div>
-                  
+
                   <div className="accordion-secondary-stats">
                     <div className="secondary-stats-row">
                       <div className="secondary-stat">
@@ -986,7 +996,7 @@ const InicioPage: React.FC = () => {
                       <span className="stat-value positive">+9</span>
                     </div>
                   </div>
-                  
+
                   <div className="accordion-form-section">
                     <div className="form-title">Últimos partidos</div>
                     <div className="form-indicators">
@@ -997,7 +1007,7 @@ const InicioPage: React.FC = () => {
                       <span className="form-result draw">E</span>
                     </div>
                   </div>
-                  
+
                   <div className="accordion-actions">
                     <a href="/equipo/aguilas" className="accordion-team-link">
                       <span>Ver perfil completo</span>
@@ -1010,8 +1020,8 @@ const InicioPage: React.FC = () => {
 
             {/* Equipo 3 - Titanes */}
             <div className="standings-accordion">
-              <div 
-                className={`standings-accordion-header ${activeAccordion === 2 ? 'active' : ''}`} 
+              <div
+                className={`standings-accordion-header ${activeAccordion === 2 ? 'active' : ''}`}
                 onClick={() => handleAccordionClick(2)}
               >
                 <div className="accordion-rank">
@@ -1019,9 +1029,9 @@ const InicioPage: React.FC = () => {
                 </div>
                 <div className="accordion-team-info">
                   <div className="team-logo-container">
-                    <img src="/assets/teams/titanes.png" alt="Titanes" />
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/180px-FC_Barcelona_%28crest%29.svg.png" alt="Barcelona" />
                   </div>
-                  <span className="accordion-team-name">Titanes</span>
+                  <span className="accordion-team-name">FC Barcelona</span>
                 </div>
                 <div className="accordion-summary">
                   <div className="accordion-points">20</div>
@@ -1030,9 +1040,9 @@ const InicioPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <div 
+              <div
                 className={`standings-accordion-content ${activeAccordion === 2 ? 'active' : ''}`}
-                style={{ maxHeight: activeAccordion === 2 ? '500px' : '0px' }}
+                style={{ maxHeight: activeAccordion === 2 ? '500px' : '0' }}
               >
                 <div className="accordion-content-inner">
                   <div className="accordion-main-stats">
@@ -1053,7 +1063,7 @@ const InicioPage: React.FC = () => {
                       <div className="stat-label">P</div>
                     </div>
                   </div>
-                  
+
                   <div className="accordion-secondary-stats">
                     <div className="secondary-stats-row">
                       <div className="secondary-stat">
@@ -1070,7 +1080,7 @@ const InicioPage: React.FC = () => {
                       <span className="stat-value positive">+8</span>
                     </div>
                   </div>
-                  
+
                   <div className="accordion-form-section">
                     <div className="form-title">Últimos partidos</div>
                     <div className="form-indicators">
@@ -1081,7 +1091,7 @@ const InicioPage: React.FC = () => {
                       <span className="form-result win">G</span>
                     </div>
                   </div>
-                  
+
                   <div className="accordion-actions">
                     <a href="/equipo/titanes" className="accordion-team-link">
                       <span>Ver perfil completo</span>
@@ -1094,8 +1104,8 @@ const InicioPage: React.FC = () => {
 
             {/* Equipo 4 - Delfines */}
             <div className="standings-accordion">
-              <div 
-                className={`standings-accordion-header ${activeAccordion === 3 ? 'active' : ''}`} 
+              <div
+                className={`standings-accordion-header ${activeAccordion === 3 ? 'active' : ''}`}
                 onClick={() => handleAccordionClick(3)}
               >
                 <div className="accordion-rank">
@@ -1103,9 +1113,9 @@ const InicioPage: React.FC = () => {
                 </div>
                 <div className="accordion-team-info">
                   <div className="team-logo-container">
-                    <img src="/assets/teams/delfines.png" alt="Delfines" />
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/180px-Manchester_United_FC_crest.svg.png" alt="Manchester United" />
                   </div>
-                  <span className="accordion-team-name">Delfines</span>
+                  <span className="accordion-team-name">Manchester United</span>
                 </div>
                 <div className="accordion-summary">
                   <div className="accordion-points">18</div>
@@ -1114,9 +1124,9 @@ const InicioPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <div 
+              <div
                 className={`standings-accordion-content ${activeAccordion === 3 ? 'active' : ''}`}
-                style={{ maxHeight: activeAccordion === 3 ? '500px' : '0px' }}
+                style={{ maxHeight: activeAccordion === 3 ? '500px' : '0' }}
               >
                 <div className="accordion-content-inner">
                   <div className="accordion-main-stats">
@@ -1137,7 +1147,7 @@ const InicioPage: React.FC = () => {
                       <div className="stat-label">P</div>
                     </div>
                   </div>
-                  
+
                   <div className="accordion-secondary-stats">
                     <div className="secondary-stats-row">
                       <div className="secondary-stat">
@@ -1154,7 +1164,7 @@ const InicioPage: React.FC = () => {
                       <span className="stat-value positive">+5</span>
                     </div>
                   </div>
-                  
+
                   <div className="accordion-form-section">
                     <div className="form-title">Últimos partidos</div>
                     <div className="form-indicators">
@@ -1165,7 +1175,7 @@ const InicioPage: React.FC = () => {
                       <span className="form-result draw">E</span>
                     </div>
                   </div>
-                  
+
                   <div className="accordion-actions">
                     <a href="/equipo/delfines" className="accordion-team-link">
                       <span>Ver perfil completo</span>
@@ -1178,8 +1188,8 @@ const InicioPage: React.FC = () => {
 
             {/* Equipo 5 - Guerreros */}
             <div className="standings-accordion">
-              <div 
-                className={`standings-accordion-header ${activeAccordion === 4 ? 'active' : ''}`} 
+              <div
+                className={`standings-accordion-header ${activeAccordion === 4 ? 'active' : ''}`}
                 onClick={() => handleAccordionClick(4)}
               >
                 <div className="accordion-rank">
@@ -1187,9 +1197,9 @@ const InicioPage: React.FC = () => {
                 </div>
                 <div className="accordion-team-info">
                   <div className="team-logo-container">
-                    <img src="/assets/teams/guerreros.png" alt="Guerreros" />
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/180px-Chelsea_FC.svg.png" alt="Chelsea" />
                   </div>
-                  <span className="accordion-team-name">Guerreros</span>
+                  <span className="accordion-team-name">Chelsea</span>
                 </div>
                 <div className="accordion-summary">
                   <div className="accordion-points">15</div>
@@ -1198,9 +1208,9 @@ const InicioPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <div 
+              <div
                 className={`standings-accordion-content ${activeAccordion === 4 ? 'active' : ''}`}
-                style={{ maxHeight: activeAccordion === 4 ? '500px' : '0px' }}
+                style={{ maxHeight: activeAccordion === 4 ? '500px' : '0' }}
               >
                 <div className="accordion-content-inner">
                   <div className="accordion-main-stats">
@@ -1221,7 +1231,7 @@ const InicioPage: React.FC = () => {
                       <div className="stat-label">P</div>
                     </div>
                   </div>
-                  
+
                   <div className="accordion-secondary-stats">
                     <div className="secondary-stats-row">
                       <div className="secondary-stat">
@@ -1238,7 +1248,7 @@ const InicioPage: React.FC = () => {
                       <span className="stat-value positive">+2</span>
                     </div>
                   </div>
-                  
+
                   <div className="accordion-form-section">
                     <div className="form-title">Últimos partidos</div>
                     <div className="form-indicators">
@@ -1249,7 +1259,7 @@ const InicioPage: React.FC = () => {
                       <span className="form-result loss">P</span>
                     </div>
                   </div>
-                  
+
                   <div className="accordion-actions">
                     <a href="/equipo/guerreros" className="accordion-team-link">
                       <span>Ver perfil completo</span>
@@ -1261,7 +1271,7 @@ const InicioPage: React.FC = () => {
             </div>
           </div>
         </div>
-        
+
         <Footer />
       </IonContent>
     </IonPage>
