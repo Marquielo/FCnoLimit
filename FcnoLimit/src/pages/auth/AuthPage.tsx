@@ -44,8 +44,8 @@ const AuthPage: React.FC = () => {
   const [present, dismiss] = useIonLoading();
   const [passwordsMatch, setPasswordsMatch] = useState(true);
 
-  // URL fija para producción cuando hay problemas con las variables de entorno
-  const apiBaseUrl = 'https://fcnolimit-back.onrender.com';
+  // Modifica cómo obtienes la URL de la API
+  const apiBaseUrl = import.meta.env.VITE_API_URL;
   console.log("API URL base definida:", apiBaseUrl);
 
   // Función para probar la conexión a la base de datos
