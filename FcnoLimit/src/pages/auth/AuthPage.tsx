@@ -57,28 +57,57 @@ const AuthPage: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    
+    // Validación básica de campos
+    if (!email || !password) {
+      setError('Por favor completa todos los campos');
+      return;
+    }
+    
     try {
       present({ message: 'Iniciando sesión...' });
-
-      const res = await fetch(`${apiUrl}/api/usuarios/login`, {
+      
+      // Corregir la URL: apiUrl ya contiene /api, así que no lo duplicamos
+      // El valor de apiUrl es: http://fcnolimit-back.onrender.com/api
+      const loginUrl = `${apiUrl}/usuarios/login`;
+      console.log('Intentando login en:', loginUrl);
+      
+      const res = await fetch(loginUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ correo: email, contraseña: password }),
       });
 
+      // Manejo seguro de la respuesta JSON
       let data;
       try {
         data = await res.json();
-      } catch {
-        data = {};
+        console.log('Respuesta del servidor:', data);
+      } catch (jsonError) {
+        console.error('Error al procesar JSON de respuesta:', jsonError);
+        throw new Error('Error al procesar la respuesta del servidor');
       }
 
       dismiss();
-      if (!res.ok) throw new Error(data.error || 'Error de autenticación');
+      
+      if (!res.ok) {
+        throw new Error(data.error || 'Error de autenticación');
+      }
+      
+      // Verificación explícita de que los datos necesarios existen
+      if (!data.token || !data.user) {
+        console.error('Respuesta incompleta:', data);
+        throw new Error('Respuesta incompleta del servidor');
+      }
+      
+      // Guardar los datos verificados
       localStorage.setItem('token', data.token);
       localStorage.setItem('usuario', JSON.stringify(data.user));
-      history.push('/inicio'); // <--- Usa el router en vez de window.location.href
+      
+      console.log('Login exitoso, redirigiendo a inicio...');
+      history.push('/inicio');
     } catch (err: any) {
+      console.error('Error durante el login:', err);
       dismiss();
       setError(err.message === 'Failed to fetch'
         ? 'No se pudo conectar con el servidor. Intenta de nuevo en unos segundos.'
