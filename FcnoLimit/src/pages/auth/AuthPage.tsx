@@ -55,7 +55,7 @@ const AuthPage: React.FC = () => {
   // Función para probar la conexión a la base de datos
   const testDbConnection = async () => {
     try {
-      const response = await fetch(`${cleanApiUrl}/api/dbtest`);
+      const response = await fetch('https://fcnolimit-back.onrender.com/api/dbtest');
       const data = await response.json();
       console.log('Conexión a la base de datos:', data);
       return data;
@@ -83,8 +83,8 @@ const AuthPage: React.FC = () => {
       console.log("Iniciando proceso de login");
       present({ message: 'Iniciando sesión...' });
 
-      // Construir la URL cuidadosamente
-      const loginUrl = `${apiBaseUrl}/api/usuarios/login`;
+      // Construir la URL cuidadosamente - sin /api/ si no es necesario según tu backend
+      const loginUrl = 'https://fcnolimit-back.onrender.com/api/usuarios/login';
       console.log("URL completa para login:", loginUrl);
       
       const res = await fetch(loginUrl, {
@@ -125,7 +125,7 @@ const AuthPage: React.FC = () => {
     }
     try {
       present({ message: 'Creando cuenta...' });
-      const res = await fetch(`${apiBaseUrl}/api/usuarios/register`, {
+      const res = await fetch('https://fcnolimit-back.onrender.com/api/usuarios/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
