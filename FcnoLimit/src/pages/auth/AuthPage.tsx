@@ -84,7 +84,7 @@ const AuthPage: React.FC = () => {
       present({ message: 'Iniciando sesión...' });
 
       // Construir la URL cuidadosamente
-      const loginUrl = `${cleanApiUrl}/usuarios/login`;
+      const loginUrl = `${cleanApiUrl}/api/usuarios/login`;
       console.log("URL completa para login:", loginUrl);
       
       const res = await fetch(loginUrl, {
@@ -125,7 +125,7 @@ const AuthPage: React.FC = () => {
     }
     try {
       present({ message: 'Creando cuenta...' });
-      const res = await fetch(`${cleanApiUrl}/usuarios/register`, {
+      const res = await fetch(`${cleanApiUrl}/api/usuarios/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
