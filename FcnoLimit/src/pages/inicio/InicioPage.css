@@ -2288,6 +2288,7 @@ h2 ion-icon {
   }
 }
 
+<<<<<<< HEAD
 .mouse {
   width: 30px;
   height: 50px;
@@ -2646,7 +2647,31 @@ h2 ion-icon {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
 }
+=======
+/* FORZAR MODO CLARO EN TODAS LAS SECCIONES DE INICIO */
+ 
+.upcoming-tournament-banner, 
+.services-section, 
+.community-section,
+.standings-section,
+.facilities-section,
+.partners-section,
+.features-section-wrapper,
+.highlights-wrapper,
+.fcnl-news-wrapper,
+.cta-section {
+  background-color: #ffffff !important;
+  color: #121921 !important;
+}
 
+
+
+
+
+/* Fondos específicos que deben permanecer oscuros por diseño */
+>>>>>>> parent of 7e7cbf2 (cambios)
+
+.cta-section,
 .community-card {
   background: var(--fcnolimit-bg-dark);
   color: var(--fcnolimit-text-light);
