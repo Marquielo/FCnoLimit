@@ -6,16 +6,16 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import NavBar from './components/NavBar';
-import EquiposPage from './pages/equipos/EquiposPage';
-import JugadoresPage from './pages/jugadores/JugadoresPage';
-import ComparativasPage from './pages/estadisticas/ComparativasPage';
-import PartidosPage from './pages/partidos/PartidosPage';      
-import InicioPage from './pages/inicio/InicioPage';
-import AuthPage from './pages/auth/AuthPage';
-import CampeonatosPage from './pages/campeonato/CampeonatoPage';
-import NoticiasPage  from './pages/noticias/NoticiasPage';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import PerfilPage from './pages/perfil/PerfilPage';
+import EquiposPage from './pages/home/equipos/EquiposPage';
+import JugadoresPage from './pages/home/jugadores/JugadoresPage';
+import ComparativasPage from './pages/home/estadisticas/ComparativasPage';
+import PartidosPage from './pages/home/partidos/PartidosPage';      
+import InicioPage from './pages/home/inicio/InicioPage';
+import AuthPage from './pages/home/auth/AuthPage';
+import CampeonatosPage from './pages/home/campeonato/CampeonatoPage';
+import NoticiasPage  from './pages/home/noticias/NoticiasPage';
+import AdminDashboard from './pages/home/admin/AdminDashboard';
+import PerfilPage from './pages/home/perfil/PerfilPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import 'bootstrap/dist/css/bootstrap.min.css';
 

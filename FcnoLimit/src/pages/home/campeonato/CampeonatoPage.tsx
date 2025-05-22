@@ -1,8 +1,8 @@
 import React from 'react';
 import { IonPage, IonContent, IonButton, IonIcon } from '@ionic/react';
 import { trophyOutline } from 'ionicons/icons';
-import NavBar from '../../components/NavBar';
-import Footer from '../../components/Footer';
+import NavBar from '../../../components/NavBar';
+import Footer from '../../../components/Footer';
 import './CampeonatoPage.css';
 
 const CampeonatosPage: React.FC = () => {

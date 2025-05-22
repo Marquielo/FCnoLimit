@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { IonPage, IonContent, IonButton } from "@ionic/react";
-import NavBar from "../../components/NavBar";
-import Footer from "../../components/Footer";
-import FormGenerico from "../../components/FormGenerico";
-import SearchBar from "../../components/SearchBar";
-import sections from "../../config/sections";
-import fieldsMap from "../../config/fieldsMap";
-import { useUserSearch } from "../../hooks/useUserSearch";
-import api from "../../api/axios";
+import NavBar from "../../../components/NavBar";
+import Footer from "../../../components/Footer";
+import FormGenerico from "../../../components/FormGenerico";
+import SearchBar from "../../../components/SearchBar";
+import sections from "../../../config/sections";
+import fieldsMap from "../../../config/fieldsMap";
+import { useUserSearch } from "../../../hooks/useUserSearch";
+import api from "../../../api/axios";
 import "./AdminDashboard.css";
 
 const AdminDashboard: React.FC = () => {

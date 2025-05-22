@@ -20,7 +20,7 @@ import {
   logoApple
 } from 'ionicons/icons';
 import './AuthPage.css';
-import NavBar from '../../components/NavBar';
+import NavBar from '../../../components/NavBar';
 import { useHistory } from 'react-router-dom';
 
 const AuthPage: React.FC = () => {

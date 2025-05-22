@@ -22,8 +22,8 @@ import {
 } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import './InicioPage.css';
-import NavBar from '../../components/NavBar';
-import Footer from '../../components/Footer';
+import NavBar from '../../../components/NavBar';
+import Footer from '../../../components/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Opciones de configuración para el slider (ajustado para Swiper)
