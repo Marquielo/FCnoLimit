@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { IonIcon, IonButton, IonPopover, IonList, IonItem } from "@ionic/react";
+import { IonIcon, IonButton } from "@ionic/react";
 import {
   footballOutline,
   peopleSharp,
@@ -15,7 +15,8 @@ import {
   closeCircleOutline,
   settingsOutline,
   notificationsOutline,
-  chevronForwardOutline
+  chevronForwardOutline,
+  chevronDown
 } from "ionicons/icons";
 import { useHistory, useLocation } from "react-router-dom";
 import "./NavBar.css";
@@ -29,6 +30,11 @@ const NavBar: React.FC = () => {
   const [popoverEvent, setPopoverEvent] = useState<MouseEvent | undefined>(undefined);
   const [isClosing, setIsClosing] = useState(false);
   const navbarRef = useRef<HTMLDivElement>(null);
+  const popoverRef = useRef<HTMLIonPopoverElement>(null);
+
+  // Referencia para el dropdown
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const userButtonRef = useRef<HTMLDivElement>(null);
 
   const usuario = localStorage.getItem("usuario") ? JSON.parse(localStorage.getItem("usuario")!) : null;
 
@@ -36,29 +42,53 @@ const NavBar: React.FC = () => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
-    
+
     const handleResize = () => {
       if (window.innerWidth > 991 && isOpen) {
         setIsOpen(false);
       }
     };
-    
+
     window.addEventListener("scroll", handleScroll);
     window.addEventListener("resize", handleResize);
-    
+
     // Bloquear scroll cuando el menú móvil esté abierto
     if (isOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
-    
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
       document.body.style.overflow = '';
     };
   }, [isOpen]);
+
+  // Añade este efecto para manejar clics fuera del dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // Si el dropdown está abierto y el clic fue fuera del dropdown y del botón de usuario
+      if (
+        showUserMenu &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        userButtonRef.current &&
+        !userButtonRef.current.contains(event.target as Node)
+      ) {
+        setShowUserMenu(false);
+      }
+    };
+
+    // Agregar evento al documento
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Limpieza al desmontar
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showUserMenu]);
 
   // Añade este fragmento antes del export default NavBar
   useEffect(() => {
@@ -73,27 +103,27 @@ const NavBar: React.FC = () => {
           link.setAttribute('data-tooltip', span.textContent || '');
         }
       });
-      
+
       // Agregar clases al botón de usuario
       const userButton = document.querySelector('.user-button');
       const userName = userButton?.querySelector('span');
       const dropdownIcon = userButton?.querySelector('ion-icon[icon="chevron-forward-outline"]');
-      
+
       if (userName) {
         userName.classList.add('user-name');
       }
-      
+
       if (dropdownIcon) {
         dropdownIcon.classList.add('user-dropdown-icon');
       }
     };
-    
+
     // Ejecutar después de que el componente se monte
     addTooltipsAndClasses();
-    
+
     // Volver a ejecutar si la ventana cambia de tamaño
     window.addEventListener('resize', addTooltipsAndClasses);
-    
+
     return () => {
       window.removeEventListener('resize', addTooltipsAndClasses);
     };
@@ -121,7 +151,7 @@ const NavBar: React.FC = () => {
   const handleMenuClose = () => {
     setIsClosing(true);
     document.body.style.overflow = '';
-    
+
     // Esperamos a que termine la animación de cierre antes de ocultar completamente
     setTimeout(() => {
       setIsOpen(false);
@@ -150,9 +180,9 @@ const NavBar: React.FC = () => {
   return (
     <>
       <nav className={`navbar navbar-expand-lg ${scrolled ? "scrolled" : ""}`} ref={navbarRef}>
-        <div className="container">
+        <div className="fc-container">
           <div className="navbar-header">
-            <a className="navbar-brand" href="/" onClick={(e) => {e.preventDefault(); handleNavClick("/inicio")}}>
+            <a className="navbar-brand" href="/" onClick={(e) => { e.preventDefault(); handleNavClick("/inicio") }}>
               <IonIcon icon={footballOutline} />
               <div className="brand-text">
                 FCnoLimit
@@ -162,12 +192,12 @@ const NavBar: React.FC = () => {
               </div>
             </a>
           </div>
-          
+
           {/* Botón hamburguesa solo visible cuando el menú está cerrado */}
           {!isOpen && (
-            <button 
-              className={`navbar-toggler`} 
-              type="button" 
+            <button
+              className={`navbar-toggler`}
+              type="button"
               onClick={handleMenuOpen}
             >
               <div className="hamburger-icon">
@@ -177,13 +207,13 @@ const NavBar: React.FC = () => {
               </div>
             </button>
           )}
-          
+
           {/* Overlay para el fondo */}
-          <div 
-            className={`navbar-overlay${isOpen ? " show" : ""}${isClosing ? " closing" : ""}`} 
+          <div
+            className={`navbar-overlay${isOpen ? " show" : ""}${isClosing ? " closing" : ""}`}
             onClick={handleMenuClose}
           ></div>
-          
+
           <div className={`collapse navbar-collapse ${isOpen ? "show" : ""} ${isClosing ? "closing" : ""}`}>
             {/* Header del menú móvil */}
             <div className="mobile-menu-header d-lg-none">
@@ -191,13 +221,13 @@ const NavBar: React.FC = () => {
                 <IonIcon icon={footballOutline} className="mobile-logo-icon" />
                 <span className="mobile-logo-text">FCnoLimit</span>
               </div>
-              <button 
-                className="navbar-close-btn" 
-                onClick={handleMenuClose} 
+              <button
+                className="navbar-close-btn"
+                onClick={handleMenuClose}
                 aria-label="Cerrar menú"
               ></button>
             </div>
-            
+
             <div className="mobile-menu-content">
               {/* Perfil de usuario en móvil */}
               {usuario && (
@@ -212,17 +242,17 @@ const NavBar: React.FC = () => {
                   </div>
                   <div className="user-name-mobile">{usuario.nombre_completo}</div>
                   <div className="user-role-mobile">
-                    {usuario.rol === "administrador" ? "Administrador" : 
-                     usuario.rol === "jugador" ? "Jugador" : 
-                     usuario.rol === "persona_natural" ? "Perfil" : 
-                     usuario.rol === "entrenador" ? "Entrenador" : "Usuario"}
+                    {usuario.rol === "administrador" ? "Administrador" :
+                      usuario.rol === "jugador" ? "Jugador" :
+                        usuario.rol === "persona_natural" ? "Perfil" :
+                          usuario.rol === "entrenador" ? "Entrenador" : "Usuario"}
                   </div>
                 </div>
               )}
-              
+
               {/* Título de sección principal */}
               <div className="menu-section-title d-lg-none">Navegación</div>
-              
+
               <ul className="navbar-nav">
                 {mainNavItems.map((item) => (
                   <li className="nav-item" key={item.path}>
@@ -251,11 +281,11 @@ const NavBar: React.FC = () => {
                 )}
               </ul>
             </div>
-            
+
             {/* Acciones de usuario en móvil */}
             {usuario && (
               <div className="user-actions-mobile d-lg-none">
-                <button 
+                <button
                   className="user-action-btn"
                   onClick={() => {
                     handleMenuClose();
@@ -265,9 +295,9 @@ const NavBar: React.FC = () => {
                   <IonIcon icon={personCircleOutline} />
                   <span className="user-action-text">Mi perfil</span>
                 </button>
-                
+
                 {usuario.rol === "administrador" && (
-                  <button 
+                  <button
                     className="user-action-btn"
                     onClick={() => {
                       handleMenuClose();
@@ -278,8 +308,8 @@ const NavBar: React.FC = () => {
                     <span className="user-action-text">Admin</span>
                   </button>
                 )}
-                
-                <button 
+
+                <button
                   className="user-action-btn logout-btn"
                   onClick={handleLogout}
                 >
@@ -288,62 +318,105 @@ const NavBar: React.FC = () => {
                 </button>
               </div>
             )}
-            
+
             {/* Avatar y nombre como botón con menú (solo en desktop) */}
             {usuario && (
               <div className="d-none d-lg-block">
-                <IonButton
+                <div
                   className="user-button"
-                  onClick={handleUserButtonClick}
-                  fill="clear"
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  ref={userButtonRef}
                 >
-                  <img
-                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(usuario.nombre_completo || "U")}&background=ff9800&color=121921&rounded=true&size=32`}
-                    alt="avatar"
-                    className="user-avatar"
-                    style={{ width: 32, height: 32, borderRadius: "50%" }}
-                  />
-                  <span style={{ color: "#121921", fontWeight: 500, marginLeft: "0.5rem" }}>{usuario.nombre_completo}</span>
-                  <IonIcon icon={chevronForwardOutline} style={{ marginLeft: "0.5rem", fontSize: "0.8rem" }} />
-                </IonButton>
-                <IonPopover
-                  isOpen={showUserMenu}
-                  event={popoverEvent}
-                  onDidDismiss={() => setShowUserMenu(false)}
-                  className="user-popover"
-                >
-                  <div style={{ padding: "10px 15px", borderBottom: "1px solid rgba(255, 252, 252, 0.1)" }}>
-                    <h5 style={{ margin: 0, fontSize: "16px", fontWeight: 600, color: "#ffffff" }}>{usuario.nombre_completo}</h5>
-                    <p style={{ margin: "5px 0 0", fontSize: "14px", color: "rgba(10, 10, 10, 0.7)" }}>
-                      {usuario.rol === "administrador" ? "Administrador" : 
-                       usuario.rol === "jugador" ? "Jugador" : 
-                       usuario.rol === "persona_natural" ? "Perfil" : 
-                       usuario.rol === "entrenador" ? "Entrenador" : "Usuario"}
-                    </p>
+                  <div className="user-avatar-container">
+                    <img
+                      src={`https://ui-avatars.com/api/?name=${encodeURIComponent(usuario.nombre_completo || "U")}&background=ff9800&color=fff`}
+                      alt={usuario.nombre_completo}
+                      className="user-avatar"
+                    />
+                    <div className="user-status-indicator"></div>
                   </div>
-                  <IonList>
-                    <IonItem button onClick={() => {
-                      setShowUserMenu(false);
-                      history.push("/perfil");
-                    }}>
-                      <IonIcon icon={personCircleOutline} slot="start" />
-                      <span style={{color: "#121921"}}>Mi perfil</span>
-                    </IonItem>
-                    {usuario.rol === "administrador" && (
-                      <IonItem button onClick={() => {
+                  <span className="user-name">{usuario.nombre_completo}</span>
+                  <IonIcon icon={chevronDown} className="user-dropdown-icon" />
+                </div>
+
+                {showUserMenu && (
+                  <div className="custom-user-dropdown" ref={dropdownRef}>
+                    {/* Contenido del menú */}
+                    <div className="user-menu-header">
+                      <div className="user-avatar-dropdown">
+                        <img
+                          src={`https://ui-avatars.com/api/?name=${encodeURIComponent(usuario.nombre_completo || "U")}&background=ff9800&color=121921&size=48`}
+                          alt={usuario.nombre_completo}
+                        />
+                      </div>
+                      <div className="user-info-dropdown">
+                        <div className="user-name-dropdown">{usuario.nombre_completo}</div>
+                        <div className="user-role-dropdown">
+                          {usuario.rol === "administrador" ? "Administrador" :
+                            usuario.rol === "jugador" ? "Jugador" :
+                              usuario.rol === "persona_natural" ? "Perfil" :
+                                usuario.rol === "entrenador" ? "Entrenador" : "Usuario"}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="user-menu-items">
+                      <a href="#" className="user-menu-item" onClick={(e) => {
+                        e.preventDefault();
                         setShowUserMenu(false);
-                        history.push("/admin");
+                        history.push("/perfil");
                       }}>
-                        <IonIcon icon={settingsOutline} slot="start" />
-                        <span style={{color: "#121921"}}>Panel de administración</span>
-                      </IonItem>
-                    )}
-                    <IonItem button onClick={handleLogout}>
-                      <IonIcon icon={logOutOutline} slot="start" />
-                      <span style={{color: "#de1111"}}>Cerrar sesión</span>
-                    </IonItem>
-                  </IonList>
-                </IonPopover>
+                        <IonIcon icon={personCircleOutline} />
+                        Mi perfil
+                      </a>
+
+                      {usuario.rol === "administrador" && (
+                        <a href="#" className="user-menu-item" onClick={(e) => {
+                          e.preventDefault();
+                          setShowUserMenu(false);
+                          history.push("/admin");
+                        }}>
+                          <IonIcon icon={settingsOutline} />
+                          Panel de administración
+                        </a>
+                      )}
+
+                      <a href="#" className="user-menu-item" onClick={(e) => {
+                        e.preventDefault();
+                        setShowUserMenu(false);
+                        history.push("/estadisticas");
+                      }}>
+                        <IonIcon icon={statsChartSharp} />
+                        Estadísticas
+                      </a>
+
+                      <a href="#" className="user-menu-item" onClick={(e) => {
+                        e.preventDefault();
+                        setShowUserMenu(false);
+                        history.push("/configuracion");
+                      }}>
+                        <IonIcon icon={settingsOutline} />
+                        Configuración
+                      </a>
+
+                      <a href="#" className="user-menu-item" onClick={(e) => {
+                        e.preventDefault();
+                        setShowUserMenu(false);
+                        history.push("/ayuda");
+                      }}>
+                        <IonIcon icon={notificationsOutline} />
+                        Ayuda
+                      </a>
+
+                      <a href="#" className="user-menu-item logout" onClick={(e) => {
+                        e.preventDefault();
+                        handleLogout();
+                      }}>
+                        <IonIcon icon={logOutOutline} />
+                        Cerrar sesión
+                      </a>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>

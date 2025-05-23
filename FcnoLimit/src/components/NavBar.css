@@ -1,7 +1,24 @@
+/* ======================================
+   TABLA DE CONTENIDOS
+   ======================================
+   1. Importaciones y Variables
+   2. Estilos Base del Navbar
+   3. Elementos de Navegación
+   4. Avatar y Perfil de Usuario
+   5. Botones y Acciones
+   6. Menú Móvil
+   7. Animaciones
+   8. Media Queries
+   ====================================== */
+
+/* ==================== */
+/* 1. Importaciones y Variables */
+/* ==================== */
+
 @import '../styles/variables.css';
 
 /* ==================== */
-/* === BASE STYLES === */
+/* 2. Estilos Base del Navbar */
 /* ==================== */
 
 .navbar {
@@ -13,6 +30,27 @@
   top: 0;
   z-index: 1000;
   width: 100%;
+}
+
+.navbar .fc-container {
+  width: 100%;
+  max-width: 1320px;
+  margin-right: auto;
+  margin-left: 10px;
+  padding-right: 15px;
+  padding-left: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-header {
+  display: flex;
+  align-items: center;
+  padding-right: 2rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  margin-right: 2rem;
+  height: 100%;
 }
 
 .navbar-brand {
@@ -32,13 +70,40 @@
   transform: translateY(-1px);
 }
 
-.navbar-header {
+.navbar-brand ion-icon {
+  font-size: 2.2rem;
+  color: var(--fcnolimit-primary);
+  margin-right: 0.8rem;
+  animation: spin 20s linear infinite;
+}
+
+.brand-text {
   display: flex;
+  flex-direction: column;
+  line-height: 1;
+  color: var(--fcnolimit-text-light) !important;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.25);
+}
+
+.brand-slogan {
+  font-size: 0.8rem;
+  font-weight: 400;
+  opacity: 0.8;
+  margin-top: 0.2rem;
+  color: var(--fcnolimit-text-light) !important;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.25);
+}
+
+/* ==================== */
+/* 3. Elementos de Navegación */
+/* ==================== */
+
+.navbar-nav {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding-left: 1rem;
   align-items: center;
-  padding-right: 2rem;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  margin-right: 2rem;
-  height: 100%;
 }
 
 .nav-item {
@@ -69,7 +134,249 @@
   border-bottom: 2px solid var(--fcnolimit-primary-light);
 }
 
-/* Hamburger button styles */
+.nav-link ion-icon {
+  font-size: 1.4rem;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover ion-icon {
+  transform: translateY(-2px) scale(1.1);
+  color: var(--fcnolimit-primary-light);
+}
+
+.nav-link.active ion-icon {
+  color: var(--fcnolimit-text-light) !important;
+  transform: scale(1.1);
+}
+
+.navbar-nav .nav-link span, 
+.nav-text-visible {
+  display: inline-block;
+  margin-left: 10px;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Tooltips para modo iconos */
+.nav-tooltip {
+  position: relative;
+}
+
+.nav-tooltip:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  z-index: 1000;
+}
+
+/* Login button */
+.navbar-nav .nav-item:last-child .nav-link {
+  background: var(--fcnolimit-primary) !important;
+  color: var(--fcnolimit-text-light) !important;
+  border-radius: var(--fcnolimit-border-radius-pill);
+  font-weight: 700;
+  box-shadow: var(--fcnolimit-shadow-primary);
+  padding: 0.7rem 2.2rem !important;
+  margin-left: 1.5rem;
+  transition: background 0.2s, transform 0.3s, box-shadow 0.3s;
+}
+
+.navbar-nav .nav-item:last-child .nav-link:hover {
+  background: var(--fcnolimit-primary-light) !important;
+  color: var(--fcnolimit-text-light) !important;
+  box-shadow: 0 0 24px 0 rgba(255, 167, 38, 0.35);
+  transform: translateY(-2px);
+}
+
+/* ==================== */
+/* 4. Avatar y Perfil de Usuario */
+/* ==================== */
+
+.user-avatar-container {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid #ffffff;
+  overflow: hidden;
+}
+
+.user-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  color: #121921;
+}
+
+.user-avatar-container:hover .user-avatar {
+  transform: scale(1.05);
+}
+
+.user-status-indicator {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #4caf50;
+  border-radius: 50%;
+  bottom: 2px;
+  right: 2px;
+  border: 2px solid #ffffff;
+}
+
+.user-button {
+  display: flex;
+  align-items: center;
+  padding: 4px 12px 4px 4px;
+  border-radius: 30px;
+  background-color: rgba(255, 255, 255, 0.95);
+  transition: all 0.3s ease;
+  margin-right: 0;
+  margin-left: auto;
+}
+
+/* Aumentar el margen entre los elementos de navegación y el avatar */
+@media (min-width: 992px) {
+  .navbar-nav {
+    margin-right: 20px;
+  }
+  
+  .navbar-collapse {
+    justify-content: space-between;
+    flex-grow: 1;
+  }
+}
+
+/* Asegurar que el contenedor del avatar quede a la derecha en todas las resoluciones de escritorio */
+@media (min-width: 1200px) {
+  .d-lg-block {
+    padding-left: 30px;
+  }
+}
+
+/* Ajustar el espacio en resoluciones más pequeñas pero aún desktop */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .d-lg-block {
+    padding-left: 15px;
+  }
+  
+  .navbar-nav {
+    margin-right: 10px;
+  }
+}
+
+/* Popover de usuario */
+.user-popover {
+  --width: 280px;
+  --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  --border-radius: 12px;
+  --backdrop-opacity: 0 !important;
+  --offset-x: -15px;
+}
+
+.user-popover::part(content) {
+  border-radius: 12px;
+  overflow: hidden;
+  right: 0 !important;
+  left: auto !important;
+  position: absolute !important;
+}
+
+.user-popover-container {
+  position: relative;
+}
+
+
+
+.user-popover-header {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  background: linear-gradient(135deg, #ff9800, #ff7300);
+  color: white;
+}
+
+.user-popover-avatar-container {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-popover-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-popover-info {
+  margin-left: 16px;
+}
+
+.user-popover-info h5 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.user-popover-info p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.logout-item {
+  color: #de1111;
+  font-weight: 500;
+}
+
+/* ==================== */
+/* 5. Botones y Acciones */
+/* ==================== */
+
+/* Border buttons */
+.btn-bordered {
+  border: 2px solid var(--fcnolimit-primary);
+  background: transparent;
+  color: var(--fcnolimit-primary) !important;
+  transition: all 0.3s ease;
+}
+
+.btn-bordered:hover {
+  background: var(--fcnolimit-primary);
+  color: var(--fcnolimit-text-light) !important;
+}
+
+.login-button ion-icon,
+ion-button[class*="login"] ion-icon,
+.login ion-icon {
+  color: white !important;
+}
+
+.nav ion-icon {
+  color: white !important;
+}
+
+.item-ion-ripple-effect {
+  color: #121921;
+}
+
+/* Hamburger button */
 .navbar-toggler {
   display: flex;
   align-items: center;
@@ -95,23 +402,6 @@
   transform: scale(1.05);
 }
 
-.navbar-toggler.active {
-  opacity: 0; /* Ocultar por completo cuando está activo */
-  visibility: hidden; /* Eliminar del flujo de documento */
-  position: absolute; /* Sacar del flujo para no afectar el layout */
-  pointer-events: none; /* Evitar que reciba clics */
-}
-
-.navbar-toggler.active:focus {
-  box-shadow: none !important;
-  outline: none !important;
-  background: rgba(0, 0, 0, 0.15) !important;
-}
-
-.navbar-toggler.active:hover {
-  background: rgba(255, 167, 38, 0.2) !important;
-}
-
 .hamburger-icon {
   position: relative;
   width: 20px;
@@ -128,6 +418,13 @@
   background-color: #fff;
   border-radius: 2px;
   transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.navbar-toggler.active {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  pointer-events: none;
 }
 
 .navbar-toggler.active .line-1 {
@@ -150,145 +447,11 @@
   transition: var(--fcnolimit-transition-fast);
 }
 
-/* Brand text and slogan */
-.brand-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1;
-  color: var(--fcnolimit-text-light) !important;
-  text-shadow: 0 1px 8px rgba(0,0,0,0.25);
-}
-
-.brand-slogan {
-  font-size: 0.8rem;
-  font-weight: 400;
-  opacity: 0.8;
-  margin-top: 0.2rem;
-  color: var(--fcnolimit-text-light) !important;
-  text-shadow: 0 1px 8px rgba(0,0,0,0.25);
-}
-
-/* Nav items and links */
-.navbar-nav {
-  display: flex;
-  gap: 1rem;
-  margin: 0;
-  padding-left: 1rem;
-  align-items: center;
-}
-
-/* Icon styles */
-.nav-link ion-icon {
-  font-size: 1.4rem;
-  margin-right: 0.5rem;
-  vertical-align: middle;
-  transition: all 0.3s ease;
-}
-
-.nav-link:hover ion-icon {
-  transform: translateY(-2px) scale(1.1);
-  color: var(--fcnolimit-primary-light);
-}
-
-.nav-link.active ion-icon {
-  color: var(--fcnolimit-text-light) !important;
-  transform: scale(1.1);
-}
-
-.item-ion-ripple-effect{
-  color: #121921;
-}
-
-.user-avatar{
-  color: #121921;
-}
-
-.navbar-brand ion-icon {
-  font-size: 2.2rem;
-  color: var(--fcnolimit-primary);
-  margin-right: 0.8rem;
-  animation: spin 20s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* Login button */
-.navbar-nav .nav-item:last-child .nav-link {
-  background: var(--fcnolimit-primary) !important;
-  color: var(--fcnolimit-text-light) !important;
-  border-radius: var(--fcnolimit-border-radius-pill);
-  font-weight: 700;
-  box-shadow: var(--fcnolimit-shadow-primary);
-  padding: 0.7rem 2.2rem !important;
-  margin-left: 1.5rem;
-  transition: background 0.2s, transform 0.3s, box-shadow 0.3s;
-}
-
-.navbar-nav .nav-item:last-child .nav-link:hover {
-  background: var(--fcnolimit-primary-light) !important;
-  color: var(--fcnolimit-text-light) !important;
-  box-shadow: 0 0 24px 0 rgba(255, 167, 38, 0.35);
-  transform: translateY(-2px);
-}
-
-/* Border buttons */
-.btn-bordered {
-  border: 2px solid var(--fcnolimit-primary);
-  background: transparent;
-  color: var(--fcnolimit-primary) !important;
-  transition: all 0.3s ease;
-}
-
-.btn-bordered:hover {
-  background: var(--fcnolimit-primary);
-  color: var(--fcnolimit-text-light) !important;
-}
-
-.input-wrapper {
-  color: #121921;
-}
-
-/* Dropdown menus */
-.dropdown-menu {
-  background-color: var(--fcnolimit-bg-dark);
-  border: 1px solid var(--fcnolimit-primary);
-  box-shadow: var(--fcnolimit-shadow-lg);
-  border-radius: var(--fcnolimit-border-radius-md);
-  overflow: hidden;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.dropdown-item {
-  color: var(--fcnolimit-text-light);
-  padding: 0.7rem 1rem;
-  border-radius: var(--fcnolimit-border-radius-sm);
-  transition: var(--fcnolimit-transition-fast);
-}
-
-.dropdown-item:hover {
-  background-color: var(--fcnolimit-primary);
-  color: var(--fcnolimit-text-light);
-}
-
-.login-button ion-icon,
-ion-button[class*="login"] ion-icon,
-.login ion-icon {
-  color: white !important;
-}
-
-.nav ion-icon {
-  color: white !important;
-}
-
 /* ==================== */
-/* === MOBILE STYLES === */
+/* 6. Menú Móvil */
 /* ==================== */
 
-/* Base Navbar Collapse - solo estilos generales */
+/* Base Navbar Collapse */
 .navbar-collapse {
   display: flex;
   align-items: center;
@@ -361,7 +524,15 @@ ion-button[class*="login"] ion-icon,
   transform: rotate(-45deg);
 }
 
-/* Animaciones para los elementos al abrir y cerrar */
+/* ==================== */
+/* 7. Animaciones */
+/* ==================== */
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 @keyframes slideInRight {
   from {
     opacity: 0;
@@ -373,11 +544,53 @@ ion-button[class*="login"] ion-icon,
   }
 }
 
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 /* ==================== */
-/* === MEDIA QUERIES === */
+/* 8. Media Queries */
 /* ==================== */
 
-/* Estilos para móvil */
+/* Responsive container sizes */
+@media (min-width: 576px) {
+  .fc-container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .fc-container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .fc-container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .fc-container {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .fc-container {
+    max-width: 1320px;
+  }
+}
+
+/* Ajustes para móvil y tablet */
 @media (max-width: 991px) {
   /* Base adjustments */
   .navbar {
@@ -431,8 +644,14 @@ ion-button[class*="login"] ion-icon,
   
   .navbar-collapse.show {
     right: 0;
+    width: 100%;
+    max-width: 320px;
   }
   
+  .fc-container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 
   /* Header del menú lateral */
   .mobile-menu-header {
@@ -467,10 +686,10 @@ ion-button[class*="login"] ion-icon,
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   }
   
-  /* Botón de cierre mejorado */
+  /* Botón de cierre */
   .navbar-close-btn {
     position: relative;
-    background: rgba(0, 0, 0, 0.2) !important; /* Fondo oscuro semitransparente */
+    background: rgba(0, 0, 0, 0.2) !important;
     border: none !important;
     width: 36px;
     height: 36px;
@@ -483,6 +702,8 @@ ion-button[class*="login"] ion-icon,
     z-index: 1051;
     margin-left: 10px;
     box-shadow: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
   }
 
   .navbar-close-btn:hover {
@@ -490,7 +711,6 @@ ion-button[class*="login"] ion-icon,
     transform: rotate(90deg);
   }
 
-  /* Líneas de la X más visibles */
   .navbar-close-btn::before,
   .navbar-close-btn::after {
     content: '';
@@ -510,28 +730,8 @@ ion-button[class*="login"] ion-icon,
     transform: rotate(-45deg);
   }
   
-  /* Eliminar cualquier estilo heredado de botones */
   .navbar-close-btn * {
     display: none !important;
-  }
-
-  /* Eliminar estilos que puedan estar afectando al botón */
-  button.navbar-close-btn {
-    -webkit-appearance: none !important;
-    appearance: none !important;
-    background: rgba(0, 0, 0, 0.15) !important;
-  }
-
-  /* Asegurarnos de que el header del menú móvil no tenga estilos conflictivos */
-  .mobile-menu-header {
-    width: 100%;
-    padding: 1rem 1.2rem;
-    background: linear-gradient(to right, rgba(255, 167, 38, 0.2), rgba(255, 167, 38, 0.05)) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
   }
   
   /* Contenedor principal del menú con scroll */
@@ -616,7 +816,7 @@ ion-button[class*="login"] ion-icon,
     font-weight: 500;
   }
   
-  /* Menú de navegación */
+  /* Menú de navegación móvil */
   .navbar-nav {
     flex-direction: column;
     width: 100%;
@@ -636,7 +836,15 @@ ion-button[class*="login"] ion-icon,
   .navbar-collapse.show .nav-item {
     opacity: 1;
     transform: translateX(0);
+    animation: slideInRight 0.4s forwards;
   }
+  
+  .navbar-collapse.show .nav-item:nth-child(1) { animation-delay: 0.1s; }
+  .navbar-collapse.show .nav-item:nth-child(2) { animation-delay: 0.15s; }
+  .navbar-collapse.show .nav-item:nth-child(3) { animation-delay: 0.2s; }
+  .navbar-collapse.show .nav-item:nth-child(4) { animation-delay: 0.25s; }
+  .navbar-collapse.show .nav-item:nth-child(5) { animation-delay: 0.3s; }
+  .navbar-collapse.show .nav-item:nth-child(6) { animation-delay: 0.35s; }
 
   .navbar-nav .nav-link {
     display: flex;
@@ -653,6 +861,20 @@ ion-button[class*="login"] ion-icon,
     background: linear-gradient(to right, rgba(255, 167, 38, 0.2), rgba(255, 167, 38, 0.05));
     border-left: 3px solid var(--fcnolimit-primary);
     font-weight: 600;
+    position: relative;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .navbar-nav .nav-link.active::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 1.2rem;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--fcnolimit-primary);
   }
 
   .nav-link:hover {
@@ -665,28 +887,35 @@ ion-button[class*="login"] ion-icon,
     margin-right: 0.8rem;
     color: #fff;
     opacity: 0.9;
+    min-width: 24px;
   }
 
   .nav-link.active ion-icon {
     color: var(--fcnolimit-primary);
   }
   
-  /* Sección del enlace activo */
-  .navbar-collapse .nav-link.active {
-    position: relative;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  /* Título de sección */
+  .menu-section-title {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 0 1.5rem;
+    margin: 1.5rem 0 0.5rem;
+    font-weight: 600;
   }
-
-  .navbar-collapse .nav-link.active::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    right: 1.2rem;
-    transform: translateY(-50%);
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--fcnolimit-primary);
+  
+  /* Login button mobile */
+  .navbar-nav .nav-item:last-child {
+    margin-top: 1rem;
+  }
+  
+  .navbar-nav .nav-item:last-child .nav-link {
+    margin: 0.5rem 0 0;
+    justify-content: center;
+    padding: 1rem !important;
+    margin-left: 0;
+    background: linear-gradient(135deg, var(--fcnolimit-primary), var(--fcnolimit-primary-dark)) !important;
   }
   
   /* Botones de acción del usuario */
@@ -739,42 +968,17 @@ ion-button[class*="login"] ion-icon,
     background: rgba(244, 67, 54, 0.25);
   }
   
-  /* Título de sección */
-  .menu-section-title {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.5);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    padding: 0 1.5rem;
-    margin: 1.5rem 0 0.5rem;
-    font-weight: 600;
+  /* Ajustes específicos para el menú móvil */
+  .mobile-menu-content .navbar-nav .nav-link {
+    align-items: center;
   }
-  
-  /* Login button mobile */
-  .navbar-nav .nav-item:last-child {
-    margin-top: 1rem;
+
+  .mobile-menu-content .navbar-nav .nav-link span {
+    display: inline-block;
+    visibility: visible;
+    opacity: 1;
+    margin-left: 10px;
   }
-  
-  .navbar-nav .nav-item:last-child .nav-link {
-    margin: 0.5rem 0 0;
-    justify-content: center;
-    padding: 1rem !important;
-    margin-left: 0;
-    background: linear-gradient(135deg, var(--fcnolimit-primary), var(--fcnolimit-primary-dark)) !important;
-  }
-  
-  /* Secuencia de animación para elementos del menú */
-  .navbar-collapse.show .nav-item {
-    animation: slideInRight 0.4s forwards;
-    opacity: 0;
-  }
-  
-  .navbar-collapse.show .nav-item:nth-child(1) { animation-delay: 0.1s; }
-  .navbar-collapse.show .nav-item:nth-child(2) { animation-delay: 0.15s; }
-  .navbar-collapse.show .nav-item:nth-child(3) { animation-delay: 0.2s; }
-  .navbar-collapse.show .nav-item:nth-child(4) { animation-delay: 0.25s; }
-  .navbar-collapse.show .nav-item:nth-child(5) { animation-delay: 0.3s; }
-  .navbar-collapse.show .nav-item:nth-child(6) { animation-delay: 0.35s; }
 }
 
 /* Ajustes para dispositivos pequeños */
@@ -802,50 +1006,9 @@ ion-button[class*="login"] ion-icon,
   }
 }
 
-/* Ajuste de la navegación para pantallas medianas */
-@media (max-width: 1280px) {
-  .navbar .brand-slogan {
-    font-size: 0.7rem;
-  }
-  
-  .navbar-nav .nav-link {
-    padding: 0.5rem 0.6rem;
-    font-size: 0.9rem;
-  }
-  
-  .navbar-nav .nav-link ion-icon {
-    font-size: 1rem;
-    margin-right: 3px;
-  }
-}
-
-/* Ajuste adicional para pantallas un poco más pequeñas */
-@media (max-width: 1120px) {
-  .navbar .brand-slogan {
-    display: none !important;
-  }
-  
-  .navbar-nav .nav-link span {
-    display: none;
-  }
-  
-  .navbar-nav .nav-link ion-icon {
-    margin-right: 0;
-    font-size: 1.2rem;
-  }
-  
-  .navbar-nav .nav-link {
-    padding: 0.5rem 0.4rem;
-  }
-  
-  .user-button {
-    padding-left: 0.3rem !important;
-    padding-right: 0.3rem !important;
-  }
-}
-
-/* Asegurar estilos de desktop */
+/* Ajustes para pantallas medianas */
 @media (min-width: 992px) {
+  /* Sobrescribir estilos móviles para desktop */
   .navbar-collapse {
     position: static !important;
     width: auto !important;
@@ -897,67 +1060,88 @@ ion-button[class*="login"] ion-icon,
     display: none !important;
   }
   
-  /* Asegurar que las características móviles no aparezcan en desktop */
+  /* Ocultar elementos móviles en desktop */
   .mobile-menu-header, .menu-section-title, .user-profile-mobile, .user-actions-mobile {
     display: none !important;
   }
 }
 
-/* Añadir una clase para mostrar tooltips en modo iconos */
-.nav-tooltip {
-  position: relative;
-}
-
-.nav-tooltip:hover::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.7rem;
-  white-space: nowrap;
-  z-index: 1000;
-}
-
-/* Añade estos estilos para la adaptabilidad del botón de usuario */
-
-@media (max-width: 1200px) {
-  .user-button .user-name {
-    max-width: 150px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}
-
-@media (max-width: 1120px) {
-  .user-button .user-name {
-    display: none;
+/* Ajustes para pantallas medianas-grandes */
+@media (max-width: 1280px) {
+  .navbar .brand-slogan {
+    font-size: 0.7rem;
   }
   
-  .user-button .user-dropdown-icon {
-    display: none;
+  .navbar-nav .nav-link {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.9rem;
+  }
+  
+  .navbar-nav .nav-link ion-icon {
+    font-size: 1rem;
+    margin-right: 3px;
+  }
+}
+
+/* Ajustes específicos para resoluciones entre 1200px y 1280px */
+@media (min-width: 1200px) and (max-width: 1280px) {
+  .navbar-nav {
+    gap: 0.6rem !important;
+  }
+  
+  .navbar-nav .nav-link {
+    padding: 0.6rem 0.7rem !important;
+  }
+  
+  .navbar-nav .nav-link span {
+    font-size: 0.9rem;
+  }
+  
+  .navbar-header {
+    padding-right: 1.5rem;
+    margin-right: 1.5rem;
+  }
+}
+
+/* Ajustes para resoluciones entre 1120px y 1200px */
+@media (min-width: 1120px) and (max-width: 1200px) {
+  .navbar-nav {
+    gap: 0.5rem !important;
+  }
+  
+  .navbar-nav .nav-link {
+    padding: 0.5rem 0.6rem !important;
+    font-size: 0.85rem;
+  }
+  
+  .navbar-header {
+    padding-right: 1rem;
+    margin-right: 1rem;
+  }
+  
+  .user-button .user-name {
+    max-width: 130px;
+    font-size: 14px;
+  }
+}
+
+/* Ajustes para resoluciones entre 992px y 1120px */
+@media (min-width: 992px) and (max-width: 1120px) {
+  .navbar .brand-slogan {
+    display: none !important;
+  }
+  
+  .navbar-nav .nav-link {
+    padding: 0.5rem 0.4rem;
+  }
+  
+  .navbar-nav {
+    gap: 0.4rem !important;
   }
   
   .user-button {
-    margin-left: 8px;
-  }
-}
-
-/* Arreglo para modo móvil y tablet */
-@media (max-width: 991px) {
-  .navbar-collapse.show {
-    width: 100%;
-    max-width: 320px;
-  }
-  
-  .container {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 0.3rem !important;
+    padding-right: 0.3rem !important;
   }
 }
 
@@ -987,33 +1171,251 @@ ion-button[class*="login"] ion-icon,
   }
 }
 
-/* Asegurar que el texto en los elementos nav-link sea visible */
-.navbar-nav .nav-link span {
-  display: inline-block;
-  margin-left: 10px;
-  opacity: 1;
-  visibility: visible;
+/* Ajustes específicos para el botón de usuario */
+@media (max-width: 1200px) {
+  .user-button .user-name {
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
-/* Ajuste específico para el menú móvil */
-.mobile-menu-content .navbar-nav .nav-link {
+@media (max-width: 1120px) {
+  .user-button .user-name {
+    display: none;
+  }
+  
+  .user-button .user-dropdown-icon {
+    display: none;
+  }
+  
+  .user-button {
+    margin-left: 8px;
+  }
+}
+
+/* Ajustes para posicionar el avatar de usuario más a la derecha */
+.d-lg-block {
+  margin-left: auto;
+  padding-left: 0px;
+  padding-right: 15px;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+}
+
+/* Ajustar la visualización del dropdown */
+ion-popover.user-popover::part(backdrop) {
+  background: transparent !important;
+}
+
+ion-popover.user-popover::part(arrow) {
+  display: none !important;
+}
+
+/* Estilos específicos para el menú desplegable de usuario */
+.user-menu-dropdown {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  width: 280px;
+}
+
+/* Estilos mejorados para el dropdown personalizado */
+.custom-user-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 280px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+  z-index: 1100;
+  animation: dropdownFadeIn 0.2s ease;
+  transform-origin: top right;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.user-menu-header {
+  padding: 16px;
+  display: flex;
   align-items: center;
+  background-color: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.mobile-menu-content .navbar-nav .nav-link ion-icon {
-  min-width: 24px;
+.user-avatar-dropdown {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border: 2px solid var(--fcnolimit-primary);
 }
 
-.mobile-menu-content .navbar-nav .nav-link span {
-  display: inline-block;
-  visibility: visible;
-  opacity: 1;
-  margin-left: 10px;
+.user-avatar-dropdown img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.nav-text-visible {
-  display: inline-block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  margin-left: 10px;
+.user-info-dropdown {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name-dropdown {
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 3px;
+}
+
+.user-role-dropdown {
+  font-size: 13px;
+  color: #666;
+  opacity: 0.8;
+}
+
+/* Elementos del menú */
+.user-menu-items {
+  padding: 8px 0;
+}
+
+.user-menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  color: #333;
+  transition: all 0.2s ease;
+  text-decoration: none !important;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  position: relative;
+}
+
+.user-menu-item:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-left: 3px solid var(--fcnolimit-primary);
+  color: var(--fcnolimit-primary);
+  text-decoration: none !important;
+  padding-left: 19px;
+}
+
+.user-menu-item ion-icon {
+  font-size: 20px;
+  margin-right: 12px;
+  color: #666;
+  min-width: 20px;
+  transition: all 0.2s ease;
+}
+
+.user-menu-item:hover ion-icon {
+  color: var(--fcnolimit-primary);
+  transform: translateX(2px);
+}
+
+/* Elemento de cierre de sesión */
+.user-menu-item.logout {
+  color: #e53935;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  margin-top: 5px;
+  padding-top: 14px;
+}
+
+.user-menu-item.logout:hover {
+  background-color: rgba(229, 57, 53, 0.05);
+  border-left: 3px solid #e53935;
+}
+
+.user-menu-item.logout ion-icon {
+  color: #e53935;
+}
+
+/* Posicionamiento y diseño del botón de usuario */
+.d-lg-block {
+  position: relative;
+}
+
+.user-button {
+  display: flex;
+  align-items: center;
+  padding: 4px 12px 4px 4px;
+  border-radius: 30px;
+  background-color: var(--fcnolimit-primary);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-button:hover {
+  background-color: var(--fcnolimit-primary-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.user-avatar-container {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  margin-right: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid #ffffff;
+  overflow: hidden;
+}
+
+.user-name {
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  max-width: 130px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-dropdown-icon {
+  color: white;
+  margin-left: 4px;
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.user-button:hover .user-dropdown-icon {
+  transform: rotate(180deg);
+}
+
+/* Mejorar aspecto de IonPopover para este uso específico */
+ion-popover.user-popover {
+  --backdrop-opacity: 0 !important;
+  --background: transparent;
+}
+
+/* Soluciones para el problema de popover */
+ion-popover {
+  --backdrop-opacity: 0 !important;
+}
+
+ion-popover.user-popover::part(backdrop) {
+  display: none !important;
+  background: transparent !important;
+  opacity: 0 !important;
+}
+
+/* Asegurarse que los clics fuera del popover lo cierren */
+body.backdrop-no-scroll {
+  overflow: auto !important;
+  pointer-events: auto !important;
+}
+
+/* Evitar que el backdrop capture eventos */
+ion-backdrop {
+  opacity: 0 !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  display: none !important;
 }
