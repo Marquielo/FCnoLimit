@@ -6,10 +6,10 @@ import { Route, Redirect } from 'react-router-dom';
 import AuthPage from './pages/home/auth/AuthPage';
 import InicioPage from './pages/home//inicio/InicioPage';
 import AdminDashboard from './pages/admin/dashboard/AdminDashboard';
-import JugadorPerfil from './pages/jugador/perfil/JugadorPerfil';
-import EntrenadorPerfil from './pages/entrenador/perfil/EntrenadorPerfil';
-import CompletarPerfilJugador from './pages/jugador/perfil/CompletarPerfil';
-import CompletarPerfilEntrenador from './pages/entrenador/perfil/CompletarPerfil';
+import JugadorPerfil from './pages/admin/jugador/perfil/JugadorPerfil';
+import EntrenadorPerfil from './pages/admin/entrenador/perfil/EntrenadorPerfil';
+import CompletarPerfilJugador from './pages/admin/jugador/perfil/CompletarPerfil';
+import CompletarPerfilEntrenador from './pages/admin/entrenador/perfil/CompletarPerfil';
 import PrivateRoute from './components/PrivateRoute';
 import PanelPartidos from './pages/home/partidos/PanelPartidos';
 
@@ -60,41 +60,41 @@ const App: React.FC = () => {
           
           {/* Rutas para jugador */}
           <PrivateRoute 
-            path="/jugador/perfil/completar" 
+            path="/admin/jugador/perfil/completar" 
             component={CompletarPerfilJugador} 
             allowedRoles={['jugador']} 
             exact 
           />
           <PrivateRoute 
-            path="/jugador/perfil" 
+            path="/admin/jugador/perfil" 
             component={JugadorPerfil} 
             allowedRoles={['jugador']} 
             exact 
           />
           <PrivateRoute 
-            path="/jugador" 
+            path="/admin/jugador" 
             exact
-            component={() => <Redirect to="/jugador/perfil" />} 
+            component={() => <Redirect to="/admin/jugador/perfil" />} 
             allowedRoles={['jugador']} 
           />
           
           {/* Rutas para entrenador */}
           <PrivateRoute 
-            path="/entrenador/perfil/completar" 
+            path="/admin/entrenador/perfil/completar" 
             component={CompletarPerfilEntrenador} 
             allowedRoles={['entrenador']} 
             exact 
           />
           <PrivateRoute 
-            path="/entrenador/perfil" 
+            path="/admin/entrenador/perfil" 
             component={EntrenadorPerfil} 
             allowedRoles={['entrenador']} 
             exact 
           />
           <PrivateRoute 
-            path="/entrenador" 
+            path="/admin/entrenador" 
             exact
-            component={() => <Redirect to="/entrenador/perfil" />} 
+            component={() => <Redirect to="/admin/entrenador/perfil" />} 
             allowedRoles={['entrenador']} 
           />
           
