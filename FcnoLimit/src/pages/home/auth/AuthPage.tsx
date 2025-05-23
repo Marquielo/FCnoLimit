@@ -162,7 +162,6 @@ const AuthPage: React.FC = () => {
       console.log("Iniciando proceso de login");
       present({ message: 'Iniciando sesión...' });
 
-      // Construir la URL cuidadosamente - sin /api/ si no es necesario según tu backend
       const loginUrl = 'https://fcnolimit-back.onrender.com/api/usuarios/login';
       console.log("URL completa para login:", loginUrl);
       
@@ -183,9 +182,32 @@ const AuthPage: React.FC = () => {
 
       dismiss();
       if (!res.ok) throw new Error(data.error || 'Error de autenticación');
+      
+      // Guardar datos de sesión
       localStorage.setItem('token', data.token);
       localStorage.setItem('usuario', JSON.stringify(data.user));
-      history.push('/inicio'); // <--- Usa el router en vez de window.location.href
+      
+      // Redireccionar según el rol del usuario
+      const userRole = data.user?.rol || 'persona_natural';
+      console.log("🔐 INICIO DE SESIÓN: Usuario autenticado como:", userRole.toUpperCase());
+      console.log("👤 Datos del usuario:", data.user);
+      
+      // Modificación del switch en handleLogin
+      switch (userRole) {
+        case 'admin':
+          history.push('/admin/dashboard');
+          break;
+        case 'jugador':
+          history.push('/jugador/perfil/completar');
+          break;
+        case 'entrenador':
+          history.push('/entrenador/perfil/completar');
+          break;
+        case 'persona_natural':
+        default:
+          history.push('/inicio');
+          break;
+      }
     } catch (err: any) {
       dismiss();
       setError(err.message === 'Failed to fetch'
@@ -334,7 +356,7 @@ const AuthPage: React.FC = () => {
     setRegisterError('');
     setRegisterSuccess('');
     
-    // Validar todos los campos incluyendo el rol
+    // Validaciones...
     const isNameValid = validateName(registerName);
     const isEmailValid = validateEmail(registerEmail);
     const isPasswordValid = validatePassword(registerPassword);
@@ -342,7 +364,6 @@ const AuthPage: React.FC = () => {
     const didAgreeToTerms = validateTerms(agreeToTerms);
     const isRoleValid = validateRole(selectedRole);
     
-    // Si algún campo no es válido, no continuar
     if (!isNameValid || !isEmailValid || !isPasswordValid || 
         !doPasswordsMatch || !didAgreeToTerms || !isRoleValid) {
       setRegisterError('Por favor, completa correctamente todos los campos.');
@@ -358,7 +379,7 @@ const AuthPage: React.FC = () => {
           nombre_completo: registerName || registerEmail.split('@')[0],
           correo: registerEmail,
           contraseña: registerPassword,
-          rol: selectedRole // Usar el rol seleccionado
+          rol: selectedRole
         })
       });
 
@@ -369,11 +390,9 @@ const AuthPage: React.FC = () => {
         data = {};
       }
 
-      dismiss();
-      
-      // Manejar específicamente el error de correo duplicado
       if (!res.ok) {
-        // Verificar si el error está relacionado con correo duplicado
+        dismiss();
+        // Manejar error de correo duplicado
         if (data.error && (
           data.error.includes('duplicate key') || 
           data.error.includes('correo_key') || 
@@ -386,12 +405,53 @@ const AuthPage: React.FC = () => {
           return;
         }
         
-        // Para otros errores
         throw new Error(data.error || 'Error al registrar');
       }
       
-      setRegisterSuccess('Cuenta creada exitosamente. Ahora puedes iniciar sesión.');
-      setShowLogin(true);
+      // Registro exitoso - ahora iniciamos sesión automáticamente
+      try {
+        const loginRes = await fetch('https://fcnolimit-back.onrender.com/api/usuarios/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            correo: registerEmail, 
+            contraseña: registerPassword 
+          })
+        });
+        
+        const loginData = await loginRes.json();
+        
+        if (!loginRes.ok) throw new Error('No se pudo iniciar sesión automáticamente');
+        
+        // Guardar datos de sesión
+        localStorage.setItem('token', loginData.token);
+        localStorage.setItem('usuario', JSON.stringify(loginData.user));
+        
+        console.log("🔐 REGISTRO EXITOSO: Usuario registrado y autenticado como:", selectedRole.toUpperCase());
+        console.log("👤 Datos del usuario:", loginData.user);
+
+        dismiss();
+        
+        // Redireccionar según el rol seleccionado
+        switch (selectedRole) {
+          case 'jugador':
+            history.push('/jugador/perfil/completar');
+            break;
+          case 'entrenador':
+            history.push('/entrenador/perfil/completar');
+            break;
+          case 'persona_natural':
+          default:
+            history.push('/inicio');
+            break;
+        }
+      } catch (loginErr) {
+        dismiss();
+        // Si falla el inicio de sesión automático, mostramos mensaje de éxito y pedimos login manual
+        setRegisterSuccess('Cuenta creada exitosamente. Ahora puedes iniciar sesión.');
+        setShowLogin(true);
+      }
+      
     } catch (err: any) {
       dismiss();
       setRegisterError(err.message === 'Failed to fetch'
@@ -416,6 +476,24 @@ const AuthPage: React.FC = () => {
     forms.forEach(form => {
       form.setAttribute('novalidate', 'true');
     });
+  }, []);
+
+  // Agregar este useEffect al inicio del componente, después de la definición de variables
+  useEffect(() => {
+    const userJSON = localStorage.getItem('usuario');
+    const token = localStorage.getItem('token');
+    
+    if (userJSON && token) {
+      try {
+        const userData = JSON.parse(userJSON);
+        console.log("👤 Usuario ya autenticado:", userData.rol.toUpperCase());
+        console.log("👤 Datos del usuario:", userData);
+      } catch (error) {
+        console.error("Error al leer datos de usuario del localStorage:", error);
+      }
+    } else {
+      console.log("🔒 No hay sesión de usuario activa");
+    }
   }, []);
 
   return (
@@ -682,7 +760,7 @@ const AuthPage: React.FC = () => {
                         </div>
                       </div>
                       
-                      {/* Selector de tipo de usuario simplificado */}
+                      {/* Selector de tipo de usuario con descripciones */}
                       <div className="role-selection-container">
                         <div className="field-label">Tipo de Usuario</div>
                         <div className="role-options">
@@ -700,6 +778,9 @@ const AuthPage: React.FC = () => {
                             />
                             <label htmlFor="role-persona">
                               <div className="role-name">Perfil</div>
+                              <div className="role-description">
+                                Únete como aficionado y disfruta de contenido exclusivo
+                              </div>
                             </label>
                           </div>
                           
@@ -717,6 +798,9 @@ const AuthPage: React.FC = () => {
                             />
                             <label htmlFor="role-jugador">
                               <div className="role-name">Jugador</div>
+                              <div className="role-description">
+                                Crea tu perfil deportivo y conéctate con equipos
+                              </div>
                             </label>
                           </div>
                           
@@ -734,6 +818,9 @@ const AuthPage: React.FC = () => {
                             />
                             <label htmlFor="role-entrenador">
                               <div className="role-name">Entrenador</div>
+                              <div className="role-description">
+                                Gestiona tu equipo y desarrolla el talento
+                              </div>
                             </label>
                           </div>
                         </div>

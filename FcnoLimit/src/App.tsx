@@ -1,23 +1,16 @@
-import { Redirect, Route } from 'react-router-dom';
-import {
-  IonApp,
-  IonRouterOutlet,
-  setupIonicReact
-} from '@ionic/react';
+import React from 'react';
+import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import NavBar from './components/NavBar';
-import EquiposPage from './pages/home/equipos/EquiposPage';
-import JugadoresPage from './pages/home/jugadores/JugadoresPage';
-import ComparativasPage from './pages/home/estadisticas/ComparativasPage';
-import PartidosPage from './pages/home/partidos/PartidosPage';      
-import InicioPage from './pages/home/inicio/InicioPage';
+import { Route, Redirect } from 'react-router-dom';
+
 import AuthPage from './pages/home/auth/AuthPage';
-import CampeonatosPage from './pages/home/campeonato/CampeonatoPage';
-import NoticiasPage  from './pages/home/noticias/NoticiasPage';
-import AdminDashboard from './pages/home/admin/AdminDashboard';
-import PerfilPage from './pages/home/perfil/PerfilPage';
-import ProtectedRoute from './components/ProtectedRoute';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import InicioPage from './pages/home//inicio/InicioPage';
+import AdminDashboard from './pages/admin/dashboard/AdminDashboard';
+import JugadorPerfil from './pages/jugador/perfil/JugadorPerfil';
+import EntrenadorPerfil from './pages/entrenador/perfil/EntrenadorPerfil';
+import CompletarPerfilJugador from './pages/jugador/perfil/CompletarPerfil';
+import CompletarPerfilEntrenador from './pages/entrenador/perfil/CompletarPerfil';
+import PrivateRoute from './components/PrivateRoute';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -35,80 +28,81 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
-
-/* import '@ionic/react/css/palettes/dark.always.css'; */
-/* import '@ionic/react/css/palettes/dark.class.css'; */
-import '@ionic/react/css/palettes/dark.system.css';
-
 /* Theme variables */
 import './styles/variables.css';
 
-setupIonicReact({
-  mode: 'md',
-  animated: true
-});
+setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp className="light-theme">
-    <IonReactRouter>
-      <IonRouterOutlet>
-        {/* Rutas públicas */}
-        <Route exact path="/inicio" component={InicioPage} />
-        <Route exact path="/auth" component={AuthPage} />
-        {/* Rutas protegidas */}
-        <Route exact path="/campeonatos" render={() => (
-          <ProtectedRoute>
-            <CampeonatosPage />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/equipos" render={() => (
-          <ProtectedRoute>
-            <EquiposPage />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/jugadores" render={() => (
-          <ProtectedRoute>
-            <JugadoresPage />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/partidos" render={() => (
-          <ProtectedRoute>
-            <PartidosPage />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/comparativas" render={() => (
-          <ProtectedRoute>
-            <ComparativasPage />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/noticias" render={() => (
-          <ProtectedRoute>
-            <NoticiasPage />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/admin" render={() => (
-          <ProtectedRoute>
-            <AdminDashboard />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/">
-          <Redirect to="/inicio" />
-        </Route>
-        <Route exact path="/perfil" render={() => (
-          <ProtectedRoute>
-            <PerfilPage />
-          </ProtectedRoute>
-        )} />
-      </IonRouterOutlet>
-      <NavBar />
-    </IonReactRouter>
-  </IonApp>
-);
+const App: React.FC = () => {
+  return (
+    <IonApp>
+      <IonReactRouter>
+        <IonRouterOutlet>
+          {/* Rutas públicas */}
+          <Route path="/auth" component={AuthPage} exact />
+          <Route path="/inicio" component={InicioPage} exact />
+          <Route path="/" exact render={() => <Redirect to="/inicio" />} />
+          
+          {/* Rutas para administrador */}
+          <PrivateRoute 
+            path="/admin/dashboard" 
+            component={AdminDashboard} 
+            allowedRoles={['admin']} 
+            exact 
+          />
+          <PrivateRoute 
+            path="/admin" 
+            exact
+            component={() => <Redirect to="/admin/dashboard" />} 
+            allowedRoles={['admin']} 
+          />
+          
+          {/* Rutas para jugador */}
+          <PrivateRoute 
+            path="/jugador/perfil/completar" 
+            component={CompletarPerfilJugador} 
+            allowedRoles={['jugador']} 
+            exact 
+          />
+          <PrivateRoute 
+            path="/jugador/perfil" 
+            component={JugadorPerfil} 
+            allowedRoles={['jugador']} 
+            exact 
+          />
+          <PrivateRoute 
+            path="/jugador" 
+            exact
+            component={() => <Redirect to="/jugador/perfil" />} 
+            allowedRoles={['jugador']} 
+          />
+          
+          {/* Rutas para entrenador */}
+          <PrivateRoute 
+            path="/entrenador/perfil/completar" 
+            component={CompletarPerfilEntrenador} 
+            allowedRoles={['entrenador']} 
+            exact 
+          />
+          <PrivateRoute 
+            path="/entrenador/perfil" 
+            component={EntrenadorPerfil} 
+            allowedRoles={['entrenador']} 
+            exact 
+          />
+          <PrivateRoute 
+            path="/entrenador" 
+            exact
+            component={() => <Redirect to="/entrenador/perfil" />} 
+            allowedRoles={['entrenador']} 
+          />
+          
+          {/* Ruta para cuando no se encuentra la página */}
+          <Route render={() => <Redirect to="/inicio" />} />
+        </IonRouterOutlet>
+      </IonReactRouter>
+    </IonApp>
+  );
+};
 
 export default App;
