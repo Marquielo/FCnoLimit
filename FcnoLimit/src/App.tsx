@@ -11,6 +11,7 @@ import EntrenadorPerfil from './pages/entrenador/perfil/EntrenadorPerfil';
 import CompletarPerfilJugador from './pages/jugador/perfil/CompletarPerfil';
 import CompletarPerfilEntrenador from './pages/entrenador/perfil/CompletarPerfil';
 import PrivateRoute from './components/PrivateRoute';
+import PanelPartidos from './pages/home/partidos/PanelPartidos';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -97,6 +98,13 @@ const App: React.FC = () => {
             allowedRoles={['entrenador']} 
           />
           
+          {/* Ruta para panel de partidos (solo para administradores de resultados o principal) */}
+          <PrivateRoute 
+            path="/panel-partidos" 
+            component={PanelPartidos}
+            exact 
+          />
+
           {/* Ruta para cuando no se encuentra la página */}
           <Route render={() => <Redirect to="/inicio" />} />
         </IonRouterOutlet>

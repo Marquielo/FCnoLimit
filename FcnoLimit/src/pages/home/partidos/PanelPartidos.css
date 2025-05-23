@@ -1,0 +1,24 @@
+.panel-card {
+  margin: 2rem auto;
+  max-width: 600px;
+  box-shadow: var(--fcnolimit-shadow-md);
+}
+
+.panel-form ion-item {
+  margin-bottom: 1rem;
+}
+
+.panel-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.panel-list {
+  margin-top: 2.5rem;
+}
+
+.panel-list-card {
+  margin-bottom: 1.5rem;
+  box-shadow: var(--fcnolimit-shadow-sm);
+}
