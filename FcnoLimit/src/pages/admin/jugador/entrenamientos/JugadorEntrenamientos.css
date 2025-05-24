@@ -1,0 +1,59 @@
+.seccion-titulo {
+  display: flex;
+  align-items: center;
+  margin: 20px 0 10px;
+  color: #333;
+  font-size: 20px;
+}
+
+.seccion-titulo ion-icon {
+  margin-right: 8px;
+}
+
+.entrenamiento-card {
+  margin-bottom: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.entrenamiento-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.entrenamiento-titulo {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.asistencia-badge {
+  display: flex;
+  align-items: center;
+}
+
+.asistencia-badge ion-icon {
+  margin-right: 4px;
+}
+
+.entrenamiento-descripcion {
+  margin-top: 16px;
+  color: #666;
+  font-size: 15px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+.botones-asistencia {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.sin-entrenamientos {
+  text-align: center;
+  margin: 40px 0;
+  color: #666;
+}

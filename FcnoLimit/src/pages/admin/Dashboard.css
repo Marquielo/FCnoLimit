@@ -1,0 +1,91 @@
+.dashboard-titulo {
+  margin: 20px 0 16px;
+  font-weight: bold;
+  color: #333;
+  font-size: 22px;
+}
+
+.estadistica-card {
+  --background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+  height: 100%;
+}
+
+.estadistica-icono {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.estadistica-valor {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.estadistica-titulo {
+  font-size: 14px;
+  color: #666;
+}
+
+.modulo-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+  height: 100%;
+}
+
+.modulo-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.modulo-icono {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.modulo-icono ion-icon {
+  font-size: 24px;
+  color: white;
+}
+
+.bg-primary {
+  background-color: var(--ion-color-primary);
+}
+
+.bg-success {
+  background-color: var(--ion-color-success);
+}
+
+.bg-warning {
+  background-color: var(--ion-color-warning);
+}
+
+.bg-danger {
+  background-color: var(--ion-color-danger);
+}
+
+.bg-tertiary {
+  background-color: var(--ion-color-tertiary);
+}
+
+.bg-medium {
+  background-color: var(--ion-color-medium);
+}
+
+.bg-dark {
+  background-color: var(--ion-color-dark);
+}
+
+.modulo-acciones {
+  display: grid;
+  gap: 8px;
+}

@@ -1,0 +1,122 @@
+.estadistica-card {
+  --background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+  height: 100%;
+}
+
+.estadistica-icono {
+  font-size: 24px;
+  margin-bottom: 8px;
+  color: #3880ff;
+}
+
+.estadistica-icono.goles {
+  color: #0ec254;
+}
+
+.estadistica-valor {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.estadistica-titulo {
+  font-size: 14px;
+  color: #666;
+}
+
+.seccion-titulo {
+  display: flex;
+  align-items: center;
+  margin: 20px 0 10px;
+  color: #333;
+  font-size: 20px;
+}
+
+.seccion-titulo ion-icon {
+  margin-right: 8px;
+}
+
+.tarjetas-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.tarjeta {
+  width: 20px;
+  height: 28px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+  margin: 0 4px;
+  color: #000;
+}
+
+.tarjeta.amarilla {
+  background-color: #ffeb3b;
+}
+
+.tarjeta.roja {
+  background-color: #f44336;
+}
+
+.partido-card {
+  margin-bottom: 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.competicion {
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.partido-stat {
+  text-align: center;
+}
+
+.partido-valor {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.partido-label {
+  font-size: 12px;
+  color: #666;
+}
+
+.tarjetas-small {
+  display: flex;
+  justify-content: center;
+}
+
+.tarjeta-small {
+  width: 16px;
+  height: 22px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 12px;
+  margin: 0 2px;
+}
+
+.tarjeta-small.amarilla {
+  background-color: #ffeb3b;
+}
+
+.tarjeta-small.roja {
+  background-color: #f44336;
+}
+
+.sin-tarjetas {
+  color: #999;
+}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { IonIcon, IonButton } from "@ionic/react";
+import { IonIcon } from "@ionic/react";
 import {
   footballOutline,
   peopleSharp,
@@ -12,11 +12,12 @@ import {
   newspaperSharp,
   personCircleOutline,
   logOutOutline,
-  closeCircleOutline,
   settingsOutline,
   notificationsOutline,
-  chevronForwardOutline,
-  chevronDown
+  chevronDown,
+  calendarOutline,
+  documentTextOutline,
+  fitnessOutline
 } from "ionicons/icons";
 import { useHistory, useLocation } from "react-router-dom";
 import "./NavBar.css";
@@ -27,16 +28,14 @@ const NavBar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const [popoverEvent, setPopoverEvent] = useState<MouseEvent | undefined>(undefined);
   const [isClosing, setIsClosing] = useState(false);
   const navbarRef = useRef<HTMLDivElement>(null);
-  const popoverRef = useRef<HTMLIonPopoverElement>(null);
-
-  // Referencia para el dropdown
   const dropdownRef = useRef<HTMLDivElement>(null);
   const userButtonRef = useRef<HTMLDivElement>(null);
 
+  // Obtener el usuario del localStorage
   const usuario = localStorage.getItem("usuario") ? JSON.parse(localStorage.getItem("usuario")!) : null;
+  const userRole = usuario?.rol || 'no_auth';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,27 +48,7 @@ const NavBar: React.FC = () => {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleResize);
-
-    // Bloquear scroll cuando el menú móvil esté abierto
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
-
-  // Añade este efecto para manejar clics fuera del dropdown
-  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      // Si el dropdown está abierto y el clic fue fuera del dropdown y del botón de usuario
       if (
         showUserMenu &&
         dropdownRef.current &&
@@ -81,23 +60,75 @@ const NavBar: React.FC = () => {
       }
     };
 
-    // Agregar evento al documento
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
     document.addEventListener("mousedown", handleClickOutside);
 
-    // Limpieza al desmontar
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showUserMenu]);
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
 
-  const mainNavItems = [
-    { path: "/inicio", icon: homeSharp, text: "Inicio" },
-    { path: "/equipos", icon: peopleSharp, text: "Equipos" },
-    { path: "/partidos", icon: footballSharp, text: "Partidos" },
-    { path: "/campeonatos", icon: trophySharp, text: "Campeonatos" },
-    { path: "/comparativas", icon: gitCompareSharp, text: "Comparativas" },
-    { path: "/noticias", icon: newspaperSharp, text: "Noticias" },
-  ];
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, showUserMenu]);
+
+  // Definir las rutas de navegación según el rol del usuario
+  const getNavItems = () => {
+    // Items comunes para todos los usuarios
+    const commonItems = [
+      { path: "/inicio", icon: homeSharp, text: "Inicio" },
+      { path: "/equipos", icon: peopleSharp, text: "Equipos" },
+      { path: "/partidos", icon: footballSharp, text: "Partidos" },
+      { path: "/campeonatos", icon: trophySharp, text: "Campeonatos" },
+      { path: "/noticias", icon: newspaperSharp, text: "Noticias" },
+    ];
+    
+    // Items específicos según rol
+    switch (userRole) {
+      case 'administrador':
+        return [
+          ...commonItems,
+          { path: "/admin", icon: settingsOutline, text: "Panel Admin" },
+          { path: "/estadisticas", icon: statsChartSharp, text: "Estadísticas" },
+          { path: "/comparativas", icon: gitCompareSharp, text: "Comparativas" },
+        ];
+      
+      case 'jugador':
+        return [
+          ...commonItems,
+          { path: "/jugador/perfil", icon: personCircleOutline, text: "Mi Perfil" },
+          { path: "/jugador/estadisticas", icon: statsChartSharp, text: "Mis Estadísticas" },
+          { path: "/jugador/entrenamientos", icon: fitnessOutline, text: "Entrenamientos" },
+        ];
+      
+      case 'entrenador':
+        return [
+          ...commonItems,
+          { path: "/entrenador/equipo", icon: peopleSharp, text: "Mi Equipo" },
+          { path: "/entrenador/entrenamientos", icon: fitnessOutline, text: "Entrenamientos" },
+          { path: "/entrenador/tacticas", icon: documentTextOutline, text: "Tácticas" },
+          { path: "/entrenador/estadisticas", icon: statsChartSharp, text: "Estadísticas" },
+        ];
+      
+      case 'persona_natural':
+        return [
+          ...commonItems,
+          { path: "/perfil", icon: personCircleOutline, text: "Mi Perfil" },
+          { path: "/comparativas", icon: gitCompareSharp, text: "Comparativas" },
+        ];
+      
+      default:
+        return commonItems;
+    }
+  };
+
+  const navItems = getNavItems();
 
   // Nueva función para abrir el menú
   const handleMenuOpen = () => {
@@ -123,9 +154,9 @@ const NavBar: React.FC = () => {
     handleMenuClose();
   };
 
-  const handleUserButtonClick = (e: React.MouseEvent) => {
-    setPopoverEvent(e.nativeEvent);
-    setShowUserMenu(true);
+  const toggleUserMenu = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowUserMenu(!showUserMenu);
   };
 
   const handleLogout = () => {
@@ -134,6 +165,96 @@ const NavBar: React.FC = () => {
     setShowUserMenu(false);
     handleMenuClose();
     history.push("/auth");
+  };
+
+  // Renderizar elementos de menú de usuario según rol
+  const renderUserMenuItems = () => {
+    const items = [];
+    
+    // Añadir elemento de perfil según el rol
+    if (userRole === 'jugador') {
+      items.push(
+        <a key="perfil" href="#" className="user-menu-item" onClick={(e) => {
+          e.preventDefault();
+          setShowUserMenu(false);
+          history.push("/jugador/perfil");
+        }}>
+          <IonIcon icon={personCircleOutline} />
+          Mi perfil de jugador
+        </a>
+      );
+    } else if (userRole === 'entrenador') {
+      items.push(
+        <a key="perfil" href="#" className="user-menu-item" onClick={(e) => {
+          e.preventDefault();
+          setShowUserMenu(false);
+          history.push("/entrenador/perfil");
+        }}>
+          <IonIcon icon={personCircleOutline} />
+          Mi perfil de entrenador
+        </a>
+      );
+    } else {
+      items.push(
+        <a key="perfil" href="#" className="user-menu-item" onClick={(e) => {
+          e.preventDefault();
+          setShowUserMenu(false);
+          history.push("/perfil");
+        }}>
+          <IonIcon icon={personCircleOutline} />
+          Mi perfil
+        </a>
+      );
+    }
+    
+    // Añadir panel de administración para administradores
+    if (userRole === 'administrador') {
+      items.push(
+        <a key="admin" href="#" className="user-menu-item" onClick={(e) => {
+          e.preventDefault();
+          setShowUserMenu(false);
+          history.push("/admin");
+        }}>
+          <IonIcon icon={settingsOutline} />
+          Panel de administración
+        </a>
+      );
+    }
+    
+    // Elementos comunes para todos los usuarios autenticados
+    items.push(
+      <a key="config" href="#" className="user-menu-item" onClick={(e) => {
+        e.preventDefault();
+        setShowUserMenu(false);
+        history.push("/configuracion");
+      }}>
+        <IonIcon icon={settingsOutline} />
+        Configuración
+      </a>
+    );
+    
+    items.push(
+      <a key="ayuda" href="#" className="user-menu-item" onClick={(e) => {
+        e.preventDefault();
+        setShowUserMenu(false);
+        history.push("/ayuda");
+      }}>
+        <IonIcon icon={notificationsOutline} />
+        Ayuda
+      </a>
+    );
+    
+    items.push(
+      <a key="logout" href="#" className="user-menu-item logout" onClick={(e) => {
+        e.preventDefault();
+        handleLogout();
+      }}>
+        <IonIcon icon={logOutOutline} />
+        Cerrar sesión
+      </a>
+    );
+    
+    return items;
   };
 
   return (
@@ -191,12 +312,10 @@ const NavBar: React.FC = () => {
               {/* Perfil de usuario en móvil */}
               {usuario && (
                 <div className="user-profile-mobile d-lg-none">
-                  <div className="tar-mobile">
+                  <div className="user-avatar-mobile">
                     <img
                       src={`https://ui-avatars.com/api/?name=${encodeURIComponent(usuario.nombre_completo || "U")}&background=ff9800&color=fff&size=80`}
                       alt="Avatar"
-                      width="85"
-                      height="85"
                     />
                   </div>
                   <div className="user-name-mobile">{usuario.nombre_completo}</div>
@@ -213,16 +332,11 @@ const NavBar: React.FC = () => {
               <div className="menu-section-title d-lg-none">Navegación</div>
 
               <ul className="navbar-nav">
-                {mainNavItems.map((item) => (
+                {navItems.map((item) => (
                   <li className="nav-item" key={item.path}>
                     <button
                       className={`nav-link btn btn-link ${
-                        // No aplicar "active" a Noticias si hay un usuario logueado
-                        (usuario && item.path === "/noticias") 
-                          ? "" 
-                          : location.pathname === item.path 
-                            ? "active" 
-                            : ""
+                        location.pathname === item.path ? "active" : ""
                       }`}
                       onClick={() => handleNavClick(item.path)}
                       type="button"
@@ -251,18 +365,34 @@ const NavBar: React.FC = () => {
             {/* Acciones de usuario en móvil */}
             {usuario && (
               <div className="user-actions-mobile d-lg-none">
-                <button
-                  className="user-action-btn"
-                  onClick={() => {
-                    handleMenuClose();
-                    history.push("/perfil");
-                  }}
-                >
-                  <IonIcon icon={personCircleOutline} />
-                  <span className="user-action-text">Mi perfil</span>
-                </button>
+                {/* Botones de acción personalizados según rol en móvil */}
+                {userRole === 'jugador' && (
+                  <button
+                    className="user-action-btn"
+                    onClick={() => {
+                      handleMenuClose();
+                      history.push("/jugador/perfil");
+                    }}
+                  >
+                    <IonIcon icon={personCircleOutline} />
+                    <span className="user-action-text">Mi perfil</span>
+                  </button>
+                )}
+                
+                {userRole === 'entrenador' && (
+                  <button
+                    className="user-action-btn"
+                    onClick={() => {
+                      handleMenuClose();
+                      history.push("/entrenador/equipo");
+                    }}
+                  >
+                    <IonIcon icon={peopleSharp} />
+                    <span className="user-action-text">Mi equipo</span>
+                  </button>
+                )}
 
-                {usuario.rol === "administrador" && (
+                {userRole === 'administrador' && (
                   <button
                     className="user-action-btn"
                     onClick={() => {
@@ -290,7 +420,7 @@ const NavBar: React.FC = () => {
               <div className="d-none d-lg-block">
                 <div
                   className="user-button"
-                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  onClick={toggleUserMenu}
                   ref={userButtonRef}
                 >
                   <div className="user-avatar-container">
@@ -326,60 +456,7 @@ const NavBar: React.FC = () => {
                       </div>
                     </div>
                     <div className="user-menu-items">
-                      <a href="#" className="user-menu-item" onClick={(e) => {
-                        e.preventDefault();
-                        setShowUserMenu(false);
-                        history.push("/perfil");
-                      }}>
-                        <IonIcon icon={personCircleOutline} />
-                        Mi perfil
-                      </a>
-
-                      {usuario.rol === "administrador" && (
-                        <a href="#" className="user-menu-item" onClick={(e) => {
-                          e.preventDefault();
-                          setShowUserMenu(false);
-                          history.push("/admin");
-                        }}>
-                          <IonIcon icon={settingsOutline} />
-                          Panel de administración
-                        </a>
-                      )}
-
-                      <a href="#" className="user-menu-item" onClick={(e) => {
-                        e.preventDefault();
-                        setShowUserMenu(false);
-                        history.push("/estadisticas");
-                      }}>
-                        <IonIcon icon={statsChartSharp} />
-                        Estadísticas
-                      </a>
-
-                      <a href="#" className="user-menu-item" onClick={(e) => {
-                        e.preventDefault();
-                        setShowUserMenu(false);
-                        history.push("/configuracion");
-                      }}>
-                        <IonIcon icon={settingsOutline} />
-                        Configuración
-                      </a>
-
-                      <a href="#" className="user-menu-item" onClick={(e) => {
-                        e.preventDefault();
-                        setShowUserMenu(false);
-                        history.push("/ayuda");
-                      }}>
-                        <IonIcon icon={notificationsOutline} />
-                        Ayuda
-                      </a>
-
-                      <a href="#" className="user-menu-item logout" onClick={(e) => {
-                        e.preventDefault();
-                        handleLogout();
-                      }}>
-                        <IonIcon icon={logOutOutline} />
-                        Cerrar sesión
-                      </a>
+                      {renderUserMenuItems()}
                     </div>
                   </div>
                 )}

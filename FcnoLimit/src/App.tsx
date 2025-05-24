@@ -1,17 +1,23 @@
-import React from 'react';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { Redirect, Route } from 'react-router-dom';
+import {
+  IonApp,
+  IonRouterOutlet,
+  setupIonicReact
+} from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { Route, Redirect } from 'react-router-dom';
-
+import NavBar from './components/NavBar';
+import EquiposPage from './pages/home/equipos/EquiposPage';
+import JugadoresPage from './pages/admin/jugador/JugadoresPage';
+import ComparativasPage from './pages/home/estadisticas/ComparativasPage';
+import PartidosPage from './pages/home/partidos/PartidosPage';      
+import InicioPage from './pages/home/inicio/InicioPage';
 import AuthPage from './pages/home/auth/AuthPage';
-import InicioPage from './pages/home//inicio/InicioPage';
-import AdminDashboard from './pages/admin/dashboard/AdminDashboard';
-import JugadorPerfil from './pages/admin/jugador/perfil/JugadorPerfil';
-import EntrenadorPerfil from './pages/admin/entrenador/perfil/EntrenadorPerfil';
-import CompletarPerfilJugador from './pages/admin/jugador/perfil/CompletarPerfil';
-import CompletarPerfilEntrenador from './pages/admin/entrenador/perfil/CompletarPerfil';
-import PrivateRoute from './components/PrivateRoute';
-import PanelPartidos from './pages/home/partidos/PanelPartidos';
+import CampeonatosPage from './pages/home/campeonato/CampeonatoPage';
+import NoticiasPage  from './pages/home/noticias/NoticiasPage';
+import AdminDashboard from './pages/home/admin/AdminDashboard';
+import PerfilPage from './pages/home/perfil/PerfilPage';
+import ProtectedRoute from './components/ProtectedRoute';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -29,88 +35,142 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
+/**
+ * Ionic Dark Mode
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
+
+/* import '@ionic/react/css/palettes/dark.always.css'; */
+/* import '@ionic/react/css/palettes/dark.class.css'; */
+import '@ionic/react/css/palettes/dark.system.css';
+
 /* Theme variables */
 import './styles/variables.css';
 
-setupIonicReact();
+import JugadorPerfil from './pages/admin/jugador/perfil/JugadorPerfil';
+import JugadorEstadisticas from './pages/admin/jugador/estadisticas/Estadisticas';
+import JugadorEntrenamientos from './pages/admin/jugador/entrenamientos/JugadorEntrenamientos';
+import EntrenadorPerfil from './pages/admin/entrenador/perfil/EntrenadorPerfil';
+import EntrenadorEquipo from './pages/admin/entrenador/equipos/EntrenadorEquipo';
+import EntrenadorEstadisticas from './pages/admin/entrenador/estadistica/EntrenadorEstadisticas';
+import EntrenadorEntrenamientos from './pages/admin/entrenador/entrenamientos/EntrenadorEntrenamientos';
+import EntrenadorPage from './pages/admin/entrenador/page';
 
-const App: React.FC = () => {
-  return (
-    <IonApp>
-      <IonReactRouter>
-        <IonRouterOutlet>
-          {/* Rutas públicas */}
-          <Route path="/auth" component={AuthPage} exact />
-          <Route path="/inicio" component={InicioPage} exact />
-          <Route path="/" exact render={() => <Redirect to="/inicio" />} />
-          
-          {/* Rutas para administrador */}
-          <PrivateRoute 
-            path="/admin/dashboard" 
-            component={AdminDashboard} 
-            allowedRoles={['admin']} 
-            exact 
-          />
-          <PrivateRoute 
-            path="/admin" 
-            exact
-            component={() => <Redirect to="/admin/dashboard" />} 
-            allowedRoles={['admin']} 
-          />
-          
-          {/* Rutas para jugador */}
-          <PrivateRoute 
-            path="/admin/jugador/perfil/completar" 
-            component={CompletarPerfilJugador} 
-            allowedRoles={['jugador']} 
-            exact 
-          />
-          <PrivateRoute 
-            path="/admin/jugador/perfil" 
-            component={JugadorPerfil} 
-            allowedRoles={['jugador']} 
-            exact 
-          />
-          <PrivateRoute 
-            path="/admin/jugador" 
-            exact
-            component={() => <Redirect to="/admin/jugador/perfil" />} 
-            allowedRoles={['jugador']} 
-          />
-          
-          {/* Rutas para entrenador */}
-          <PrivateRoute 
-            path="/admin/entrenador/perfil/completar" 
-            component={CompletarPerfilEntrenador} 
-            allowedRoles={['entrenador']} 
-            exact 
-          />
-          <PrivateRoute 
-            path="/admin/entrenador/perfil" 
-            component={EntrenadorPerfil} 
-            allowedRoles={['entrenador']} 
-            exact 
-          />
-          <PrivateRoute 
-            path="/admin/entrenador" 
-            exact
-            component={() => <Redirect to="/admin/entrenador/perfil" />} 
-            allowedRoles={['entrenador']} 
-          />
-          
-          {/* Ruta para panel de partidos (solo para administradores de resultados o principal) */}
-          <PrivateRoute 
-            path="/panel-partidos" 
-            component={PanelPartidos}
-            exact 
-          />
+setupIonicReact({
+  mode: 'md',
+  animated: true
+});
 
-          {/* Ruta para cuando no se encuentra la página */}
-          <Route render={() => <Redirect to="/inicio" />} />
-        </IonRouterOutlet>
-      </IonReactRouter>
-    </IonApp>
-  );
-};
+const App: React.FC = () => (
+  <IonApp className="light-theme">
+    <IonReactRouter>
+      <IonRouterOutlet>
+        {/* Rutas públicas */}
+        <Route exact path="/inicio" component={InicioPage} />
+        <Route exact path="/auth" component={AuthPage} />
+
+        {/* Rutas de Jugador */}
+        <Route exact path="/jugador/perfil" render={() => (
+          <ProtectedRoute>
+            <JugadorPerfil />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/jugador/estadisticas" render={() => (
+          <ProtectedRoute>
+            <JugadorEstadisticas />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/jugador/entrenamientos" render={() => (
+          <ProtectedRoute>
+            <JugadorEntrenamientos />
+          </ProtectedRoute>
+        )} />
+
+        {/* Rutas de Entrenador */}
+        <Route exact path="/entrenador/perfil" render={() => (
+          <ProtectedRoute>
+            <EntrenadorPerfil />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/entrenador/equipo" render={() => (
+          <ProtectedRoute>
+            <EntrenadorEquipo />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/entrenador/estadisticas" render={() => (
+          <ProtectedRoute>
+            <EntrenadorEstadisticas />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/entrenador/entrenamientos" render={() => (
+          <ProtectedRoute>
+            <EntrenadorEntrenamientos />
+          </ProtectedRoute>
+        )} />
+
+        {/* Rutas de Administrador */}
+        <Route exact path="/admin/dashboard" render={() => (
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/admin/jugadores" render={() => (
+          <ProtectedRoute>
+            <JugadoresPage />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/admin/entrenadores" render={() => (
+          <ProtectedRoute>
+            <EntrenadorPage />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/admin/campeonatos" render={() => (
+          <ProtectedRoute>
+            <CampeonatosPage />
+          </ProtectedRoute>
+        )} />
+
+        {/* Rutas comunes protegidas */}
+        <Route exact path="/campeonatos" render={() => (
+          <ProtectedRoute>
+            <CampeonatosPage />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/equipos" render={() => (
+          <ProtectedRoute>
+            <EquiposPage />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/partidos" render={() => (
+          <ProtectedRoute>
+            <PartidosPage />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/comparativas" render={() => (
+          <ProtectedRoute>
+            <ComparativasPage />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/noticias" render={() => (
+          <ProtectedRoute>
+            <NoticiasPage />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/perfil" render={() => (
+          <ProtectedRoute>
+            <PerfilPage />
+          </ProtectedRoute>
+        )} />
+
+        <Route exact path="/">
+          <Redirect to="/inicio" />
+        </Route>
+      </IonRouterOutlet>
+      <NavBar />
+    </IonReactRouter>
+  </IonApp>
+);
 
 export default App;
