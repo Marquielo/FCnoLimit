@@ -198,10 +198,10 @@ const AuthPage: React.FC = () => {
           history.push('/admin/dashboard');
           break;
         case 'jugador':
-          history.push('/admin/jugador/perfil/completar');
+          history.push('/jugador/perfil');
           break;
         case 'entrenador':
-          history.push('/admin/entrenador/perfil/completar');
+          history.push('/entrenador/perfil');
           break;
         case 'persona_natural':
         default:
@@ -435,10 +435,10 @@ const AuthPage: React.FC = () => {
         // Redireccionar según el rol seleccionado
         switch (selectedRole) {
           case 'jugador':
-            history.push('/admin/jugador/perfil/completar');
+            history.push('/jugador/perfil');
             break;
           case 'entrenador':
-            history.push('/admin/entrenador/perfil/completar');
+            history.push('/entrenador/perfil');
             break;
           case 'persona_natural':
           default:
