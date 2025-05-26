@@ -1,0 +1,79 @@
+.location-map-container {
+  height: 250px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.marker {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.marker-icon {
+  font-size: 2rem;
+  color: #ffa726;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
+  animation: bounce 1s infinite;
+}
+
+.marker-text {
+  background: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.leaflet-container {
+  width: 100%;
+  height: 250px;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.leaflet-popup-content {
+  margin: 0;
+  padding: 0.5rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.leaflet-popup-tip-container {
+  margin-top: -1px;
+}
+
+/* Estilo personalizado para el popup */
+.leaflet-popup {
+  margin-bottom: 15px;
+}
+
+.leaflet-popup-content {
+  text-align: center;
+  font-weight: 500;
+}
+
+.leaflet-popup-content br {
+  margin: 5px 0;
+}

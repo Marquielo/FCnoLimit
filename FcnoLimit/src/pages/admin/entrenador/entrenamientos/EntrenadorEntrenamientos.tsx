@@ -22,7 +22,6 @@ import {
   IonModal,
   IonInput,
   IonTextarea,
-  IonDatetime,
   IonButtons,
   IonBackButton,
   IonSelect,
@@ -66,6 +65,12 @@ import {
 } from 'ionicons/icons';
 import NavBar from '../../../../components/NavBar';
 import Footer from '../../../../components/Footer';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { es } from 'date-fns/locale';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import LocationMap, { LocationType } from '../../../../components/LocationMap';
 
 // Interfaces
 interface Entrenamiento {
@@ -74,7 +79,7 @@ interface Entrenamiento {
   fecha: string;
   hora: string;
   duracion: string;
-  lugar: string;
+  lugar: LocationType; // Cambiado de string a LocationType
   tipo: string;
   descripcion: string;
   completado: boolean;
@@ -83,6 +88,15 @@ interface Entrenamiento {
     presentes: number;
   };
 }
+
+// Añade el tema personalizado para MUI
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#ffa726', // Color primario de FCnoLimit
+    },
+  },
+});
 
 const EntrenadorEntrenamientos: React.FC = () => {
   const [entrenamientos, setEntrenamientos] = useState<Entrenamiento[]>([]);
@@ -100,7 +114,7 @@ const EntrenadorEntrenamientos: React.FC = () => {
   const [nuevaFecha, setNuevaFecha] = useState<string>('');
   const [nuevaHora, setNuevaHora] = useState<string>('');
   const [nuevaDuracion, setNuevaDuracion] = useState<string>('');
-  const [nuevoLugar, setNuevoLugar] = useState<string>('');
+  const [nuevoLugar, setNuevoLugar] = useState<LocationType>('');
   const [nuevoTipo, setNuevoTipo] = useState<string>('');
   const [nuevaDescripcion, setNuevaDescripcion] = useState<string>('');
 
@@ -254,7 +268,7 @@ const EntrenadorEntrenamientos: React.FC = () => {
     setNuevaFecha(entrenamiento.fecha);
     setNuevaHora(entrenamiento.hora);
     setNuevaDuracion(entrenamiento.duracion);
-    setNuevoLugar(entrenamiento.lugar);
+    setNuevoLugar(entrenamiento.lugar as LocationType);
     setNuevoTipo(entrenamiento.tipo);
     setNuevaDescripcion(entrenamiento.descripcion);
     setEntrenamientoSeleccionado(entrenamiento);
@@ -554,135 +568,167 @@ const EntrenadorEntrenamientos: React.FC = () => {
                     </IonButton>
                   </IonButtons>
                   <IonTitle>{isEditing ? 'Editar Entrenamiento' : 'Nuevo Entrenamiento'}</IonTitle>
-                  <IonButtons slot="end">
-                    <IonButton strong onClick={guardarEntrenamiento} className="save-button">
-                      <IonIcon slot="start" icon={checkmark} />
-                      Guardar
-                    </IonButton>
-                  </IonButtons>
                 </IonToolbar>
               </IonHeader>
               
               <IonContent className="modal-content">
-                <div className="modal-section">
-                  <div className="modal-section-header">
-                    <IonIcon icon={clipboardOutline} className="modal-section-icon" />
-                    <h3 className="modal-section-title">Información General</h3>
+                <form className="form-container" onSubmit={(e) => {
+                  e.preventDefault();
+                  guardarEntrenamiento();
+                }}>
+                  {/* Sección de Información General */}
+                  <div className="modal-form-section">
+                    <div className="section-title">
+                      <IonIcon icon={clipboardOutline} />
+                      <h3>Información General</h3>
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label">
+                        Título <span className="required-mark">*</span>
+                      </label>
+                      <input 
+                        type="text"
+                        className="custom-input"
+                        placeholder="Ej: Entrenamiento físico"
+                        value={nuevoTitulo}
+                        onChange={(e) => setNuevoTitulo(e.target.value)}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label">
+                        Tipo <span className="required-mark">*</span>
+                      </label>
+                      <select 
+                        className="custom-select"
+                        value={nuevoTipo}
+                        onChange={(e) => setNuevoTipo(e.target.value)}
+                      >
+                        <option value="">Seleccione un tipo</option>
+                        <option value="Físico">Físico</option>
+                        <option value="Técnico">Técnico</option>
+                        <option value="Táctico">Táctico</option>
+                        <option value="Recuperación">Recuperación</option>
+                        <option value="Partido">Partido de práctica</option>
+                      </select>
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label">
+                        Descripción
+                      </label>
+                      <textarea
+                        className="custom-textarea"
+                        placeholder="Describa el objetivo y actividades del entrenamiento"
+                        value={nuevaDescripcion}
+                        onChange={(e) => setNuevaDescripcion(e.target.value)}
+                      />
+                    </div>
                   </div>
-                  
-                  <IonItem className="modal-form-item">
-                    <IonLabel position="floating">
-                      Título <span className="required-indicator">*</span>
-                    </IonLabel>
-                    <IonInput
-                      value={nuevoTitulo}
-                      onIonChange={e => setNuevoTitulo(e.detail.value || '')}
-                      placeholder="Ej: Entrenamiento físico"
-                      required
-                    />
-                  </IonItem>
-                  
-                  <IonItem className="modal-form-item">
-                    <IonLabel>
-                      Tipo <span className="required-indicator">*</span>
-                    </IonLabel>
-                    <IonSelect
-                      value={nuevoTipo}
-                      onIonChange={e => setNuevoTipo(e.detail.value)}
-                      placeholder="Seleccione un tipo"
-                      interface="popover"
+
+                  {/* Sección de Fecha y Hora */}
+                  <div className="modal-form-section">
+                    <div className="section-title">
+                      <IonIcon icon={calendarOutline} />
+                      <h3>Fecha y Hora</h3>
+                    </div>
+
+                    <div className="date-time-grid">
+                      <div className="form-group">
+                        <label className="form-label">
+                          Fecha <span className="required-mark">*</span>
+                        </label>
+                        <input 
+                          type="date"
+                          className="custom-input"
+                          value={nuevaFecha}
+                          onChange={(e) => setNuevaFecha(e.target.value)}
+                          min={new Date().toISOString().split('T')[0]}
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label className="form-label">
+                          Hora <span className="required-mark">*</span>
+                        </label>
+                        <input 
+                          type="time"
+                          className="custom-input"
+                          value={nuevaHora}
+                          onChange={(e) => setNuevaHora(e.target.value)}
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label className="form-label">
+                          Duración <span className="required-mark">*</span>
+                        </label>
+                        <input 
+                          type="number"
+                          className="custom-input"
+                          placeholder="90"
+                          value={nuevaDuracion}
+                          onChange={(e) => setNuevaDuracion(e.target.value)}
+                        />
+                        <span className="help-text">minutos</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Sección de Ubicación */}
+                  <div className="modal-form-section">
+                    <div className="section-title">
+                      <IonIcon icon={locationOutline} />
+                      <h3>Ubicación</h3>
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label">
+                        Lugar <span className="required-mark">*</span>
+                      </label>
+                      <select 
+                        className="custom-select"
+                        value={nuevoLugar}
+                        onChange={(e) => setNuevoLugar(e.target.value as LocationType)}
+                      >
+                        <option value="">Seleccione un lugar</option>
+                        <option value="Campo principal">Campo principal</option>
+                        <option value="Campo auxiliar">Campo auxiliar</option>
+                        <option value="Gimnasio">Gimnasio</option>
+                        <option value="Sala de tácticas">Sala de tácticas</option>
+                        <option value="Pista de atletismo">Pista de atletismo</option>
+                      </select>
+                    </div>
+
+                    <div className="map-container">
+                      <LocationMap selectedLocation={nuevoLugar} />
+                      <div className="map-info">
+                        <div className="info-row">
+                          <IonIcon icon={locationOutline} />
+                          <span>Complejo Deportivo FC No Limit</span>
+                        </div>
+                        <div className="info-row">
+                          <IonIcon icon={informationCircle} />
+                          <span>Seleccione una ubicación de la lista para ver en el mapa</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Añadir al final del formulario, después de la última sección */}
+                  <div className="form-actions">
+                    <IonButton 
+                      expand="block" 
+                      type="submit"
+                      className="save-button"
+                      strong
                     >
-                      <IonSelectOption value="Físico">Físico</IonSelectOption>
-                      <IonSelectOption value="Técnico">Técnico</IonSelectOption>
-                      <IonSelectOption value="Táctico">Táctico</IonSelectOption>
-                      <IonSelectOption value="Recuperación">Recuperación</IonSelectOption>
-                      <IonSelectOption value="Partido">Partido de práctica</IonSelectOption>
-                    </IonSelect>
-                  </IonItem>
-                  
-                  <IonItem className="modal-form-item">
-                    <IonLabel position="floating">
-                      Descripción
-                    </IonLabel>
-                    <IonTextarea
-                      value={nuevaDescripcion}
-                      onIonChange={e => setNuevaDescripcion(e.detail.value || '')}
-                      placeholder="Describa el objetivo y actividades del entrenamiento"
-                      rows={3}
-                      autoGrow={true}
-                    />
-                  </IonItem>
-                </div>
-                
-                <div className="modal-section">
-                  <div className="modal-section-header">
-                    <IonIcon icon={calendarOutline} className="modal-section-icon" />
-                    <h3 className="modal-section-title">Fecha y Hora</h3>
+                      <IonIcon slot="start" icon={checkmark} />
+                      {isEditing ? 'Guardar cambios' : 'Crear entrenamiento'}
+                    </IonButton>
                   </div>
-                  
-                  <IonItem className="modal-form-item">
-                    <IonLabel>
-                      Fecha <span className="required-indicator">*</span>
-                    </IonLabel>
-                    {/* Actualizado IonDatetime para quitar displayFormat */}
-                    <IonDatetime
-                      presentation="date"
-                      min="2023-01-01"
-                      max="2030-12-31"
-                      value={nuevaFecha}
-                      onIonChange={(e) => setNuevaFecha(e.detail.value as string)}
-                    />
-                  </IonItem>
-                  
-                  <IonItem className="modal-form-item">
-                    <IonLabel position="floating">
-                      Hora <span className="required-indicator">*</span>
-                    </IonLabel>
-                    <IonInput
-                      type="time"
-                      value={nuevaHora}
-                      onIonChange={e => setNuevaHora(e.detail.value || '')}
-                      required
-                    />
-                  </IonItem>
-                  
-                  <IonItem className="modal-form-item">
-                    <IonLabel position="floating">
-                      Duración <span className="required-indicator">*</span>
-                    </IonLabel>
-                    <IonInput
-                      value={nuevaDuracion}
-                      onIonChange={e => setNuevaDuracion(e.detail.value || '')}
-                      placeholder="Ej: 90 minutos"
-                      required
-                    />
-                  </IonItem>
-                </div>
-                
-                <div className="modal-section">
-                  <div className="modal-section-header">
-                    <IonIcon icon={locationOutline} className="modal-section-icon" />
-                    <h3 className="modal-section-title">Ubicación</h3>
-                  </div>
-                  
-                  <IonItem className="modal-form-item">
-                    <IonLabel position="floating">
-                      Lugar <span className="required-indicator">*</span>
-                    </IonLabel>
-                    <IonInput
-                      value={nuevoLugar}
-                      onIonChange={e => setNuevoLugar(e.detail.value || '')}
-                      placeholder="Ej: Campo principal"
-                      required
-                    />
-                  </IonItem>
-                </div>
-                
-                <div className="modal-help-text">
-                  <IonText color="medium">
-                    <small>Los campos marcados con <span className="required-indicator">*</span> son obligatorios</small>
-                  </IonText>
-                </div>
+                </form>
               </IonContent>
             </IonPage>
           </IonModal>
