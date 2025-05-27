@@ -112,7 +112,7 @@ const NavBar: React.FC = () => {
           ...commonItems,
           { path: "/entrenador/equipo", icon: peopleSharp, text: "Mi Equipo" },
           { path: "/entrenador/entrenamientos", icon: fitnessOutline, text: "Entrenamientos" },
-          { path: "/entrenador/tacticas", icon: documentTextOutline, text: "Tácticas" },
+          { path: "/entrenador/tactica", icon: documentTextOutline, text: "Tácticas" },
           { path: "/entrenador/estadisticas", icon: statsChartSharp, text: "Estadísticas" },
         ];
       

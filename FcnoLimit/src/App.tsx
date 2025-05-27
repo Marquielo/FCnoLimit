@@ -57,6 +57,7 @@ import EntrenadorEquipo from './pages/admin/entrenador/equipos/EntrenadorEquipo'
 import EntrenadorEstadisticas from './pages/admin/entrenador/estadistica/EntrenadorEstadisticas';
 import EntrenadorEntrenamientos from './pages/admin/entrenador/entrenamientos/EntrenadorEntrenamientos';
 import EntrenadorPage from './pages/admin/entrenador/page';
+import EntrenadorTacticas from './pages/admin/entrenador/tactica/EntrenadorTacticas';
 
 setupIonicReact({
   mode: 'md',
@@ -107,6 +108,11 @@ const App: React.FC = () => (
         <Route exact path="/entrenador/entrenamientos" render={() => (
           <ProtectedRoute>
             <EntrenadorEntrenamientos />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/entrenador/tactica" render={() => (
+          <ProtectedRoute>
+            <EntrenadorTacticas />
           </ProtectedRoute>
         )} />
 

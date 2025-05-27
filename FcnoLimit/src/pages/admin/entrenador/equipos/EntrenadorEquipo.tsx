@@ -24,11 +24,46 @@ import {
   IonSelectOption,
   IonModal,
   IonButtons,
-  IonBackButton,
+  IonButton as IonButtonImport,
   IonList,
   IonText,
+  IonSkeletonText,
+  IonProgressBar,
+  IonSegment,
+  IonSegmentButton,
+  IonFab,
+  IonFabButton,
 } from '@ionic/react';
-import { peopleCircleOutline, footballOutline, alertCircleOutline, fitnessOutline, trophyOutline } from 'ionicons/icons';
+import { 
+  peopleCircleOutline, 
+  footballOutline, 
+  alertCircleOutline, 
+  fitnessOutline, 
+  trophyOutline, 
+  personAddOutline,
+  starOutline,
+  checkmarkOutline,
+  closeOutline,
+  calendarOutline,
+  timeOutline,
+  arrowForward,
+  podiumOutline,
+  medicalOutline,
+  statsChartOutline,
+  addOutline,
+  chevronForward,
+  ribbonOutline,
+  heart,
+  flash,
+  speedometer,
+  layers,
+  thumbsUp,
+  options,
+  close,
+  create
+} from 'ionicons/icons';
+import NavBar from '../../../../components/NavBar';
+import Footer from '../../../../components/Footer';
 
 // Interfaces para datos
 interface Jugador {
@@ -54,78 +89,86 @@ const EntrenadorEquipo: React.FC = () => {
   const [filtro, setFiltro] = useState<string>('todos');
   const [jugadorSeleccionado, setJugadorSeleccionado] = useState<Jugador | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [vistaActual, setVistaActual] = useState<string>('tarjetas');
+  const [loading, setLoading] = useState<boolean>(true);
 
   // Datos de ejemplo
   useEffect(() => {
+    // Simular carga de datos
+    setLoading(true);
+    
     // Aquí cargarías los datos desde tu API
-    const datosEjemplo: Jugador[] = [
-      {
-        id: 1,
-        nombre: 'Carlos Martínez',
-        posicion: 'Delantero',
-        edad: 24,
-        numero: 9,
-        imagen: 'https://ionicframework.com/docs/img/demos/avatar.svg',
-        estado: 'disponible',
-        estadisticas: {
-          partidos: 15,
-          goles: 12,
-          asistencias: 5,
-          tarjetasAmarillas: 2,
-          tarjetasRojas: 0
+    setTimeout(() => {
+      const datosEjemplo: Jugador[] = [
+        {
+          id: 1,
+          nombre: 'Carlos Martínez',
+          posicion: 'Delantero',
+          edad: 24,
+          numero: 9,
+          imagen: 'https://ionicframework.com/docs/img/demos/avatar.svg',
+          estado: 'disponible',
+          estadisticas: {
+            partidos: 15,
+            goles: 12,
+            asistencias: 5,
+            tarjetasAmarillas: 2,
+            tarjetasRojas: 0
+          }
+        },
+        {
+          id: 2,
+          nombre: 'Juan Pérez',
+          posicion: 'Mediocampista',
+          edad: 22,
+          numero: 8,
+          imagen: 'https://ionicframework.com/docs/img/demos/avatar.svg',
+          estado: 'lesionado',
+          estadisticas: {
+            partidos: 14,
+            goles: 3,
+            asistencias: 10,
+            tarjetasAmarillas: 4,
+            tarjetasRojas: 0
+          }
+        },
+        {
+          id: 3,
+          nombre: 'Miguel López',
+          posicion: 'Defensa',
+          edad: 26,
+          numero: 4,
+          imagen: 'https://ionicframework.com/docs/img/demos/avatar.svg',
+          estado: 'disponible',
+          estadisticas: {
+            partidos: 16,
+            goles: 1,
+            asistencias: 2,
+            tarjetasAmarillas: 3,
+            tarjetasRojas: 1
+          }
+        },
+        {
+          id: 4,
+          nombre: 'Andrés Silva',
+          posicion: 'Portero',
+          edad: 29,
+          numero: 1,
+          imagen: 'https://ionicframework.com/docs/img/demos/avatar.svg',
+          estado: 'sancionado',
+          estadisticas: {
+            partidos: 16,
+            goles: 0,
+            asistencias: 0,
+            tarjetasAmarillas: 1,
+            tarjetasRojas: 0
+          }
         }
-      },
-      {
-        id: 2,
-        nombre: 'Juan Pérez',
-        posicion: 'Mediocampista',
-        edad: 22,
-        numero: 8,
-        imagen: 'https://ionicframework.com/docs/img/demos/avatar.svg',
-        estado: 'lesionado',
-        estadisticas: {
-          partidos: 14,
-          goles: 3,
-          asistencias: 10,
-          tarjetasAmarillas: 4,
-          tarjetasRojas: 0
-        }
-      },
-      {
-        id: 3,
-        nombre: 'Miguel López',
-        posicion: 'Defensa',
-        edad: 26,
-        numero: 4,
-        imagen: 'https://ionicframework.com/docs/img/demos/avatar.svg',
-        estado: 'disponible',
-        estadisticas: {
-          partidos: 16,
-          goles: 1,
-          asistencias: 2,
-          tarjetasAmarillas: 3,
-          tarjetasRojas: 1
-        }
-      },
-      {
-        id: 4,
-        nombre: 'Andrés Silva',
-        posicion: 'Portero',
-        edad: 29,
-        numero: 1,
-        imagen: 'https://ionicframework.com/docs/img/demos/avatar.svg',
-        estado: 'sancionado',
-        estadisticas: {
-          partidos: 16,
-          goles: 0,
-          asistencias: 0,
-          tarjetasAmarillas: 1,
-          tarjetasRojas: 0
-        }
-      }
-    ];
-
-    setJugadores(datosEjemplo);
+      ];
+  
+      setJugadores(datosEjemplo);
+      setLoading(false);
+    }, 1000);
   }, []);
 
   // Filtrar jugadores según búsqueda y filtro
@@ -146,244 +189,507 @@ const EntrenadorEquipo: React.FC = () => {
     setShowModal(true);
   };
 
+  // Obtener color según posición
+  const getColorPosicion = (posicion: string) => {
+    switch(posicion) {
+      case 'Portero': return 'amarillo';
+      case 'Defensa': return 'azul';
+      case 'Mediocampista': return 'verde';
+      case 'Delantero': return 'rojo';
+      default: return 'gris';
+    }
+  };
+
+  // Obtener color y texto según estado
+  const getEstadoInfo = (estado: string) => {
+    switch(estado) {
+      case 'disponible': 
+        return { color: 'success', texto: 'Disponible', icon: checkmarkOutline };
+      case 'lesionado': 
+        return { color: 'warning', texto: 'Lesionado', icon: medicalOutline };
+      case 'sancionado': 
+        return { color: 'danger', texto: 'Sancionado', icon: closeOutline };
+      default: 
+        return { color: 'medium', texto: 'Desconocido', icon: alertCircleOutline };
+    }
+  };
+
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar color="primary">
-          <IonTitle>Gestión de Equipo</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+    <IonPage className="equipo-page">
+      <NavBar />
+      
+      {/* Hero section mejorada */}
+      <IonContent fullscreen className="equipo-content">
+        <div className="equipo-hero">
+          <div className="equipo-hero-overlay"></div>
+          <div className="equipo-hero-content">
+            <h1 className="main-title">
+              <span>Gestión del</span>
+              Equipo
+            </h1>
+            <p className="hero-subtitle">
+              Administra tu plantilla, revisa estadísticas y gestiona el estado de cada jugador.
+            </p>
+            
+            <div className="hero-badges">
+              <div className="hero-badge">
+                <IonIcon icon={peopleCircleOutline} />
+                <div className="badge-count">{jugadores.length}</div>
+                <div className="badge-label">Jugadores</div>
+              </div>
+              <div className="hero-badge">
+                <IonIcon icon={footballOutline} />
+                <div className="badge-count">{jugadores.filter(j => j.estado === 'disponible').length}</div>
+                <div className="badge-label">Disponibles</div>
+              </div>
+              <div className="hero-badge">
+                <IonIcon icon={fitnessOutline} />
+                <div className="badge-count">{jugadores.filter(j => j.estado === 'lesionado').length}</div>
+                <div className="badge-label">Lesionados</div>
+              </div>
+              <div className="hero-badge">
+                <IonIcon icon={alertCircleOutline} />
+                <div className="badge-count">{jugadores.filter(j => j.estado === 'sancionado').length}</div>
+                <div className="badge-label">Sancionados</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Filtros y búsqueda */}
+        <div className="equipo-filtros-container">
+          <div className="filtros-header">
+            <IonSearchbar
+              value={busqueda}
+              onIonChange={e => setBusqueda(e.detail.value || '')}
+              placeholder="Buscar jugador..."
+              className="equipo-searchbar"
+            />
+            
+            <IonButton 
+              className="agregar-jugador-btn primary-btn" 
+              onClick={() => console.log('Agregar jugador')}
+            >
+              <IonIcon slot="start" icon={personAddOutline} />
+              Agregar Jugador
+            </IonButton>
+          </div>
+          
+          <div className="filtro-segment-container">
+            <IonSegment value={filtro} onIonChange={e => setFiltro(e.detail.value?.toString() || 'todos')} mode="ios" className="filtro-segment">
+              <IonSegmentButton value="todos" className="segment-button-custom">
+                <IonLabel>
+                  Todos
+                  <span className="segment-button-counter">{jugadores.length}</span>
+                </IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="disponibles" className="segment-button-custom">
+                <IonLabel>
+                  Disponibles
+                  <span className="segment-button-counter">{jugadores.filter(j => j.estado === 'disponible').length}</span>
+                </IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="lesionados" className="segment-button-custom">
+                <IonLabel>
+                  Lesionados
+                  <span className="segment-button-counter">{jugadores.filter(j => j.estado === 'lesionado').length}</span>
+                </IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="sancionados" className="segment-button-custom">
+                <IonLabel>
+                  Sancionados
+                  <span className="segment-button-counter">{jugadores.filter(j => j.estado === 'sancionado').length}</span>
+                </IonLabel>
+              </IonSegmentButton>
+            </IonSegment>
+          </div>
+          
+          <div className="vista-selector">
+            <IonSegment value={vistaActual} onIonChange={e => setVistaActual(e.detail.value?.toString() || 'tarjetas')}>
+              <IonSegmentButton value="tarjetas">
+                <IonIcon icon={layers} />
+              </IonSegmentButton>
+              <IonSegmentButton value="lista">
+                <IonIcon icon={options} />
+              </IonSegmentButton>
+            </IonSegment>
+          </div>
+        </div>
 
-      <IonContent className="ion-padding">
-        <IonCard>
-          <IonCardHeader>
-            <IonCardTitle>Resumen del Equipo</IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent>
-            <IonGrid>
-              <IonRow>
-                <IonCol size="6" size-md="3">
-                  <div className="ion-text-center">
-                    <IonIcon icon={peopleCircleOutline} color="primary" style={{ fontSize: '2rem' }} />
-                    <p><strong>Jugadores</strong></p>
-                    <IonText color="primary">
-                      <h2>{jugadores.length}</h2>
-                    </IonText>
+        {/* Estado de carga */}
+        {loading ? (
+          <div className="loading-container">
+            <IonProgressBar type="indeterminate" color="primary"></IonProgressBar>
+            <div className="skeleton-cards">
+              {[...Array(4)].map((_, i) => (
+                <div className="skeleton-card" key={i}>
+                  <div className="skeleton-header">
+                    <div className="skeleton-avatar"></div>
+                    <div className="skeleton-details">
+                      <IonSkeletonText animated style={{ width: '70%', height: '16px' }}></IonSkeletonText>
+                      <IonSkeletonText animated style={{ width: '40%', height: '12px' }}></IonSkeletonText>
+                    </div>
                   </div>
-                </IonCol>
-                <IonCol size="6" size-md="3">
-                  <div className="ion-text-center">
-                    <IonIcon icon={footballOutline} color="success" style={{ fontSize: '2rem' }} />
-                    <p><strong>Disponibles</strong></p>
-                    <IonText color="success">
-                      <h2>{jugadores.filter(j => j.estado === 'disponible').length}</h2>
-                    </IonText>
+                  <div className="skeleton-content">
+                    <IonSkeletonText animated style={{ width: '90%', height: '12px' }}></IonSkeletonText>
+                    <IonSkeletonText animated style={{ width: '60%', height: '12px' }}></IonSkeletonText>
                   </div>
-                </IonCol>
-                <IonCol size="6" size-md="3">
-                  <div className="ion-text-center">
-                    <IonIcon icon={fitnessOutline} color="warning" style={{ fontSize: '2rem' }} />
-                    <p><strong>Lesionados</strong></p>
-                    <IonText color="warning">
-                      <h2>{jugadores.filter(j => j.estado === 'lesionado').length}</h2>
-                    </IonText>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <>
+            {/* Vista de tarjetas */}
+            {vistaActual === 'tarjetas' && (
+              <div className="jugadores-grid">
+                {jugadoresFiltrados.length === 0 ? (
+                  <div className="empty-state">
+                    <div className="empty-state-icon">
+                      <IonIcon icon={peopleCircleOutline} />
+                    </div>
+                    <h3 className="empty-state-title">No se encontraron jugadores</h3>
+                    <p className="empty-state-text">Intenta cambiar los filtros o añade nuevos jugadores al equipo.</p>
+                    <IonButton className="empty-state-action">
+                      <IonIcon slot="start" icon={personAddOutline} />
+                      Añadir Jugador
+                    </IonButton>
                   </div>
-                </IonCol>
-                <IonCol size="6" size-md="3">
-                  <div className="ion-text-center">
-                    <IonIcon icon={alertCircleOutline} color="danger" style={{ fontSize: '2rem' }} />
-                    <p><strong>Sancionados</strong></p>
-                    <IonText color="danger">
-                      <h2>{jugadores.filter(j => j.estado === 'sancionado').length}</h2>
-                    </IonText>
-                  </div>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-          </IonCardContent>
-        </IonCard>
+                ) : (
+                  jugadoresFiltrados.map((jugador, index) => (
+                    <div 
+                      className={`jugador-card animate-on-enter ${index % 3 === 0 ? 'animate-delay-1' : index % 3 === 1 ? 'animate-delay-2' : 'animate-delay-3'} show`}
+                      key={jugador.id}
+                      onClick={() => verDetalles(jugador)}
+                    >
+                      <div className={`card-indicator ${getEstadoInfo(jugador.estado).color}`}></div>
+                      <div className="card-header">
+                        <div className="card-numero">{jugador.numero}</div>
+                        <div className={`card-posicion-badge ${getColorPosicion(jugador.posicion)}`}>
+                          {jugador.posicion}
+                        </div>
+                      </div>
+                      <div className="card-avatar">
+                        <img src={jugador.imagen} alt={jugador.nombre} />
+                        <div className={`estado-indicador ${getEstadoInfo(jugador.estado).color}`}>
+                          <IonIcon icon={getEstadoInfo(jugador.estado).icon} />
+                        </div>
+                      </div>
+                      <div className="card-info">
+                        <h3 className="card-nombre">{jugador.nombre}</h3>
+                        <div className="card-stats">
+                          <div className="stat-item">
+                            <div className="stat-value">{jugador.estadisticas.partidos}</div>
+                            <div className="stat-label">PJ</div>
+                          </div>
+                          <div className="stat-item">
+                            <div className="stat-value">{jugador.estadisticas.goles}</div>
+                            <div className="stat-label">Goles</div>
+                          </div>
+                          <div className="stat-item">
+                            <div className="stat-value">{jugador.estadisticas.asistencias}</div>
+                            <div className="stat-label">Asis.</div>
+                          </div>
+                        </div>
+                        <div className="card-footer">
+                          <div className="card-age">
+                            <IonIcon icon={calendarOutline} />
+                            {jugador.edad} años
+                          </div>
+                          <div className="card-action">
+                            Ver Detalles
+                            <IonIcon icon={chevronForward} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
 
-        <IonGrid>
-          <IonRow className="ion-align-items-center">
-            <IonCol size="12" size-md="6">
-              <IonSearchbar
-                value={busqueda}
-                onIonChange={e => setBusqueda(e.detail.value || '')}
-                placeholder="Buscar jugador..."
-              />
-            </IonCol>
-            <IonCol size="12" size-md="6">
-              <IonSelect
-                value={filtro}
-                onIonChange={e => setFiltro(e.detail.value)}
-                interface="popover"
-                placeholder="Filtrar por estado"
-              >
-                <IonSelectOption value="todos">Todos</IonSelectOption>
-                <IonSelectOption value="disponibles">Disponibles</IonSelectOption>
-                <IonSelectOption value="lesionados">Lesionados</IonSelectOption>
-                <IonSelectOption value="sancionados">Sancionados</IonSelectOption>
-              </IonSelect>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
+            {/* Vista de lista */}
+            {vistaActual === 'lista' && (
+              <div className="jugadores-lista">
+                {jugadoresFiltrados.length === 0 ? (
+                  <div className="empty-state">
+                    <div className="empty-state-icon">
+                      <IonIcon icon={peopleCircleOutline} />
+                    </div>
+                    <h3 className="empty-state-title">No se encontraron jugadores</h3>
+                    <p className="empty-state-text">Intenta cambiar los filtros o añade nuevos jugadores al equipo.</p>
+                    <IonButton className="empty-state-action">
+                      <IonIcon slot="start" icon={personAddOutline} />
+                      Añadir Jugador
+                    </IonButton>
+                  </div>
+                ) : (
+                  <IonList className="lista-jugadores">
+                    {jugadoresFiltrados.map((jugador, index) => (
+                      <IonItem 
+                        key={jugador.id} 
+                        className={`lista-item animate-on-enter ${index % 3 === 0 ? 'animate-delay-1' : index % 3 === 1 ? 'animate-delay-2' : 'animate-delay-3'} show`}
+                        onClick={() => verDetalles(jugador)}
+                        detail={true}
+                      >
+                        <div className={`item-numero ${getColorPosicion(jugador.posicion)}`} slot="start">
+                          {jugador.numero}
+                        </div>
+                        <IonAvatar slot="start">
+                          <img src={jugador.imagen} alt={jugador.nombre} />
+                        </IonAvatar>
+                        <IonLabel>
+                          <h2>{jugador.nombre}</h2>
+                          <p>{jugador.posicion} • {jugador.edad} años</p>
+                          <div className="item-stats">
+                            <span className="mini-stat">
+                              <IonIcon icon={footballOutline} /> {jugador.estadisticas.goles}
+                            </span>
+                            <span className="mini-stat">
+                              <IonIcon icon={peopleCircleOutline} /> {jugador.estadisticas.asistencias}
+                            </span>
+                            <span className="mini-stat">
+                              <IonIcon icon={trophyOutline} /> {jugador.estadisticas.partidos}
+                            </span>
+                          </div>
+                        </IonLabel>
+                        <IonChip 
+                          slot="end" 
+                          color={getEstadoInfo(jugador.estado).color}
+                          className="estado-chip"
+                        >
+                          <IonIcon icon={getEstadoInfo(jugador.estado).icon} />
+                          <IonLabel>{getEstadoInfo(jugador.estado).texto}</IonLabel>
+                        </IonChip>
+                      </IonItem>
+                    ))}
+                  </IonList>
+                )}
+              </div>
+            )}
+          </>
+        )}
 
-        <IonGrid>
-          <IonRow>
-            {jugadoresFiltrados.map(jugador => (
-              <IonCol size="12" size-md="6" size-lg="4" key={jugador.id}>
-                <IonCard>
-                  <IonItem>
-                    <IonAvatar slot="start">
-                      <img src={jugador.imagen} alt={jugador.nombre} />
-                    </IonAvatar>
-                    <IonLabel>
-                      <h2>{jugador.nombre}</h2>
-                      <p>{jugador.posicion}</p>
-                    </IonLabel>
-                    <IonBadge slot="end" color={
-                      jugador.estado === 'disponible' ? 'success' :
-                      jugador.estado === 'lesionado' ? 'warning' : 'danger'
-                    }>
-                      {jugador.estado === 'disponible' ? 'Disponible' :
-                       jugador.estado === 'lesionado' ? 'Lesionado' : 'Sancionado'}
-                    </IonBadge>
-                  </IonItem>
-                  <IonCardContent>
-                    <IonGrid>
-                      <IonRow>
-                        <IonCol size="6">
-                          <p><strong>Edad:</strong> {jugador.edad}</p>
-                        </IonCol>
-                        <IonCol size="6">
-                          <p><strong>Número:</strong> {jugador.numero}</p>
-                        </IonCol>
-                      </IonRow>
-                      <IonRow>
-                        <IonCol size="12" className="ion-text-center">
-                          <IonButton fill="clear" onClick={() => verDetalles(jugador)}>
-                            Ver detalles
-                          </IonButton>
-                        </IonCol>
-                      </IonRow>
-                    </IonGrid>
-                  </IonCardContent>
-                </IonCard>
-              </IonCol>
-            ))}
-          </IonRow>
-        </IonGrid>
-
-        <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
+        {/* Modal de detalles del jugador */}
+        <IonModal 
+          isOpen={showModal} 
+          onDidDismiss={() => setShowModal(false)}
+          className="jugador-modal"
+        >
           {jugadorSeleccionado && (
             <IonPage>
               <IonHeader>
-                <IonToolbar>
+                <IonToolbar color="primary" className="modal-header">
                   <IonButtons slot="start">
-                    <IonButton onClick={() => setShowModal(false)}>Cerrar</IonButton>
+                    <IonButton onClick={() => setShowModal(false)}>
+                      <IonIcon slot="icon-only" icon={close} />
+                    </IonButton>
                   </IonButtons>
-                  <IonTitle>{jugadorSeleccionado.nombre}</IonTitle>
+                  <IonTitle>Perfil de Jugador</IonTitle>
                 </IonToolbar>
               </IonHeader>
-              <IonContent className="ion-padding">
-                <div className="ion-text-center ion-margin-bottom">
-                  <IonAvatar style={{ margin: '0 auto', width: '100px', height: '100px' }}>
-                    <img src={jugadorSeleccionado.imagen} alt={jugadorSeleccionado.nombre} />
-                  </IonAvatar>
-                  <h1>{jugadorSeleccionado.nombre}</h1>
-                  <IonChip>
-                    {jugadorSeleccionado.posicion}
-                  </IonChip>
-                  <IonChip color={
-                    jugadorSeleccionado.estado === 'disponible' ? 'success' :
-                    jugadorSeleccionado.estado === 'lesionado' ? 'warning' : 'danger'
-                  }>
-                    {jugadorSeleccionado.estado === 'disponible' ? 'Disponible' :
-                     jugadorSeleccionado.estado === 'lesionado' ? 'Lesionado' : 'Sancionado'}
-                  </IonChip>
+              
+              <IonContent className="jugador-detalles-content">
+                {/* Cabecera del perfil */}
+                <div className="jugador-profile-header">
+                  <div className="profile-header-overlay"></div>
+                  <div className="profile-content">
+                    <div className="profile-avatar-container">
+                      <img src={jugadorSeleccionado.imagen} alt={jugadorSeleccionado.nombre} className="profile-avatar" />
+                      <div className={`profile-number ${getColorPosicion(jugadorSeleccionado.posicion)}`}>
+                        {jugadorSeleccionado.numero}
+                      </div>
+                    </div>
+                    
+                    <h1 className="profile-name">{jugadorSeleccionado.nombre}</h1>
+                    
+                    <div className="profile-badges">
+                      <div className={`profile-position ${getColorPosicion(jugadorSeleccionado.posicion)}-light`}>
+                        {jugadorSeleccionado.posicion}
+                      </div>
+                      <div className={`profile-status ${getEstadoInfo(jugadorSeleccionado.estado).color}`}>
+                        <IonIcon icon={getEstadoInfo(jugadorSeleccionado.estado).icon} />
+                        {getEstadoInfo(jugadorSeleccionado.estado).texto}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-
-                <IonCard>
-                  <IonCardHeader>
-                    <IonCardTitle>Información Personal</IonCardTitle>
-                  </IonCardHeader>
-                  <IonCardContent>
-                    <IonGrid>
-                      <IonRow>
-                        <IonCol size="6">
-                          <p><strong>Edad:</strong> {jugadorSeleccionado.edad}</p>
-                        </IonCol>
-                        <IonCol size="6">
-                          <p><strong>Número:</strong> {jugadorSeleccionado.numero}</p>
-                        </IonCol>
-                      </IonRow>
-                    </IonGrid>
-                  </IonCardContent>
-                </IonCard>
-
-                <IonCard>
-                  <IonCardHeader>
-                    <IonCardTitle>Estadísticas</IonCardTitle>
-                  </IonCardHeader>
-                  <IonCardContent>
-                    <IonGrid>
-                      <IonRow>
-                        <IonCol size="6" size-md="4">
-                          <div className="ion-text-center">
-                            <IonIcon icon={trophyOutline} color="primary" style={{ fontSize: '1.5rem' }} />
-                            <p>Partidos</p>
-                            <h2>{jugadorSeleccionado.estadisticas.partidos}</h2>
-                          </div>
-                        </IonCol>
-                        <IonCol size="6" size-md="4">
-                          <div className="ion-text-center">
-                            <IonIcon icon={footballOutline} color="success" style={{ fontSize: '1.5rem' }} />
-                            <p>Goles</p>
-                            <h2>{jugadorSeleccionado.estadisticas.goles}</h2>
-                          </div>
-                        </IonCol>
-                        <IonCol size="6" size-md="4">
-                          <div className="ion-text-center">
-                            <IonIcon icon={peopleCircleOutline} color="tertiary" style={{ fontSize: '1.5rem' }} />
-                            <p>Asistencias</p>
-                            <h2>{jugadorSeleccionado.estadisticas.asistencias}</h2>
-                          </div>
-                        </IonCol>
-                        <IonCol size="6" size-md="6">
-                          <div className="ion-text-center">
-                            <IonIcon icon={alertCircleOutline} color="warning" style={{ fontSize: '1.5rem' }} />
-                            <p>Tarjetas Amarillas</p>
-                            <h2>{jugadorSeleccionado.estadisticas.tarjetasAmarillas}</h2>
-                          </div>
-                        </IonCol>
-                        <IonCol size="6" size-md="6">
-                          <div className="ion-text-center">
-                            <IonIcon icon={alertCircleOutline} color="danger" style={{ fontSize: '1.5rem' }} />
-                            <p>Tarjetas Rojas</p>
-                            <h2>{jugadorSeleccionado.estadisticas.tarjetasRojas}</h2>
-                          </div>
-                        </IonCol>
-                      </IonRow>
-                    </IonGrid>
-                  </IonCardContent>
-                </IonCard>
                 
-                <IonRow className="ion-justify-content-center ion-margin-top">
-                  <IonCol size="12" size-md="6">
-                    <IonButton expand="block" color="primary">
-                      Editar Información
-                    </IonButton>
-                  </IonCol>
-                  <IonCol size="12" size-md="6">
-                    <IonButton expand="block" color={jugadorSeleccionado.estado === 'disponible' ? 'danger' : 'success'}>
-                      {jugadorSeleccionado.estado === 'disponible' ? 'Marcar como No Disponible' : 'Marcar como Disponible'}
-                    </IonButton>
-                  </IonCol>
-                </IonRow>
+                {/* Sección de estadísticas */}
+                <div className="profile-section">
+                  <div className="section-header">
+                    <h2 className="section-title">
+                      <IonIcon icon={statsChartOutline} />
+                      Estadísticas
+                    </h2>
+                  </div>
+                  
+                  <div className="stats-grid">
+                    <div className="stat-box">
+                      <div className="stat-icon">
+                        <IonIcon icon={trophyOutline} />
+                      </div>
+                      <div className="stat-value">{jugadorSeleccionado.estadisticas.partidos}</div>
+                      <div className="stat-name">Partidos</div>
+                    </div>
+                    
+                    <div className="stat-box">
+                      <div className="stat-icon">
+                        <IonIcon icon={footballOutline} />
+                      </div>
+                      <div className="stat-value">{jugadorSeleccionado.estadisticas.goles}</div>
+                      <div className="stat-name">Goles</div>
+                    </div>
+                    
+                    <div className="stat-box">
+                      <div className="stat-icon">
+                        <IonIcon icon={peopleCircleOutline} />
+                      </div>
+                      <div className="stat-value">{jugadorSeleccionado.estadisticas.asistencias}</div>
+                      <div className="stat-name">Asistencias</div>
+                    </div>
+                    
+                    <div className="stat-box">
+                      <div className="stat-icon warning">
+                        <IonIcon icon={alertCircleOutline} />
+                      </div>
+                      <div className="stat-value">{jugadorSeleccionado.estadisticas.tarjetasAmarillas}</div>
+                      <div className="stat-name">T. Amarillas</div>
+                    </div>
+                    
+                    <div className="stat-box">
+                      <div className="stat-icon danger">
+                        <IonIcon icon={alertCircleOutline} />
+                      </div>
+                      <div className="stat-value">{jugadorSeleccionado.estadisticas.tarjetasRojas}</div>
+                      <div className="stat-name">T. Rojas</div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Sección de atributos */}
+                <div className="profile-section">
+                  <div className="section-header">
+                    <h2 className="section-title">
+                      <IonIcon icon={ribbonOutline} />
+                      Atributos
+                    </h2>
+                  </div>
+                  
+                  <div className="attributes-container">
+                    <div className="attribute-item">
+                      <div className="attribute-name">
+                        <IonIcon icon={speedometer} />
+                        <span>Velocidad</span>
+                      </div>
+                      <div className="attribute-bar-container">
+                        <div className="attribute-bar" style={{ width: '85%' }}></div>
+                      </div>
+                      <div className="attribute-value">85</div>
+                    </div>
+                    
+                    <div className="attribute-item">
+                      <div className="attribute-name">
+                        <IonIcon icon={flash} />
+                        <span>Resistencia</span>
+                      </div>
+                      <div className="attribute-bar-container">
+                        <div className="attribute-bar" style={{ width: '78%' }}></div>
+                      </div>
+                      <div className="attribute-value">78</div>
+                    </div>
+                    
+                    <div className="attribute-item">
+                      <div className="attribute-name">
+                        <IonIcon icon={footballOutline} />
+                        <span>Técnica</span>
+                      </div>
+                      <div className="attribute-bar-container">
+                        <div className="attribute-bar" style={{ width: '92%' }}></div>
+                      </div>
+                      <div className="attribute-value">92</div>
+                    </div>
+                    
+                    <div className="attribute-item">
+                      <div className="attribute-name">
+                        <IonIcon icon={layers} />
+                        <span>Táctica</span>
+                      </div>
+                      <div className="attribute-bar-container">
+                        <div className="attribute-bar" style={{ width: '70%' }}></div>
+                      </div>
+                      <div className="attribute-value">70</div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Sección de información personal */}
+                <div className="profile-section">
+                  <div className="section-header">
+                    <h2 className="section-title">
+                      <IonIcon icon={peopleCircleOutline} />
+                      Información Personal
+                    </h2>
+                  </div>
+                  
+                  <div className="personal-info-grid">
+                    <div className="info-item">
+                      <div className="info-label">Edad</div>
+                      <div className="info-value">{jugadorSeleccionado.edad} años</div>
+                    </div>
+                    
+                    <div className="info-item">
+                      <div className="info-label">Número</div>
+                      <div className="info-value">{jugadorSeleccionado.numero}</div>
+                    </div>
+                    
+                    <div className="info-item">
+                      <div className="info-label">Posición</div>
+                      <div className="info-value">{jugadorSeleccionado.posicion}</div>
+                    </div>
+                    
+                    <div className="info-item">
+                      <div className="info-label">Estado</div>
+                      <div className={`info-value estado-${jugadorSeleccionado.estado}`}>
+                        {getEstadoInfo(jugadorSeleccionado.estado).texto}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Botones de acción */}
+                <div className="profile-actions">
+                  <IonButton 
+                    expand="block"
+                    color="primary"
+                    className="action-button"
+                  >
+                    <IonIcon slot="start" icon={create} />
+                    Editar Información
+                  </IonButton>
+                  
+                  <IonButton 
+                    expand="block" 
+                    color={jugadorSeleccionado.estado === 'disponible' ? 'warning' : 'success'}
+                    className="action-button"
+                  >
+                    <IonIcon slot="start" icon={jugadorSeleccionado.estado === 'disponible' ? alertCircleOutline : checkmarkOutline} />
+                    {jugadorSeleccionado.estado === 'disponible' ? 'Marcar como No Disponible' : 'Marcar como Disponible'}
+                  </IonButton>
+                </div>
               </IonContent>
             </IonPage>
           )}
         </IonModal>
+        
+        {/* FAB Button para añadir jugadores */}
+        <IonFab vertical="bottom" horizontal="end" slot="fixed" className="fab-container">
+          <IonFabButton className="fab-button-custom">
+            <IonIcon icon={addOutline} />
+          </IonFabButton>
+        </IonFab>
+        
+        <Footer />
       </IonContent>
     </IonPage>
   );

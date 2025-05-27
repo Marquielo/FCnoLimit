@@ -551,8 +551,11 @@ const EntrenadorEntrenamientos: React.FC = () => {
             </div>
           )}
 
-          <IonFab vertical="bottom" horizontal="end" slot="fixed">
-            <IonFabButton onClick={crearEntrenamiento} className="fab-button-custom">
+          <IonFab vertical="bottom" horizontal="end" slot="fixed" className="custom-fab">
+            <IonFabButton 
+              onClick={crearEntrenamiento} 
+              className="fab-button-custom"
+            >
               <IonIcon icon={add} />
             </IonFabButton>
           </IonFab>
@@ -744,7 +747,7 @@ const EntrenadorEntrenamientos: React.FC = () => {
                         <IonIcon slot="icon-only" icon={close} />
                       </IonButton>
                     </IonButtons>
-                    <IonTitle>Detalles del Entrenamiento</IonTitle>
+                    <IonTitle>Detalle del Entrenamiento</IonTitle>
                     <IonButtons slot="end">
                       <IonButton onClick={() => editarEntrenamiento(entrenamientoSeleccionado)}>
                         <IonIcon slot="icon-only" icon={create} />
@@ -752,128 +755,108 @@ const EntrenadorEntrenamientos: React.FC = () => {
                     </IonButtons>
                   </IonToolbar>
                 </IonHeader>
-
-                <IonContent className="detalles-content ion-padding">
+                
+                <IonContent className="detalles-content">
+                  {/* Hero section mejorada */}
                   <div className="detalles-hero-container">
                     <div className="detalles-hero">
                       <div className="detalles-hero-overlay"></div>
                       <div className="detalles-hero-content">
                         <div className="detalles-tipo">
-                          <div className={`detalles-tipo-badge ${getChipClase(entrenamientoSeleccionado.tipo)}`}>
+                          <div className={`detalles-tipo-badge chip-${entrenamientoSeleccionado.tipo}`}>
                             <IonIcon icon={getIconoTipo(entrenamientoSeleccionado.tipo)} />
-                            <span>{entrenamientoSeleccionado.tipo}</span>
+                            <span>{entrenamientoSeleccionado.tipo.charAt(0).toUpperCase() + entrenamientoSeleccionado.tipo.slice(1)}</span>
                           </div>
                         </div>
                         
                         <h1 className="detalles-titulo">{entrenamientoSeleccionado.titulo}</h1>
                         
                         <div className="detalles-metadata">
-                          <div className="detalles-fecha">
+                          <div className="detalles-metadata-item">
                             <IonIcon icon={calendarOutline} />
-                            <span>{formatearFecha(entrenamientoSeleccionado.fecha)}</span>
+                            <span>{entrenamientoSeleccionado.fecha}</span>
                           </div>
-                          <div className="detalles-hora">
+                          <div className="detalles-metadata-item">
                             <IonIcon icon={timeOutline} />
                             <span>{entrenamientoSeleccionado.hora}</span>
                           </div>
                         </div>
 
-                        <div className={`detalles-estado-badge ${entrenamientoSeleccionado.completado ? 'completado' : 'pendiente'}`}>
-                          <IonIcon icon={entrenamientoSeleccionado.completado ? checkmark : timeOutline} />
+                        <div className={entrenamientoSeleccionado.completado ? 'detalles-estado-badge completado' : 'detalles-estado-badge pendiente'}>
+                          <IonIcon icon={entrenamientoSeleccionado.completado ? checkmark : stopwatchOutline} />
                           <span>{entrenamientoSeleccionado.completado ? 'Completado' : 'Programado'}</span>
                         </div>
                       </div>
                     </div>
                   </div>
 
+                  {/* Cards de información mejoradas */}
                   <div className="detalles-cards-container">
-                    {/* Sección de información general */}
+                    {/* Información general */}
                     <div className="detalles-card">
                       <div className="detalles-card-header">
                         <IonIcon icon={informationCircle} />
                         <h3>Información General</h3>
                       </div>
-                      <div className="detalles-info-grid">
-                        <div className="detalles-info-item">
-                          <span className="detalles-info-label">Tipo</span>
-                          <span className="detalles-info-text">
-                            <IonIcon icon={getIconoTipo(entrenamientoSeleccionado.tipo)} />
-                            {entrenamientoSeleccionado.tipo}
-                          </span>
+                      <div className="detalles-card-content">
+                        <div className="detalle-info-grid">
+                          <div className="detalle-info-item">
+                            <div className="detalle-info-label">Duración</div>
+                            <div className="detalle-info-value">
+                              <IonIcon icon={stopwatchOutline} />
+                              {entrenamientoSeleccionado.duracion}
+                            </div>
+                          </div>
+                          
+                          <div className="detalle-info-item">
+                            <div className="detalle-info-label">Lugar</div>
+                            <div className="detalle-info-value">
+                              <IonIcon icon={locationOutline} />
+                              {entrenamientoSeleccionado.lugar}
+                            </div>
+                          </div>
                         </div>
-                        <div className="detalles-info-item">
-                          <span className="detalles-info-label">Fecha</span>
-                          <span className="detalles-info-text">
-                            <IonIcon icon={calendarOutline} />
-                            {formatearFecha(entrenamientoSeleccionado.fecha)}
-                          </span>
-                        </div>
-                        <div className="detalles-info-item">
-                          <span className="detalles-info-label">Hora</span>
-                          <span className="detalles-info-text">
-                            <IonIcon icon={timeOutline} />
-                            {entrenamientoSeleccionado.hora}
-                          </span>
-                        </div>
-                        <div className="detalles-info-item">
-                          <span className="detalles-info-label">Duración</span>
-                          <span className="detalles-info-text">
-                            <IonIcon icon={stopwatchOutline} />
-                            {entrenamientoSeleccionado.duracion}
-                          </span>
-                        </div>
-                        <div className="detalles-info-item">
-                          <span className="detalles-info-label">Lugar</span>
-                          <span className="detalles-info-text">
-                            <IonIcon icon={locationOutline} />
-                            {entrenamientoSeleccionado.lugar}
-                          </span>
+
+                        <div className="detalle-descripcion-container">
+                          <h4>Descripción</h4>
+                          <p className="detalles-descripcion">
+                            {entrenamientoSeleccionado.descripcion || "Sin descripción disponible"}
+                          </p>
                         </div>
                       </div>
                     </div>
 
-                    {/* Sección de descripción */}
-                    <div className="detalles-card">
-                      <div className="detalles-card-header">
-                        <IonIcon icon={documentText} />
-                        <h3>Descripción</h3>
-                      </div>
-                      <p className="detalles-descripcion">
-                        {entrenamientoSeleccionado.descripcion || "No hay descripción disponible para este entrenamiento."}
-                      </p>
-                    </div>
-
-                    {/* Sección de asistencia */}
+                    {/* Asistencia */}
                     <div className="detalles-card">
                       <div className="detalles-card-header">
                         <IonIcon icon={peopleOutline} />
                         <h3>Asistencia</h3>
                       </div>
-                      <div className="detalle-asistencia">
+                      <div className="detalles-card-content">
                         <div className="detalle-asistencia-chart">
-                          <IonProgressBar 
-                            value={entrenamientoSeleccionado.asistencias.presentes / entrenamientoSeleccionado.asistencias.total} 
-                            color="success" 
+                          <div 
+                            className="detalle-asistencia-progress"
                             style={{
-                              height: '100%', 
-                              width: '100%', 
-                              borderRadius: '50%',
-                              transform: 'rotate(-90deg)', 
-                              position: 'absolute'
+                              background: `conic-gradient(
+                                var(--fcnolimit-success) ${(entrenamientoSeleccionado.asistencias.presentes / entrenamientoSeleccionado.asistencias.total) * 100}%,
+                                #f4f4f4 0
+                              )`
                             }}
-                          ></IonProgressBar>
-                          <span className="detalle-asistencia-percentage">
-                            {Math.round((entrenamientoSeleccionado.asistencias.presentes / entrenamientoSeleccionado.asistencias.total) * 100)}%
-                          </span>
+                          >
+                            <div className="detalle-asistencia-percentage">
+                              {Math.round((entrenamientoSeleccionado.asistencias.presentes / entrenamientoSeleccionado.asistencias.total) * 100)}%
+                            </div>
+                          </div>
                         </div>
+
                         <div className="detalle-asistencia-info">
-                          <strong>{entrenamientoSeleccionado.asistencias.presentes}</strong> de {entrenamientoSeleccionado.asistencias.total} jugadores
+                          <strong>{entrenamientoSeleccionado.asistencias.presentes}</strong> de <strong>{entrenamientoSeleccionado.asistencias.total}</strong> jugadores asistieron
                         </div>
                       </div>
                     </div>
                   </div>
                   
-                  {/* Botones de acción */}
+                  {/* Botones de acción mejorados */}
                   <div className="detalle-buttons">
                     {!entrenamientoSeleccionado.completado && (
                       <IonButton 
@@ -904,6 +887,7 @@ const EntrenadorEntrenamientos: React.FC = () => {
                       Eliminar Entrenamiento
                     </IonButton>
                   </div>
+            
                 </IonContent>
               </IonPage>
             )}
