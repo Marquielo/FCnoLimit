@@ -53,7 +53,8 @@ import {
   arrowDownOutline,
   alertCircleOutline,
   listOutline,
-  analyticsOutline
+  analyticsOutline,
+  chevronDownOutline // Añadir este icono
 } from 'ionicons/icons';
 import NavBar from '../../../../components/NavBar';
 import Footer from '../../../../components/Footer';
@@ -142,6 +143,16 @@ const EntrenadorEstadisticas: React.FC = () => {
   const [jugadorSeleccionado, setJugadorSeleccionado] = useState<number | null>(null);
   const [filtro, setFiltro] = useState<'todos' | 'goles' | 'asistencias' | 'minutos'>('todos');
   const [cargando, setCargando] = useState<boolean>(true);
+  const [acordeonAbierto, setAcordeonAbierto] = useState<number | null>(null); // Añadir este estado
+  
+  // Agregar esta función para controlar el acordeón
+  const toggleAcordeon = (id: number) => {
+    if (acordeonAbierto === id) {
+      setAcordeonAbierto(null);
+    } else {
+      setAcordeonAbierto(id);
+    }
+  };
   
   // Carga simulada de datos
   useEffect(() => {
@@ -715,7 +726,7 @@ const EntrenadorEstadisticas: React.FC = () => {
                     </div>
                   </div>
                   <div className="card-content">
-                    <div className="jugadores-tabla">
+                    <div className="jugadores-tabla desktop-only">
                       <div className="tabla-header">
                         <div className="col-jugador">Jugador</div>
                         <div className="col-posicion">Posición</div>
@@ -759,154 +770,320 @@ const EntrenadorEstadisticas: React.FC = () => {
                         </div>
                       ))}
                     </div>
-                  </div>
-                </div>
-                
-                {/* Estadísticas individuales */}
-                <div className="estadisticas-card">
-                  <div className="card-header">
-                    <div className="card-titulo">
-                      <IonIcon icon={personOutline} />
-                      <h2>Estadísticas individuales</h2>
-                    </div>
-                    <div className="card-acciones">
-                      <IonSelect 
-                        value={jugadorSeleccionado} 
-                        onIonChange={e => setJugadorSeleccionado(e.detail.value)} 
-                        interface="popover"
-                        className="jugador-select"
-                      >
-                        {jugadores.map((jugador) => (
-                          <IonSelectOption key={jugador.id} value={jugador.id}>{jugador.nombre}</IonSelectOption>
-                        ))}
-                      </IonSelect>
-                    </div>
-                  </div>
-                  <div className="card-content">
-                    {(() => {
-                      const jugador = jugadores.find(j => j.id === jugadorSeleccionado);
-                      if (!jugador) return null;
-                      
-                      return (
-                        <div className="perfil-jugador">
-                          <div className="perfil-header">
-                            <div className="perfil-avatar">
-                              <IonIcon icon={personOutline} />
+                    
+                    {/* Acordeón para móviles */}
+                    <div className="jugadores-acordeon mobile-only">
+                      {jugadoresFiltrados.map((jugador) => (
+                        <div 
+                          key={jugador.id} 
+                          className={`acordeon-item ${jugadorSeleccionado === jugador.id ? 'acordeon-seleccionado' : ''} ${acordeonAbierto === jugador.id ? 'acordeon-abierto' : ''}`}
+                          data-id={jugador.id}
+                        >
+                          <div 
+                            className="acordeon-header" 
+                            onClick={() => toggleAcordeon(jugador.id)}
+                          >
+                            <div className="acordeon-jugador-info">
+                              <div className="acordeon-avatar">
+                                <IonIcon icon={personOutline} />
+                              </div>
+                              <div className="acordeon-detalles">
+                                <div className="acordeon-nombre">{jugador.nombre}</div>
+                                <div className="acordeon-posicion">{jugador.posicion}</div>
+                              </div>
                             </div>
-                            <div className="perfil-info">
-                              <h3 className="perfil-nombre">{jugador.nombre}</h3>
-                              <div className="perfil-posicion">{jugador.posicion}</div>
+                            
+                            <div className="acordeon-datos-rapidos">
+                              <div className="dato-rapido">
+                                <span className="dato-valor">{jugador.estadisticas.goles}</span>
+                                <span className="dato-etiqueta">Goles</span>
+                              </div>
+                              <div className="acordeon-indicador">
+                                <IonIcon icon={chevronDownOutline} />
+                              </div>
                             </div>
                           </div>
                           
-                          <div className="perfil-contenido">
-                            <div className="perfil-grafica">
-                              <Doughnut 
-                                data={obtenerDatosJugadorSeleccionado()} 
-                                options={opcionesComunes} 
-                              />
-                            </div>
-                            
-                            <div className="perfil-estadisticas">
-                              <div className="estadistica-item">
-                                <div className="estadistica-icono partidos">
+                          <div className="acordeon-contenido">
+                            {/* Estadísticas destacadas */}
+                            <div className="destacados-grid">
+                              <div className="destacado-item">
+                                <div className="destacado-icono partidos">
                                   <IonIcon icon={podiumOutline} />
                                 </div>
-                                <div className="estadistica-info">
-                                  <div className="estadistica-valor">{jugador.estadisticas.partidosJugados}</div>
-                                  <div className="estadistica-etiqueta">Partidos</div>
-                                </div>
+                                <div className="destacado-valor">{jugador.estadisticas.partidosJugados}</div>
+                                <div className="destacado-label">Partidos</div>
                               </div>
                               
-                              <div className="estadistica-item">
-                                <div className="estadistica-icono minutos">
+                              <div className="destacado-item">
+                                <div className="destacado-icono minutos">
                                   <IonIcon icon={timeOutline} />
                                 </div>
-                                <div className="estadistica-info">
-                                  <div className="estadistica-valor">{jugador.estadisticas.minutosJugados}</div>
-                                  <div className="estadistica-etiqueta">Minutos</div>
-                                </div>
+                                <div className="destacado-valor">{jugador.estadisticas.minutosJugados}</div>
+                                <div className="destacado-label">Minutos</div>
                               </div>
                               
-                              <div className="estadistica-item">
-                                <div className="estadistica-icono goles">
+                              <div className="destacado-item">
+                                <div className="destacado-icono goles">
                                   <IonIcon icon={footballOutline} />
                                 </div>
-                                <div className="estadistica-info">
-                                  <div className="estadistica-valor">{jugador.estadisticas.goles}</div>
-                                  <div className="estadistica-etiqueta">Goles</div>
-                                </div>
+                                <div className="destacado-valor">{jugador.estadisticas.goles}</div>
+                                <div className="destacado-label">Goles</div>
                               </div>
                               
-                              <div className="estadistica-item">
-                                <div className="estadistica-icono asistencias">
+                              <div className="destacado-item">
+                                <div className="destacado-icono asistencias">
                                   <IonIcon icon={peopleOutline} />
                                 </div>
-                                <div className="estadistica-info">
-                                  <div className="estadistica-valor">{jugador.estadisticas.asistencias}</div>
-                                  <div className="estadistica-etiqueta">Asistencias</div>
+                                <div className="destacado-valor">{jugador.estadisticas.asistencias}</div>
+                                <div className="destacado-label">Asistencias</div>
+                              </div>
+                            </div>
+                            
+                            {/* Rendimiento y tarjetas */}
+                            <div className="acordeon-seccion">
+                              <div className="seccion-titulo">
+                                <div className="linea-titulo"></div>
+                                <h4>Rendimiento</h4>
+                                <div className="linea-titulo"></div>
+                              </div>
+                              
+                              <div className="rendimiento-lista">
+                                <div className="rendimiento-item">
+                                  <div className="item-info">
+                                    <div className="item-icono">
+                                      <IonIcon icon={statsChartOutline} />
+                                    </div>
+                                    <div className="item-texto">
+                                      <div className="item-titulo">Goles por partido</div>
+                                      <div className="item-valor">{(jugador.estadisticas.goles / jugador.estadisticas.partidosJugados).toFixed(2)}</div>
+                                    </div>
+                                  </div>
+                                  <div className="barra-progreso-container">
+                                    <div className="barra-fondo"></div>
+                                    <div 
+                                      className="barra-progreso goles" 
+                                      style={{ 
+                                        width: `${Math.min((jugador.estadisticas.goles / jugador.estadisticas.partidosJugados) * 100, 100)}%` 
+                                      }}
+                                    ></div>
+                                  </div>
+                                </div>
+                                
+                                <div className="rendimiento-item">
+                                  <div className="item-info">
+                                    <div className="item-icono">
+                                      <IonIcon icon={timeOutline} />
+                                    </div>
+                                    <div className="item-texto">
+                                      <div className="item-titulo">Minutos por partido</div>
+                                      <div className="item-valor">{(jugador.estadisticas.minutosJugados / jugador.estadisticas.partidosJugados).toFixed(0)} min</div>
+                                    </div>
+                                  </div>
+                                  <div className="barra-progreso-container">
+                                    <div className="barra-fondo"></div>
+                                    <div 
+                                      className="barra-progreso minutos" 
+                                      style={{ 
+                                        width: `${Math.min((jugador.estadisticas.minutosJugados / jugador.estadisticas.partidosJugados / 90) * 100, 100)}%` 
+                                      }}
+                                    ></div>
+                                  </div>
+                                </div>
+                                
+                                <div className="rendimiento-item">
+                                  <div className="item-info">
+                                    <div className="item-icono">
+                                      <IonIcon icon={alertCircleOutline} />
+                                    </div>
+                                    <div className="item-texto">
+                                      <div className="item-titulo">Tarjetas</div>
+                                      <div className="tarjetas-container">
+                                        <div className="tarjeta amarilla">
+                                          <span>{jugador.estadisticas.tarjetasAmarillas}</span>
+                                        </div>
+                                        <div className="tarjeta roja">
+                                          <span>{jugador.estadisticas.tarjetasRojas}</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                             
-                            <div className="perfil-metricas">
-                              <div className="metrica">
-                                <div className="metrica-titulo">
-                                  <span>Minutos por partido</span>
-                                  <span className="metrica-valor">
-                                    {(jugador.estadisticas.minutosJugados / jugador.estadisticas.partidosJugados).toFixed(1)}
-                                  </span>
-                                </div>
-                                <div className="metrica-barra-container">
-                                  <div 
-                                    className="metrica-barra" 
-                                    style={{ 
-                                      width: `${((jugador.estadisticas.minutosJugados / jugador.estadisticas.partidosJugados) / 90) * 100}%` 
-                                    }}
-                                  ></div>
-                                </div>
-                              </div>
-                              
-                              <div className="metrica">
-                                <div className="metrica-titulo">
-                                  <span>Goles por partido</span>
-                                  <span className="metrica-valor">
-                                    {(jugador.estadisticas.goles / jugador.estadisticas.partidosJugados).toFixed(2)}
-                                  </span>
-                                </div>
-                                <div className="metrica-barra-container">
-                                  <div 
-                                    className="metrica-barra" 
-                                    style={{ 
-                                      width: `${(jugador.estadisticas.goles / jugador.estadisticas.partidosJugados) * 100}%` 
-                                    }}
-                                  ></div>
-                                </div>
-                              </div>
-                              
-                              <div className="metrica">
-                                <div className="metrica-titulo">
-                                  <span>Tarjetas amarillas</span>
-                                  <span className="metrica-valor">
-                                    {jugador.estadisticas.tarjetasAmarillas}
-                                  </span>
-                                </div>
-                                <div className="metrica-barra-container">
-                                  <div 
-                                    className="metrica-barra tarjetas" 
-                                    style={{ 
-                                      width: `${(jugador.estadisticas.tarjetasAmarillas / 10) * 100}%` 
-                                    }}
-                                  ></div>
-                                </div>
-                              </div>
+                            <div className="acordeon-acciones">
+                              <IonButton 
+                                expand="block" 
+                                className="acordeon-btn"
+                                onClick={() => {
+                                  setJugadorSeleccionado(jugador.id);
+                                  
+                                  // Desplazarse suavemente a la sección de estadísticas individuales
+                                  const estadisticasIndividuales = document.getElementById('estadisticas-individuales');
+                                  if (estadisticasIndividuales) {
+                                    estadisticasIndividuales.scrollIntoView({ behavior: 'smooth' });
+                                  }
+                                }}
+                              >
+                                <IonIcon icon={statsChartOutline} slot="start" />
+                                Ver análisis completo
+                              </IonButton>
                             </div>
                           </div>
                         </div>
-                      );
-                    })()}
+                      ))}
+                    </div>
+                    
+                    {/* Estadísticas individuales */}
+                    <div className="estadisticas-card" id="estadisticas-individuales">
+                      <div className="card-header">
+                        <div className="card-titulo">
+                          <IonIcon icon={personOutline} />
+                          <h2>Estadísticas individuales</h2>
+                        </div>
+                        <div className="card-acciones">
+                          <IonSelect 
+                            value={jugadorSeleccionado} 
+                            onIonChange={e => setJugadorSeleccionado(e.detail.value)} 
+                            interface="popover"
+                            className="jugador-select"
+                          >
+                            {jugadores.map((jugador) => (
+                              <IonSelectOption key={jugador.id} value={jugador.id}>{jugador.nombre}</IonSelectOption>
+                            ))}
+                          </IonSelect>
+                        </div>
+                      </div>
+                      <div className="card-content">
+                        {(() => {
+                          const jugador = jugadores.find(j => j.id === jugadorSeleccionado);
+                          if (!jugador) return null;
+                          
+                          return (
+                            <div className="perfil-jugador">
+                              <div className="perfil-header">
+                                <div className="perfil-avatar">
+                                  <IonIcon icon={personOutline} />
+                                </div>
+                                <div className="perfil-info">
+                                  <h3 className="perfil-nombre">{jugador.nombre}</h3>
+                                  <div className="perfil-posicion">{jugador.posicion}</div>
+                                </div>
+                              </div>
+                              
+                              <div className="perfil-contenido">
+                                <div className="perfil-grafica">
+                                  <Doughnut 
+                                    data={obtenerDatosJugadorSeleccionado()} 
+                                    options={opcionesComunes} 
+                                  />
+                                </div>
+                                
+                                <div className="perfil-estadisticas">
+                                  <div className="estadistica-item">
+                                    <div className="estadistica-icono partidos">
+                                      <IonIcon icon={podiumOutline} />
+                                    </div>
+                                    <div className="estadistica-info">
+                                      <div className="estadistica-valor">{jugador.estadisticas.partidosJugados}</div>
+                                      <div className="estadistica-etiqueta">Partidos</div>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="estadistica-item">
+                                    <div className="estadistica-icono minutos">
+                                      <IonIcon icon={timeOutline} />
+                                    </div>
+                                    <div className="estadistica-info">
+                                      <div className="estadistica-valor">{jugador.estadisticas.minutosJugados}</div>
+                                      <div className="estadistica-etiqueta">Minutos</div>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="estadistica-item">
+                                    <div className="estadistica-icono goles">
+                                      <IonIcon icon={footballOutline} />
+                                    </div>
+                                    <div className="estadistica-info">
+                                      <div className="estadistica-valor">{jugador.estadisticas.goles}</div>
+                                      <div className="estadistica-etiqueta">Goles</div>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="estadistica-item">
+                                    <div className="estadistica-icono asistencias">
+                                      <IonIcon icon={peopleOutline} />
+                                    </div>
+                                    <div className="estadistica-info">
+                                      <div className="estadistica-valor">{jugador.estadisticas.asistencias}</div>
+                                      <div className="estadistica-etiqueta">Asistencias</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                <div className="perfil-metricas">
+                                  <div className="metrica">
+                                    <div className="metrica-titulo">
+                                      <span>Minutos por partido</span>
+                                      <span className="metrica-valor">
+                                        {(jugador.estadisticas.minutosJugados / jugador.estadisticas.partidosJugados).toFixed(1)}
+                                      </span>
+                                    </div>
+                                    <div className="metrica-barra-container">
+                                      <div 
+                                        className="metrica-barra" 
+                                        style={{ 
+                                          width: `${((jugador.estadisticas.minutosJugados / jugador.estadisticas.partidosJugados) / 90) * 100}%` 
+                                        }}
+                                      ></div>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="metrica">
+                                    <div className="metrica-titulo">
+                                      <span>Goles por partido</span>
+                                      <span className="metrica-valor">
+                                        {(jugador.estadisticas.goles / jugador.estadisticas.partidosJugados).toFixed(2)}
+                                      </span>
+                                    </div>
+                                    <div className="metrica-barra-container">
+                                      <div 
+                                        className="metrica-barra" 
+                                        style={{ 
+                                          width: `${(jugador.estadisticas.goles / jugador.estadisticas.partidosJugados) * 100}%` 
+                                        }}
+                                      ></div>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="metrica">
+                                    <div className="metrica-titulo">
+                                      <span>Tarjetas amarillas</span>
+                                      <span className="metrica-valor">
+                                        {jugador.estadisticas.tarjetasAmarillas}
+                                      </span>
+                                    </div>
+                                    <div className="metrica-barra-container">
+                                      <div 
+                                        className="metrica-barra tarjetas" 
+                                        style={{ 
+                                          width: `${(jugador.estadisticas.tarjetasAmarillas / 10) * 100}%` 
+                                        }}
+                                      ></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    </div>
                   </div>
                 </div>
+                
+                <Footer />
               </>
             )}
           </div>

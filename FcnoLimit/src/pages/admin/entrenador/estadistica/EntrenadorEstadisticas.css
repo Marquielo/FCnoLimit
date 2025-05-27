@@ -701,9 +701,398 @@
   }
 }
 
+/* Estilos para mostrar/ocultar según dispositivo */
+@media (max-width: 767px) {
+  .desktop-only {
+    display: none;
+  }
+}
+
 @media (min-width: 768px) {
-  .goles-resumen {
-    display: flex;
-    justify-content: space-around;
+  .mobile-only {
+    display: none;
+  }
+}
+
+/* Estilos para acordeón móvil */
+.jugadores-acordeon {
+  margin-top: 10px;
+}
+
+.acordeon-item {
+  background-color: white;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  position: relative;
+}
+
+.acordeon-seleccionado {
+  border-left: 4px solid var(--fcnolimit-primary);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.15);
+}
+
+.acordeon-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.acordeon-jugador-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+
+.acordeon-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(52, 152, 219, 0.15), rgba(52, 152, 219, 0.25));
+  color: #3498db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  box-shadow: 0 2px 6px rgba(52, 152, 219, 0.2);
+}
+
+.acordeon-detalles {
+  display: flex;
+  flex-direction: column;
+}
+
+.acordeon-nombre {
+  font-weight: 700;
+  color: var(--fcnolimit-text-dark);
+  font-size: 1.05rem;
+  margin-bottom: 2px;
+}
+
+.acordeon-posicion {
+  color: var(--fcnolimit-text-muted);
+  font-size: 0.85rem;
+}
+
+/* Datos rápidos en el header del acordeón */
+.acordeon-datos-rapidos {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dato-rapido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, #f8f9fa, #f1f3f5);
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+
+.dato-etiqueta {
+  font-size: 0.7rem;
+  color: var(--fcnolimit-text-muted);
+  margin-top: 2px;
+}
+
+.dato-valor {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--fcnolimit-primary);
+}
+
+.acordeon-indicador {
+  color: var(--fcnolimit-text-muted);
+  transition: transform 0.3s ease;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.acordeon-abierto .acordeon-indicador {
+  transform: rotate(180deg);
+  background-color: #e9ecef;
+}
+
+.acordeon-contenido {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0, 1, 0, 1), opacity 0.3s ease;
+  opacity: 0;
+  padding: 0 16px;
+}
+
+.acordeon-abierto .acordeon-contenido {
+  max-height: 800px;
+  padding-bottom: 16px;
+  transition: max-height 0.4s ease-in-out, opacity 0.3s ease;
+  opacity: 1;
+}
+
+/* Estadísticas destacadas */
+.destacados-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.destacado-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 12px 8px;
+  border-radius: 10px;
+  background-color: #f8f9fa;
+  transition: transform 0.2s ease;
+}
+
+.destacado-item:hover {
+  transform: translateY(-2px);
+}
+
+.destacado-icono {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+  font-size: 1.1rem;
+}
+
+.destacado-icono.partidos {
+  background: rgba(52, 152, 219, 0.15);
+  color: #3498db;
+}
+
+.destacado-icono.minutos {
+  background: rgba(155, 89, 182, 0.15);
+  color: #9b59b6;
+}
+
+.destacado-icono.goles {
+  background: rgba(46, 204, 113, 0.15);
+  color: #2ecc71;
+}
+
+.destacado-icono.asistencias {
+  background: rgba(241, 196, 15, 0.15);
+  color: #f1c40f;
+}
+
+.destacado-valor {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--fcnolimit-text-dark);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.destacado-label {
+  font-size: 0.7rem;
+  color: var(--fcnolimit-text-muted);
+}
+
+/* Sección de rendimiento */
+.acordeon-seccion {
+  margin-bottom: 20px;
+}
+
+.seccion-titulo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.seccion-titulo h4 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--fcnolimit-text-muted);
+  padding: 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.linea-titulo {
+  flex: 1;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.07);
+}
+
+.rendimiento-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rendimiento-item {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.item-info {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.item-icono {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--fcnolimit-primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.item-texto {
+  flex: 1;
+}
+
+.item-titulo {
+  font-size: 0.85rem;
+  color: var(--fcnolimit-text-muted);
+  margin-bottom: 2px;
+}
+
+.item-valor {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--fcnolimit-text-dark);
+}
+
+.barra-progreso-container {
+  position: relative;
+  height: 8px;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.barra-fondo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.barra-progreso {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  border-radius: 4px;
+  transition: width 1.5s ease;
+}
+
+.barra-progreso.goles {
+  background: linear-gradient(to right, #2ecc71, #27ae60);
+}
+
+.barra-progreso.minutos {
+  background: linear-gradient(to right, #3498db, #2980b9);
+}
+
+.tarjetas-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.tarjeta {
+  width: 20px;
+  height: 28px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tarjeta.amarilla {
+  background-color: #f1c40f;
+}
+
+.tarjeta.roja {
+  background-color: #e74c3c;
+}
+
+.acordeon-acciones {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.acordeon-btn {
+  --color: white;
+  --background: var(--fcnolimit-primary);
+  --background-hover: var(--fcnolimit-primary-dark);
+  --background-activated: var(--fcnolimit-primary-dark);
+  --border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin: 0;
+  --box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);
+  height: 44px;
+  max-width: 90%;
+  text-transform: none;
+}
+
+.acordeon-btn ion-icon {
+  font-size: 16px;
+  margin-right: 6px;
+}
+
+@media (max-width: 350px) {
+  .destacados-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  
+  .destacado-item {
+    padding: 8px 4px;
+  }
+  
+  .destacado-icono {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+  }
+  
+  .rendimiento-item {
+    padding: 10px;
+  }
+  
+  .item-icono {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
   }
 }
