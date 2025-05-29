@@ -64,7 +64,7 @@ app.use('/api/jugadores', require('./routes/jugadores')(pool));
 app.use('/api/partidos', require('./routes/partidos')(pool));
 app.use('/api/estadisticas_partido', require('./routes/estadisticasPartido')(pool));
 app.use('/api/estadisticas_jugador_partido', require('./routes/estadisticasJugadorPartido')(pool));
-// Agrega las rutas faltantes:
+
 app.use('/api/divisiones', require('./routes/divisiones')(pool));
 app.use('/api/copas', require('./routes/copas')(pool));
 app.use('/api/asociaciones', require('./routes/asociaciones')(pool));

@@ -23,7 +23,9 @@ const EquiposPage: React.FC = () => {
   useEffect(() => {
     const fetchEquipos = async () => {
       try {
-        const res = await fetch(`${apiBaseUrl}/api/divisiones/equipos`);
+        const res = await fetch(`${apiBaseUrl}/api/divisiones/equipos`, {
+          cache: 'no-store'
+        });
         if (!res.ok) throw new Error('Error al cargar equipos');
         const data: Equipo[] = await res.json();
         // Agrupar equipos por división

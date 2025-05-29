@@ -15,7 +15,9 @@ const CampeonatosPage: React.FC = () => {
   useEffect(() => {
     const fetchCampeonatos = async () => {
       try {
-        const res = await fetch(`${apiBaseUrl}/api/campeonatos/vista`);
+        const res = await fetch(`${apiBaseUrl}/api/campeonatos/vista`, {
+          cache: 'no-store'
+        });
         if (!res.ok) throw new Error('Error al cargar campeonatos');
         const data = await res.json();
         setCampeonatos(Array.isArray(data) ? data : []);
