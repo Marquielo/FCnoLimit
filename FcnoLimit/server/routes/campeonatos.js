@@ -125,5 +125,15 @@ module.exports = (pool) => {
     }
   });
 
+  // Obtener vista de campeonatos (público)
+  router.get('/vista', async (req, res) => {
+    try {
+      const result = await pool.query('SELECT * FROM "fcnolimit".v_campeonatos');
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   return router;
 };

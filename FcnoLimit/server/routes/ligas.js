@@ -85,5 +85,25 @@ module.exports = (pool) => {
     }
   });
 
+  // GET /api/ligas/vista
+  router.get('/vista', async (req, res) => {
+    try {
+      const result = await pool.query('SELECT * FROM "fcnolimit".v_ligas');
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // GET /api/ligas/campeonatos
+  router.get('/campeonatos', async (req, res) => {
+    try {
+      const result = await pool.query('SELECT * FROM "fcnolimit".v_ligas_campeonatos');
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   return router;
 };

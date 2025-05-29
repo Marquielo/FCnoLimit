@@ -102,5 +102,95 @@ module.exports = (pool) => {
     }
   });
 
+  // Obtener jugadores por equipo_id
+  router.get('/:equipo_id/jugadores', async (req, res) => {
+    const { equipo_id } = req.params;
+    try {
+      const result = await pool.query(
+        `SELECT * FROM "fcnolimit".llamar_jugadores_por_equipo WHERE equipo_id = $1`,
+        [equipo_id]
+      );
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Obtener historial de partidos por equipo_id
+  router.get('/:equipo_id/historial-partidos', async (req, res) => {
+    const { equipo_id } = req.params;
+    try {
+      const result = await pool.query(
+        `SELECT * FROM "fcnolimit".v_historial_partidos WHERE equipo_id = $1`,
+        [equipo_id]
+      );
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Obtener partidos ganados por equipo_id
+  router.get('/:equipo_id/ganados', async (req, res) => {
+    const { equipo_id } = req.params;
+    try {
+      const result = await pool.query(
+        `SELECT * FROM "fcnolimit".v_partidos_ganados WHERE equipo_id = $1`,
+        [equipo_id]
+      );
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Obtener partidos perdidos por equipo_id
+  router.get('/:equipo_id/perdidos', async (req, res) => {
+    const { equipo_id } = req.params;
+    try {
+      const result = await pool.query(
+        `SELECT * FROM "fcnolimit".v_partidos_perdidos WHERE equipo_id = $1`,
+        [equipo_id]
+      );
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Obtener empates por equipo_id
+  router.get('/:equipo_id/empates', async (req, res) => {
+    const { equipo_id } = req.params;
+    try {
+      const result = await pool.query(
+        `SELECT * FROM "fcnolimit".v_empates_equipo WHERE equipo_id = $1`,
+        [equipo_id]
+      );
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Obtener divisiones de equipos
+  router.get('/divisiones', async (req, res) => {
+    try {
+      const result = await pool.query('SELECT * FROM "fcnolimit".v_equipos_divisiones');
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Obtener copas de equipos
+  router.get('/copas', async (req, res) => {
+    try {
+      const result = await pool.query('SELECT * FROM "fcnolimit".v_equipos_copas');
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   return router;
 };

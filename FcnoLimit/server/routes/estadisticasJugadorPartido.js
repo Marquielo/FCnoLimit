@@ -106,5 +106,25 @@ module.exports = (pool) => {
     }
   });
 
+  // Obtener estadísticas de jugador (vista)
+  router.get('/jugador', async (req, res) => {
+    try {
+      const result = await pool.query('SELECT * FROM "fcnolimit".v_estadisticas_jugador');
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Obtener estadísticas de jugador en partido (vista)
+  router.get('/jugador-partido', async (req, res) => {
+    try {
+      const result = await pool.query('SELECT * FROM "fcnolimit".v_estadisticas_jugador_partido');
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   return router;
 };

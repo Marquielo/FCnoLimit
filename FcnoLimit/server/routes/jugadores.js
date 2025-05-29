@@ -160,5 +160,29 @@ module.exports = (pool) => {
     }
   });
 
+  // Obtener todos los jugadores fichados (público)
+  router.get('/fichados', async (req, res) => {
+    try {
+      const result = await pool.query('SELECT * FROM "fcnolimit".llamar_all_jugadores_fichados');
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // GET /api/jugadores/:jugador_id
+  router.get('/:jugador_id', async (req, res) => {
+    const { jugador_id } = req.params;
+    try {
+      const result = await pool.query(
+        `SELECT * FROM "fcnolimit".vista_detalle_jugador WHERE jugador_id = $1`,
+        [jugador_id]
+      );
+      res.json(result.rows[0]);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+  
   return router;
 };

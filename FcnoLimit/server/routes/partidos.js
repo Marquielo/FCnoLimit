@@ -154,5 +154,53 @@ module.exports = (pool) => {
     }
   });
 
+  // Obtener partidos jugados (público)
+  router.get('/jugados', async (req, res) => {
+    try {
+      const result = await pool.query('SELECT * FROM "fcnolimit".vista_partidos_jugados');
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Obtener partidos pendientes (público)
+  router.get('/pendientes', async (req, res) => {
+    try {
+      const result = await pool.query('SELECT * FROM "fcnolimit".v_partidos_por_jugar');
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Obtener partidos pendientes por equipo (público)
+  router.get('/pendientes/equipo/:equipo_id', async (req, res) => {
+    const { equipo_id } = req.params;
+    try {
+      const result = await pool.query(
+        `SELECT * FROM "fcnolimit".v_partidos_por_jugar_equipo WHERE equipo_local_id = $1 OR equipo_visitante_id = $1`,
+        [equipo_id]
+      );
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Obtener partidos pendientes por división (público)
+  router.get('/pendientes/division/:division_equipo_id/:division_id', async (req, res) => {
+    const { division_equipo_id, division_id } = req.params;
+    try {
+      const result = await pool.query(
+        `SELECT * FROM "fcnolimit".v_partidos_por_jugar_division WHERE division_equipo_id = $1 AND division_id = $2`,
+        [division_equipo_id, division_id]
+      );
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   return router;
 };

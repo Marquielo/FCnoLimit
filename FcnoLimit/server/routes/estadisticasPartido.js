@@ -95,5 +95,35 @@ module.exports = (pool) => {
     }
   });
 
+  // Obtener estadísticas de partido (vista) (público)
+  router.get('/partido', async (req, res) => {
+    try {
+      const result = await pool.query('SELECT * FROM "fcnolimit".v_estadisticas_partido');
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Obtener goles por jugador y partido (vista) (público)
+  router.get('/goles-jugador-partido', async (req, res) => {
+    try {
+      const result = await pool.query('SELECT * FROM "fcnolimit".v_goles_jugador_partido');
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Obtener historial de jugadores y equipos (público)
+  router.get('/historial', async (req, res) => {
+    try {
+      const result = await pool.query('SELECT * FROM "fcnolimit".v_historial_jugadores_equipos');
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   return router;
 };
