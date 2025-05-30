@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -69,6 +70,7 @@ app.use('/api/divisiones', require('./routes/divisiones')(pool));
 app.use('/api/copas', require('./routes/copas')(pool));
 app.use('/api/asociaciones', require('./routes/asociaciones')(pool));
 app.use('/api/estadios', require('./routes/estadios')(pool));
+app.use('/equipos', express.static(path.join(__dirname, 'public/equipos')));
 
 const PORT = process.env.PORT || 3001;
 app.listen(port, () => {
