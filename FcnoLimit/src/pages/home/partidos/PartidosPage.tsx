@@ -90,7 +90,7 @@ const PartidosPage: React.FC = () => {
             />
           </div>
           <div className="team-name">
-            {p.equipo_local || "Equipo Local"} {/* Texto de fallback por si acaso */}
+            {p.equipo_local || "Equipo Local"}
           </div>
         </div>
         <div className="match-vs">
@@ -104,25 +104,28 @@ const PartidosPage: React.FC = () => {
             />
           </div>
           <div className="team-name">
-            {p.equipo_visitante || "Equipo Visitante"} {/* Texto de fallback */}
+            {p.equipo_visitante || "Equipo Visitante"}
           </div>
         </div>
       </div>
+
+      {/* NUEVA SECCIÓN PARA EL RESULTADO PROMINENTE (SOLO SI isJugado es true) */}
+      {isJugado && (
+        <div className="match-score-prominent">
+          <strong>
+            {typeof p.goles_local === 'number' && typeof p.goles_visitante === 'number'
+              ? `${p.goles_local} - ${p.goles_visitante}`
+              : 'S/R'}
+          </strong>
+        </div>
+      )}
+
       <div className="match-info">
-        <div className="match-info-item stadium"> {/* Clase adicional para posible estilo específico */}
+        <div className="match-info-item stadium">
           <IonIcon icon={locationOutline} />
           <span>{p.estadio || 'Por definir'}</span>
         </div>
-        {isJugado && (
-          <div className="match-info-item result"> {/* Clase adicional */}
-            <strong>
-              {typeof p.goles_local === 'number' && typeof p.goles_visitante === 'number'
-                ? `${p.goles_local} - ${p.goles_visitante}`
-                : 'S/R'} {/* Más corto */}
-            </strong>
-          </div>
-        )}
-        {/* El botón de detalles ahora se manejará con flex para posicionarlo */}
+        {/* El resultado ya no se muestra aquí, se movió arriba */}
         <IonButton className="match-details-btn" fill="clear" size="small" routerLink={`/partidos/${p.partido_id || p.id}`}>
           Detalles <IonIcon icon={arrowForward} />
         </IonButton>

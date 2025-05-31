@@ -1,3 +1,4 @@
+/* Estilos Generales de la Página y Secciones */
 .page-container {
   padding: 32px;
   min-height: 100vh;
@@ -26,6 +27,7 @@
   padding: 2rem 1rem; /* Added some horizontal padding */
 }
 
+/* Estilos del Contenedor de Partidos (Slider o Grid) */
 .matches-slider {
   display: flex;
   overflow-x: auto;
@@ -34,20 +36,16 @@
   -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
-.matches-slider .match-card {
-  min-width: 280px; /* Minimum width for cards in slider */
-  max-width: 320px; /* Maximum width for cards in slider */
-  flex: 0 0 auto;   /* Prevents shrinking/growing, uses its basis size */
-}
-
-.matches-grid {
+.matches-grid { /* Si usas un grid en lugar de slider para algunas vistas */
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
   margin-top: 2rem;
 }
 
-.match-card {
+/* Estilos de la Tarjeta de Partido (.match-card) */
+.match-card,
+.matches-slider .match-card { /* Aplicar a ambos contextos */
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); /* Softer shadow */
@@ -55,6 +53,12 @@
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-width: 280px; /* Minimum width for cards */
+  max-width: 320px; /* Maximum width for cards */
+}
+
+.matches-slider .match-card {
+  flex: 0 0 auto;   /* Prevents shrinking/growing in slider, uses its basis size */
 }
 
 .match-card:hover {
@@ -62,12 +66,25 @@
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12); /* Adjusted hover shadow */
 }
 
+/* Estilos del Encabezado de la Tarjeta */
+/* Si tienes un .match-card-header, sus estilos irían aquí. Ejemplo:
+.match-card .match-card-header {
+  text-align: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+.match-card .match-card-header .match-league { ... }
+.match-card .match-card-header .match-date { ... }
+*/
+
+/* Estilos de la Sección de Equipos */
 .match-card .match-teams {
   display: flex;
-  align-items: flex-start; /* Align items to the start of the cross axis */
-  justify-content: space-around;
-  margin-bottom: 1rem;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
+  /* margin-bottom: 1rem; */ /* Ajustar o quitar si el nuevo score necesita espacio diferente */
 }
 
 .match-card .team {
@@ -133,19 +150,31 @@
   font-weight: bold;
 }
 
+/* Estilos del Resultado Prominente */
+.match-score-prominent {
+  text-align: center;
+  font-size: 2.2rem; /* Reducido de 2.8rem, ajusta si necesitas más pequeño o más grande */
+  font-weight: 700;
+  color: #000000; /* Cambiado a negro */
+  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
+  line-height: 1;
+}
+
+/* Estilos de la Información del Partido */
 .match-card .match-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 1rem; /* More space above info */
-  margin-top: auto; /* Pushes info to the bottom if card has varying content height */
-  border-top: 1px solid #e9ecef; /* Lighter separator */
-  font-size: 0.8rem;
+  padding-top: 0.75rem;
+  margin-top: auto; /* Esto es importante si la altura de las tarjetas varía */
+  border-top: 1px solid #f0f0f0;
+  font-size: 0.75rem;
   width: 100%;
+  gap: 0.5rem;
 }
 
-.match-card .match-info-item,
-.match-card .match-result {
+.match-card .match-info-item { /* Estilo base para items como estadio */
   display: flex;
   align-items: center;
   color: #495057; /* Slightly darker grey for info text */
@@ -156,10 +185,20 @@
   font-size: 1rem; /* Slightly larger icon */
 }
 
-.match-card .match-result strong {
+/* Estilo para el resultado si se muestra dentro de .match-info (ej. para partidos pendientes sin resultado prominente) */
+.match-card .match-result strong { /* Se aplica al <strong> dentro de .match-result */
   color: #1a1a1a; /* Stronger color for result */
   font-weight: 700; /* Bolder result */
 }
+
+/* Estilo específico para el div que contiene el resultado, si es un .match-info-item */
+.match-info-item.result { /* Si el resultado es un item directo de match-info */
+  color: #333; /* Heredado o específico */
+  font-weight: bold; /* Heredado o específico */
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 
 .match-card .match-details-btn {
   font-size: 0.8rem;
@@ -172,9 +211,17 @@
   margin-left: 0.25rem;
 }
 
-/* Error message styling */
+/* Estilos de Mensajes (Error, "No hay partidos") */
 .error-message {
   color: red;
   text-align: center;
   padding: 1rem;
 }
+
+/* Si tienes un <p> para "No hay partidos", puedes estilizarlo así:
+.matches-section > p {
+  text-align: center;
+  color: #777;
+  padding: 1rem;
+}
+*/
