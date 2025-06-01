@@ -17,7 +17,8 @@ import {
   chevronDown,
   calendarOutline,
   documentTextOutline,
-  fitnessOutline
+  fitnessOutline,
+  searchOutline
 } from "ionicons/icons";
 import { useHistory, useLocation } from "react-router-dom";
 import "./NavBar.css";
@@ -82,11 +83,9 @@ const NavBar: React.FC = () => {
   const getNavItems = () => {
     // Items comunes para todos los usuarios
     const commonItems = [
-      { path: "/inicio", icon: homeSharp, text: "Inicio" },
       { path: "/equipos", icon: peopleSharp, text: "Equipos" },
       { path: "/partidos", icon: footballSharp, text: "Partidos" },
-      { path: "/campeonatos", icon: trophySharp, text: "Campeonatos" },
-      { path: "/noticias", icon: newspaperSharp, text: "Noticias" },
+      { path: "/campeonatos", icon: trophySharp, text: "Competicion" },
     ];
     
     // Items específicos según rol
@@ -115,13 +114,7 @@ const NavBar: React.FC = () => {
           { path: "/entrenador/tactica", icon: documentTextOutline, text: "Tácticas" },
           { path: "/entrenador/estadisticas", icon: statsChartSharp, text: "Estadísticas" },
         ];
-      
-      case 'persona_natural':
-        return [
-          ...commonItems,
-          { path: "/perfil", icon: personCircleOutline, text: "Mi Perfil" },
-          { path: "/comparativas", icon: gitCompareSharp, text: "Comparativas" },
-        ];
+    
       
       default:
         return commonItems;
@@ -417,49 +410,60 @@ const NavBar: React.FC = () => {
 
             {/* Avatar y nombre como botón con menú (solo en desktop) */}
             {usuario && (
-              <div className="d-none d-lg-block">
-                <div
-                  className="user-button"
-                  onClick={toggleUserMenu}
-                  ref={userButtonRef}
+              <div className="d-none d-lg-flex align-items-center gap-2">
+                {/* Botón de search a la izquierda del perfil */}
+                <button
+                  className="navbar-competition-style"
+                  onClick={() => handleNavClick("/home/buscar")}
+                  type="button"
                 >
-                  <div className="user-avatar-container">
-                    <img
-                      src={`https://ui-avatars.com/api/?name=${encodeURIComponent(usuario.nombre_completo || "U")}&background=ff9800&color=fff`}
-                      alt={usuario.nombre_completo}
-                      className="user-avatar"
-                    />
-                    <div className="user-status-indicator"></div>
+                  <IonIcon icon={searchOutline} className="navbar-search-icon" />
+                  Buscar
+                </button>
+                <div className="navbar-actions">
+                  {userRole === 'jugador' && (
+                    <button className="navbar-stats-btn">
+                      Mis estadísticas
+                    </button>
+                  )}
+                  <div className="user-button" onClick={toggleUserMenu} ref={userButtonRef}>
+                    <div className="user-avatar-container">
+                      <img
+                        src={`https://ui-avatars.com/api/?name=${encodeURIComponent(usuario.nombre_completo || "U")}&background=ff9800&color=fff`}
+                        alt={usuario.nombre_completo}
+                        className="user-avatar"
+                      />
+                      <div className="user-status-indicator"></div>
+                    </div>
+                    <span className="user-name">{usuario.nombre_completo}</span>
+                    <IonIcon icon={chevronDown} className="user-dropdown-icon" />
                   </div>
-                  <span className="user-name">{usuario.nombre_completo}</span>
-                  <IonIcon icon={chevronDown} className="user-dropdown-icon" />
-                </div>
-
-                {showUserMenu && (
-                  <div className="custom-user-dropdown" ref={dropdownRef}>
-                    {/* Contenido del menú */}
-                    <div className="user-menu-header">
-                      <div className="user-avatar-dropdown">
-                        <img
-                          src={`https://ui-avatars.com/api/?name=${encodeURIComponent(usuario.nombre_completo || "U")}&background=ff9800&color=121921&size=48`}
-                          alt={usuario.nombre_completo}
-                        />
-                      </div>
-                      <div className="user-info-dropdown">
-                        <div className="user-name-dropdown">{usuario.nombre_completo}</div>
-                        <div className="user-role-dropdown">
-                          {usuario.rol === "administrador" ? "Administrador" :
-                            usuario.rol === "jugador" ? "Jugador" :
-                              usuario.rol === "persona_natural" ? "Perfil" :
-                                usuario.rol === "entrenador" ? "Entrenador" : "Usuario"}
+                  {showUserMenu && (
+                    <div className="custom-user-dropdown" ref={dropdownRef}>
+                      {/* Contenido del menú */}
+                      <div className="user-menu-header">
+                        <div className="user-avatar-dropdown">
+                          <img
+                            src={`https://ui-avatars.com/api/?name=${encodeURIComponent(usuario.nombre_completo || "U")}&background=ff9800&color=121921&size=48`}
+                            alt={usuario.nombre_completo}
+                          />
+                        </div>
+                        <div className="user-info-dropdown">
+                          <div className="user-name-dropdown">{usuario.nombre_completo}</div>
+                          <div className="user-role-dropdown">
+                            {usuario.rol === "administrador" ? "Administrador" :
+                              usuario.rol === "jugador" ? "Jugador" :
+                                usuario.rol === "persona_natural" ? "Perfil" :
+                                  usuario.rol === "entrenador" ? "Entrenador" : "Usuario"}
+                          </div>
                         </div>
                       </div>
+                      <div className="user-menu-items">
+                        {renderUserMenuItems()}
+                      </div>
                     </div>
-                    <div className="user-menu-items">
-                      {renderUserMenuItems()}
-                    </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             )}
           </div>

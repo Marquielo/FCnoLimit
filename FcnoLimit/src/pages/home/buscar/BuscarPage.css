@@ -1,0 +1,166 @@
+.buscar-page-bg {
+  min-height: 100vh;
+  background: var(--fcnolimit-bg-light, #f3f4f6);
+}
+
+.buscar-page-flex {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.buscar-content {
+  --background: var(--fcnolimit-bg-light, #f3f4f6);
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.buscar-page-wrapper {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  background: var(--fcnolimit-bg-light, #f3f4f6);
+  box-sizing: border-box;
+  padding-top: 64px;
+  padding-bottom: 0;
+}
+
+.buscar-card-expand {
+  flex: 1 1 auto; /* Permite que crezca y empuje el footer hacia abajo */
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 0;
+  min-height: 0;
+}
+
+/* El footer siempre al fondo */
+.buscar-page-wrapper > .Footer,
+.buscar-page-wrapper > footer {
+  flex-shrink: 0;
+  margin-top: auto;
+  width: 100%;
+  /* Asegura que el footer esté pegado al fondo de la ventana */
+  position: relative;
+  bottom: 0;
+  left: 0;
+}
+
+.buscar-full-container {
+  flex: 1 1 auto;
+  width: 100vw;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background: var(--fcnolimit-bg-light, #f3f4f6);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 48px 0 0 0;
+  position: relative;
+  z-index: 0; /* Asegura que esté en la misma capa base */
+}
+
+/* El footer siempre al fondo y en la misma capa que el navbar */
+.buscar-full-container > .Footer,
+.buscar-full-container > footer {
+  margin-top: auto;
+  width: 100vw;
+  min-width: 100vw;
+  flex-shrink: 0;
+  position: relative;
+  left: 0;
+  bottom: 0;
+  z-index: 0; /* Igual que el navbar */
+}
+
+/* Header y título */
+.buscar-header {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 0 0 32px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.buscar-header h2 {
+  font-size: 2.7rem;
+  font-weight: 900;
+  color: var(--fcnolimit-primary, #ffae26);
+  margin: 0 0 18px 0;
+  font-family: 'Montserrat', 'Teko', Arial, sans-serif;
+  text-align: left;
+  text-shadow: 2px 2px 0 #fff, 0 2px 8px rgba(0,0,0,0.12);
+}
+
+/* Barra de búsqueda */
+.buscar-bar-container {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 0 18px 32px;
+  padding-left: 0;
+  padding-right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* Subtítulo */
+.buscar-subtitle {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 0 0 32px;
+  padding-left: 0;
+  padding-right: 0;
+  color: #444;
+  font-size: 1.13rem;
+  margin-top: 8px;
+  text-align: left;
+  opacity: 0.95;
+}
+
+/* Divider */
+.buscar-divider {
+  width: calc(100% - 32px);
+  max-width: 700px;
+  margin: 24px 0 16px 32px;
+  border: none;
+  border-top: 2.5px solid #222; /* Línea negra visible */
+  opacity: 1;
+  background: none;
+  height: 0;
+  box-shadow: none;
+}
+
+@media (max-width: 700px) {
+  .buscar-header,
+  .buscar-bar-container,
+  .buscar-subtitle {
+    max-width: 98vw;
+    margin-left: 8px;
+    margin-right: 8px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .buscar-header h2 {
+    font-size: 1.5rem;
+  }
+  .buscar-divider {
+    max-width: 98vw;
+    margin-left: 8px;
+    margin-right: 8px;
+    width: calc(100% - 16px);
+  }
+}

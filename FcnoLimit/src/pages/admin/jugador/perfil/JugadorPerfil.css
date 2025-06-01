@@ -1,0 +1,478 @@
+.jugador-perfil-content {
+  --background: #1a1a2e; /* Fondo oscuro principal */
+  color: #e0e0e0; /* Color de texto general claro */
+}
+
+.jugador-perfil-content-light {
+  --background: #f0f2f5; /* Un gris muy claro para el fondo de la página */
+}
+
+.perfil-container {
+  width: 100%;
+  max-width: 700px; /* Limita el ancho en pantallas grandes */
+  margin: 0 auto;
+}
+
+.perfil-card {
+  background: #fff;
+  border-radius: 32px;
+  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.08);
+  max-width: 420px;
+  width: 100%;
+  margin: auto;
+  padding-bottom: 32px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.perfil-card-light {
+  background-color: #ffffff; /* Fondo blanco para la tarjeta */
+  margin: 16px; /* Margen alrededor de la tarjeta */
+  border-radius: 20px; /* Bordes redondeados para la tarjeta */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra sutil */
+  overflow: hidden; /* Para que los bordes redondeados afecten a la imagen */
+}
+
+/* Contenedor de la imagen de cabecera */
+.perfil-cabecera-imagen-container {
+  position: relative;
+  width: 100%;
+  padding-top: 50%; /* Aspect ratio 2:1 para la imagen, ajusta según necesites */
+  background-color: #333; /* Fallback */
+  border-radius: 0 0 15px 15px; /* Bordes redondeados abajo si la imagen no los tiene */
+  overflow: hidden; /* Para que los overlays no se salgan si la imagen es más pequeña */
+  margin-bottom: 1rem;
+}
+
+.perfil-img-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2/1;
+  overflow: hidden;
+}
+
+.perfil-cabecera-imagen-container-light {
+  position: relative;
+  width: 100%;
+  /* La altura se define por la imagen o un aspect-ratio si es necesario */
+}
+
+.perfil-cabecera-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cubre el área sin distorsionar */
+}
+
+.perfil-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 32px 32px 0 0;
+}
+
+.perfil-cabecera-img-light {
+  display: block;
+  width: 100%;
+  height: auto; /* Mantiene la proporción de la imagen */
+  max-height: 300px; /* Limita la altura máxima de la imagen */
+  object-fit: cover;
+  /* Los bordes redondeados superiores los hereda de .perfil-card-light debido a overflow:hidden */
+}
+
+/* Overlay "FICHADO" */
+.cabecera-overlay-fichado {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: #f9c74f; /* Amarillo */
+  color: #1a1a2e; /* Texto oscuro */
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.perfil-fichado {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  background: #ffe066;
+  color: #222;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 12px;
+  padding: 6px 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  letter-spacing: 0.5px;
+}
+
+.cabecera-overlay-fichado-light {
+  position: absolute;
+  bottom: 16px; /* Ajustado para estar más abajo según la imagen */
+  right: 16px;
+  background-color: #facc15; /* Amarillo (Tailwind yellow-400) */
+  color: #1f2937; /* Gris oscuro para el texto (Tailwind gray-800) */
+  padding: 6px 12px;
+  border-radius: 8px; /* Bordes más redondeados */
+  font-size: 0.75rem; /* 12px */
+  font-weight: 600; /* Semibold */
+  text-transform: uppercase;
+}
+
+/* Contenedor de información principal (número, nombre) */
+.info-principal-container {
+  margin-top: -40px; /* Superponer ligeramente sobre la imagen si es necesario, o ajustar */
+  position: relative; /* Para z-index si es necesario */
+  z-index: 1;
+  padding-bottom: 1rem;
+}
+
+.info-principal-container-light {
+  padding-top: 16px; /* Espacio después de la imagen */
+}
+
+.numero-nombre {
+  display: flex;
+  align-items: flex-end; /* Alinea la base del número con el nombre */
+  gap: 0.5rem;
+}
+
+.numero-nombre-light {
+  display: flex;
+  align-items: flex-end; /* Alinea la base del número con el nombre */
+  gap: 8px; /* Espacio entre número y nombre */
+}
+
+.numero-camiseta-grande {
+  font-size: 4.5rem; /* Tamaño grande para el número */
+  font-weight: bold;
+  color: #4CAF50; /* Verde como en la imagen */
+  line-height: 1;
+}
+
+.numero-nombre {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #10b981;
+  line-height: 1;
+}
+
+.numero-camiseta-grande-light {
+  font-size: 4.5rem; /* 72px */
+  font-weight: 700; /* Bold */
+  color: #10b981; /* Verde esmeralda (Tailwind emerald-500) */
+  line-height: 1;
+}
+
+.nombre-jugador {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.nombre-jugador-light {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.nombre-corto {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #a0a0a0; /* Un poco más claro que el principal */
+}
+
+.nombre-corto-light {
+  font-size: 1rem; /* 16px */
+  font-weight: 500; /* Medium */
+  color: #4b5563; /* Gris (Tailwind gray-600) */
+}
+
+.apellido-principal {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #fff; /* Blanco */
+}
+
+.apellido-principal-light {
+  font-size: 1.875rem; /* 30px */
+  font-weight: 700; /* Bold */
+  color: #111827; /* Gris muy oscuro (Tailwind gray-900) */
+}
+
+/* Grid de detalles (Equipo, Edad, etc.) */
+.detalles-grid {
+  margin-bottom: 1rem;
+}
+
+.detalles-grid-light {
+  padding-bottom: 16px;
+}
+
+.detalle-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+}
+
+.detalle-item-light {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+
+.detalle-label {
+  font-size: 0.7rem;
+  color: #888da8; /* Color de etiqueta */
+  text-transform: uppercase;
+  margin-bottom: 0.1rem;
+}
+
+.detalle-label-light {
+  font-size: 0.75rem; /* 12px */
+  color: #6b7280; /* Gris (Tailwind gray-500) */
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.detalle-valor {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.detalle-valor-light {
+  font-size: 1rem; /* 16px */
+  font-weight: 600; /* Semibold */
+  color: #1f2937; /* Gris oscuro (Tailwind gray-800) */
+}
+
+/* Contenedor de estadísticas rápidas (Partidos, Goles, Asistencias) */
+.stats-rapidas-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 0.5rem; /* Espacio entre tarjetas */
+  margin-bottom: 1.5rem;
+}
+
+.stats-rapidas-container-light {
+  display: flex;
+  justify-content: space-between; /* Distribuye el espacio */
+  gap: 12px; /* Espacio entre tarjetas */
+  margin-bottom: 24px;
+}
+
+.stat-rapida-card {
+  background-color: #fff; /* Fondo blanco para estas tarjetas */
+  color: #1a1a2e; /* Texto oscuro */
+  border-radius: 8px;
+  padding: 0.8rem;
+  text-align: center;
+  flex: 1; /* Para que ocupen espacio similar */
+  min-width: 80px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stat-rapida-card-light {
+  background-color: #f9fafb; /* Un gris aún más claro para las tarjetas (Tailwind gray-50) */
+  border: 1px solid #e5e7eb; /* Borde ligero (Tailwind gray-200) */
+  color: #1f2937; /* Texto oscuro */
+  border-radius: 12px; /* Bordes redondeados */
+  padding: 16px;
+  text-align: center;
+  flex: 1; /* Ocupan espacio equitativamente */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+.stat-valor {
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: block;
+}
+
+.stat-valor-light {
+  font-size: 1.875rem; /* 30px */
+  font-weight: 700; /* Bold */
+  display: block;
+  color: #111827; /* Gris muy oscuro */
+}
+
+.stat-label-rapida {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: #555;
+}
+
+.stat-label-rapida-light {
+  font-size: 0.75rem; /* 12px */
+  text-transform: uppercase;
+  color: #6b7280; /* Gris (Tailwind gray-500) */
+  margin-top: 4px;
+}
+
+/* Contenedor de estadísticas detalladas (Tarjetas) */
+.estadisticas-detalladas-container {
+  background-color: #2c2c44; /* Un poco más claro que el fondo general */
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.estadisticas-detalladas-container-light {
+  /* No necesita fondo diferente si la tarjeta principal ya es blanca */
+  padding-bottom: 16px;
+}
+
+.titulo-seccion {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #a0a0a0;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+  padding-left: 0.5rem; /* Alineado con items de lista */
+}
+
+.titulo-seccion-light {
+  font-size: 0.875rem; /* 14px */
+  font-weight: 600; /* Semibold */
+  color: #4b5563; /* Gris (Tailwind gray-600) */
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  /* padding-left: 0; /* No necesita padding si los items lo manejan */
+}
+
+.lista-estadisticas {
+  background-color: transparent; /* Hereda de su contenedor */
+  --ion-item-background: #fff; /* Fondo blanco para los items */
+  border-radius: 8px;
+  overflow: hidden; /* Para que los bordes redondeados apliquen a los items */
+}
+
+.lista-estadisticas-light {
+  background-color: transparent; /* Sin fondo propio */
+  --ion-item-background: #ffffff; /* Fondo blanco para los items */
+  border-radius: 12px; /* Bordes redondeados para la lista */
+  /* box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sombra ligera para la lista */
+  /* border: 1px solid #e5e7eb; */ /* Borde opcional */
+}
+
+.item-estadistica {
+  --color: #1a1a2e; /* Texto oscuro para los items */
+  --border-color: #eee; /* Color de borde si lines="full" se usara */
+  font-size: 0.9rem;
+}
+
+.item-estadistica-light {
+  --color: #1f2937; /* Texto oscuro para los items */
+  --border-color: #f3f4f6; /* Color de borde muy claro si lines="full" se usara (Tailwind gray-100) */
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --min-height: 48px;
+  font-size: 0.9375rem; /* 15px */
+  border-bottom: 1px solid #f3f4f6; /* Separador entre items */
+}
+.item-estadistica-light:last-child {
+  border-bottom: none; /* Sin borde para el último item */
+}
+
+
+.item-estadistica ion-label {
+  font-weight: 500;
+}
+
+.item-estadistica-light ion-label {
+  font-weight: 500; /* Medium */
+  color: #374151; /* Gris (Tailwind gray-700) */
+}
+
+.stat-indicador {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.stat-indicador-light {
+  display: flex;
+  align-items: center;
+  font-weight: 600; /* Semibold */
+  font-size: 0.9375rem; /* 15px */
+  color: #1f2937; /* Gris oscuro */
+}
+
+.stat-indicador::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+  display: inline-block;
+}
+
+.stat-indicador-light::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 3px; /* Cuadrado redondeado */
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.stat-indicador.amarillo::before {
+  background-color: #f9c74f; /* Amarillo */
+}
+
+.stat-indicador-light.amarillo::before {
+  background-color: #facc15; /* Amarillo (Tailwind yellow-400) */
+}
+
+.stat-indicador.rojo::before {
+  background-color: #e91e63; /* Rojo */
+}
+
+.stat-indicador-light.rojo::before {
+  background-color: #ef4444; /* Rojo (Tailwind red-500) */
+}
+
+/* Ajustes para el toolbar */
+ion-toolbar[color="dark"] {
+  --background: #0d0d1a; /* Un negro/azul muy oscuro para el toolbar */
+  --color: #fff;
+}
+
+ion-header.ion-no-border ion-toolbar {
+  --background: #ffffff; /* Fondo blanco */
+  --color: #1f2937; /* Texto oscuro */
+  --border-width: 0px; /* Sin borde */
+}
+ion-header.ion-no-border ion-toolbar ion-title {
+  font-weight: 600;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  .perfil-card {
+    border-radius: 18px;
+    max-width: 98vw;
+    padding-bottom: 18px;
+  }
+  .perfil-img {
+    border-radius: 18px 18px 0 0;
+  }
+  .perfil-header {
+    margin: 24px 0 12px 16px;
+    gap: 10px;
+  }
+  .perfil-info-grid, .perfil-stats-rapidas {
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .perfil-estadisticas {
+    margin: 0 6px;
+  }
+}

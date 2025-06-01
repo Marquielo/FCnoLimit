@@ -42,6 +42,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-direction: row; /* Asegura el orden normal */
+}
+
+/* Asegura que el botón de search esté a la izquierda usando order */
+.navbar-competition-style {
+  order: -1;
+  margin-right: 24px; /* Espacio entre search y logo */
+  margin-left: 0;
 }
 
 .navbar-header {
@@ -1261,410 +1269,69 @@ ion-button[class*="login"] ion-icon,
   }
 }
 
-/* Ajustes para posicionar el avatar de usuario más a la derecha */
-.d-lg-block {
-  margin-left: auto;
-  padding-left: 0px;
-  padding-right: 15px;
+/* Botón estilo competición para el search */
+.navbar-competition-style {
+  background: linear-gradient(90deg, #ffae26 60%, #ff9800 100%);
+  color: #fff !important;
+  font-weight: 700;
+  border: none;
+  border-radius: 16px;
+  padding: 0.5rem 1.5rem;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 16px rgba(255,174,38,0.13);
   display: flex;
-  justify-content: flex-end;
-  position: relative;
-}
-
-/* Ajustar la visualización del dropdown */
-ion-popover.user-popover::part(backdrop) {
-  background: transparent !important;
-}
-
-ion-popover.user-popover::part(arrow) {
-  display: none !important;
-}
-
-/* Estilos específicos para el menú desplegable de usuario */
-.user-menu-dropdown {
-  background-color: white;
-  border-radius: 12px;
-  overflow: hidden;
-  width: 280px;
-}
-
-/* Estilos mejorados para el dropdown personalizado */
-.custom-user-dropdown {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 15px;
-  width: 280px;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
-  z-index: 1100;
-  animation: dropdownFadeIn 0.2s ease;
-  transform-origin: top right;
-  overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.user-menu-header {
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  background-color: #fff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.user-avatar-dropdown {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-right: 12px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  border: 2px solid var(--fcnolimit-primary);
-}
-
-.user-avatar-dropdown img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.user-info-dropdown {
-  display: flex;
-  flex-direction: column;
-}
-
-.user-name-dropdown {
-  font-weight: 600;
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 3px;
-}
-
-.user-role-dropdown {
-  font-size: 13px;
-  color: #666;
-  opacity: 0.8;
-}
-
-/* Elementos del menú */
-.user-menu-items {
-  padding: 8px 0;
-}
-
-.user-menu-item {
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  color: #333;
-  transition: all 0.2s ease;
-  text-decoration: none !important;
-  border-left: 3px solid transparent;
-  cursor: pointer;
-  position: relative;
-}
-
-.user-menu-item:hover {
-  background-color: rgba(0, 0, 0, 0.03);
-  border-left: 3px solid var(--fcnolimit-primary);
-  color: var(--fcnolimit-primary);
-  text-decoration: none !important;
-  padding-left: 19px;
-}
-
-.user-menu-item ion-icon {
-  font-size: 20px;
-  margin-right: 12px;
-  color: #666;
-  min-width: 20px;
-  transition: all 0.2s ease;
-}
-
-.user-menu-item:hover ion-icon {
-  color: var(--fcnolimit-primary);
-  transform: translateX(2px);
-}
-
-/* Elemento de cierre de sesión */
-.user-menu-item.logout {
-  color: #e53935;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
-  margin-top: 5px;
-  padding-top: 14px;
-}
-
-.user-menu-item.logout:hover {
-  background-color: rgba(229, 57, 53, 0.05);
-  border-left: 3px solid #e53935;
-}
-
-.user-menu-item.logout ion-icon {
-  color: #e53935;
-}
-
-/* Posicionamiento y diseño del botón de usuario */
-.d-lg-block {
-  position: relative;
-}
-
-.user-button {
-  display: flex;
-  align-items: center;
-  padding: 4px 12px 4px 4px;
-  border-radius: 30px;
-  background: linear-gradient(135deg, var(--fcnolimit-primary), var(--fcnolimit-primary-dark));
-  transition: all 0.3s ease;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.user-button:hover {
-  background: linear-gradient(135deg, var(--fcnolimit-primary-light), var(--fcnolimit-primary));
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.user-avatar-container {
-  position: relative;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  margin-right: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border: 2px solid #ffffff;
-  overflow: hidden;
-}
-
-.user-name {
-  color: white;
-  font-weight: 600;
-  font-size: 14px;
-  max-width: 130px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.user-dropdown-icon {
-  color: white;
-  margin-left: 4px;
-  font-size: 16px;
-  transition: transform 0.3s ease;
-}
-
-.user-button:hover .user-dropdown-icon {
-  transform: rotate(180deg);
-}
-
-/* Mejorar aspecto de IonPopover para este uso específico */
-ion-popover.user-popover {
-  --backdrop-opacity: 0 !important;
-  --background: transparent;
-}
-
-/* Soluciones para el problema de popover */
-ion-popover {
-  --backdrop-opacity: 0 !important;
-  --background: transparent !important;
-  --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
-  --width: auto !important;
-  --height: auto !important;
-}
-
-ion-popover.user-popover::part(backdrop) {
-  display: none !important;
-  background: transparent !important;
-  opacity: 0 !important;
-}
-
-ion-popover.user-popover::part(content) {
-  position: absolute !important;
-  right: 15px !important;
-  top: 60px !important;
-  left: auto !important;
-}
-
-/* Asegurarse que los clics fuera del popover lo cierren */
-body.backdrop-no-scroll {
-  overflow: auto !important;
-  pointer-events: auto !important;
-}
-
-/* Evitar que el backdrop capture eventos */
-ion-backdrop {
-  opacity: 0 !important;
-  z-index: -1 !important;
-  pointer-events: none !important;
-  display: none !important;
-}
-
-/* Mejoras en los botones de navegación para hacerlos más visibles */
-.navbar-nav .nav-link {
-  color: var(--fcnolimit-text-light) !important;
-  font-weight: 500;
-  padding: 0.7rem 1.2rem !important;
-  border-radius: var(--fcnolimit-border-radius-pill);
-  transition: var(--fcnolimit-transition-normal);
-  display: flex;
-  align-items: center;
-  font-size: 0.95rem;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.navbar-nav .nav-link::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, rgba(255, 167, 38, 0.15), rgba(255, 167, 38, 0.05));
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.navbar-nav .nav-link:hover::before {
-  opacity: 1;
-}
-
-.navbar-nav .nav-link:hover {
-  transform: translateY(-2px);
-}
-
-/* Ajustar el menú desplegable personalizado */
-.custom-user-dropdown {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 15px;
-  width: 280px;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
-  z-index: 1100;
-  animation: dropdownFadeIn 0.2s ease;
-  transform-origin: top right;
-  overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-/* Mejorar el botón de usuario */
-.user-button {
-  display: flex;
-  align-items: center;
-  padding: 4px 12px 4px 4px;
-  border-radius: 30px;
-  background: linear-gradient(135deg, var(--fcnolimit-primary), var(--fcnolimit-primary-dark));
-  transition: all 0.3s ease;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.user-button:hover {
-  background: linear-gradient(135deg, var(--fcnolimit-primary-light), var(--fcnolimit-primary));
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-/* Modificación para colocar el texto debajo de los iconos */
-.navbar-nav .nav-link {
-  color: var(--fcnolimit-text-light) !important;
-  font-weight: 500;
-  padding: 0.7rem 0.8rem !important;
-  border-radius: var(--fcnolimit-border-radius-pill);
-  transition: var(--fcnolimit-transition-normal);
-  display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 0.95rem;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-  text-align: center;
-  min-width: 80px;
-}
-
-.navbar-nav .nav-link ion-icon {
-  font-size: 1.4rem;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
   margin-right: 0;
-  margin-bottom: 0.3rem;
-  vertical-align: middle;
-  transition: all 0.3s ease;
 }
 
-.navbar-nav .nav-link span, 
-.nav-text-visible {
-  display: block;
-  margin-left: 0;
-  font-size: 0.8rem;
-  opacity: 1;
-  visibility: visible;
-  line-height: 1;
-  font-weight: 500;
+.navbar-competition-style:hover,
+.navbar-competition-style:focus {
+  background: linear-gradient(90deg, #ff9800 60%, #ffae26 100%);
+  color: #fff !important;
+  box-shadow: 0 6px 24px rgba(255,174,38,0.18);
 }
 
-.navbar-nav .nav-link:hover ion-icon {
-  transform: translateY(-2px) scale(1.1);
-  color: #ffffff !important;
+.navbar-search-icon {
+  font-size: 1.5rem;
+  color: #fff !important;
 }
 
-/* Ajuste para el botón de login que no debe tener la misma estructura */
-.navbar-nav .nav-item:last-child .nav-link {
-  flex-direction: row;
-  min-width: auto;
-  padding: 0.7rem 2rem !important;
-  margin-left: 1.5rem;
-}
-
-.navbar-nav .nav-item:last-child .nav-link ion-icon {
-  margin-right: 0.5rem;
-  margin-bottom: 0;
-}
-
-/* Tooltips para modo iconos */
-.nav-tooltip {
-  position: relative;
-}
-
-.nav-tooltip:hover::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.7rem;
-  white-space: nowrap;
-  z-index: 1000;
-}
-
-/* Login button */
-.navbar-nav .nav-item:last-child .nav-link {
-  background: var(--fcnolimit-primary) !important;
-  color: var(--fcnolimit-text-light) !important;
-  border-radius: var(--fcnolimit-border-radius-pill);
+/* --- Botón "Mis estadísticas" --- */
+.navbar-stats-btn {
+  background: linear-gradient(90deg, #ffae26 60%, #ffd700 100%);
+  color: #121921;
   font-weight: 700;
-  box-shadow: var(--fcnolimit-shadow-primary);
-  padding: 0.7rem 2.2rem !important;
-  margin-left: 1.5rem;
-  transition: background 0.2s, transform 0.3s, box-shadow 0.3s;
+  border: none;
+  border-radius: 18px;
+  padding: 8px 20px;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(255,174,38,0.13);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.navbar-stats-btn:hover {
+  background: linear-gradient(90deg, #ffd700 60%, #ffae26 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(255,174,38,0.18);
 }
 
-.navbar-nav .nav-item:last-child .nav-link:hover {
-  background: var(--fcnolimit-primary-light) !important;
-  color: var(--fcnolimit-text-light) !important;
-  box-shadow: 0 0 24px 0 rgba(255, 167, 38, 0.35);
-  transform: translateY(-2px);
+/* --- Botón de usuario/avatar --- */
+.user-button {
+  display: flex;
+  align-items: center;
+  padding: 4px 12px 4px 4px;
+  border-radius: 30px;
+  background-color: rgba(255, 255, 255, 0.95);
+  transition: all 0.3s ease;
+  margin-right: 0;
+  margin-left: auto;
 }
-
-/* ==================== */
-/* 4. Avatar y Perfil de Usuario */
-/* ==================== */
 
 .user-avatar-container {
   position: relative;
@@ -1700,1140 +1367,8 @@ ion-backdrop {
   border: 2px solid #ffffff;
 }
 
-.user-button {
-  display: flex;
-  align-items: center;
-  padding: 4px 12px 4px 4px;
-  border-radius: 30px;
-  background-color: rgba(255, 255, 255, 0.95);
-  transition: all 0.3s ease;
-  margin-right: 0;
-  margin-left: auto;
-}
-
-/* Aumentar el margen entre los elementos de navegación y el avatar */
-@media (min-width: 992px) {
-  .navbar-nav {
-    margin-right: 20px;
-  }
-  
-  .navbar-collapse {
-    justify-content: space-between;
-    flex-grow: 1;
-  }
-}
-
-/* Asegurar que el contenedor del avatar quede a la derecha en todas las resoluciones de escritorio */
-@media (min-width: 1200px) {
-  .d-lg-block {
-    padding-left: 30px;
-  }
-}
-
-/* Ajustar el espacio en resoluciones más pequeñas pero aún desktop */
-@media (min-width: 992px) and (max-width: 1199px) {
-  .d-lg-block {
-    padding-left: 15px;
-  }
-  
-  .navbar-nav {
-    margin-right: 10px;
-  }
-}
-
-/* Popover de usuario */
-.user-popover {
-  --width: 280px;
-  --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  --border-radius: 12px;
-  --backdrop-opacity: 0 !important;
-  --offset-x: -15px;
-}
-
-.user-popover::part(content) {
-  border-radius: 12px;
-  overflow: hidden;
-  right: 0 !important;
-  left: auto !important;
-  position: absolute !important;
-}
-
-.user-popover-container {
-  position: relative;
-}
-
-
-
-.user-popover-header {
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  background: linear-gradient(135deg, #ff9800, #ff7300);
-  color: white;
-}
-
-.user-popover-avatar-container {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 3px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.user-popover-avatar {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.user-popover-info {
-  margin-left: 16px;
-}
-
-.user-popover-info h5 {
-  margin: 0;
-  font-size: 17px;
-  font-weight: 600;
-}
-
-.user-popover-info p {
-  margin: 4px 0 0;
-  font-size: 14px;
-  opacity: 0.9;
-}
-
-.logout-item {
-  color: #de1111;
-  font-weight: 500;
-}
-
-/* ==================== */
-/* 5. Botones y Acciones */
-/* ==================== */
-
-/* Border buttons */
-.btn-bordered {
-  border: 2px solid var(--fcnolimit-primary);
-  background: transparent;
-  color: var(--fcnolimit-primary) !important;
-  transition: all 0.3s ease;
-}
-
-.btn-bordered:hover {
-  background: var(--fcnolimit-primary);
-  color: var(--fcnolimit-text-light) !important;
-}
-
-.login-button ion-icon,
-ion-button[class*="login"] ion-icon,
-.login ion-icon {
-  color: white !important;
-}
-
-.nav ion-icon {
-  color: white !important;
-}
-
-.item-ion-ripple-effect {
-  color: #121921;
-}
-
-/* Hamburger button */
-.navbar-toggler {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  border-radius: 8px;
-  padding: 0;
-  transition: all 0.3s ease;
-  margin-left: auto;
-}
-
-.navbar-toggler:focus {
-  box-shadow: none !important;
-  outline: none !important;
-  background: rgba(0, 0, 0, 0.15) !important;
-}
-
-.navbar-toggler:hover {
-  background: rgba(255, 167, 38, 0.2);
-  transform: scale(1.05);
-}
-
-.hamburger-icon {
-  position: relative;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.hamburger-icon .line {
-  display: block;
-  width: 100%;
-  height: 2px;
-  background-color: #fff;
-  border-radius: 2px;
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-}
-
-.navbar-toggler.active {
-  opacity: 0;
-  visibility: hidden;
-  position: absolute;
-  pointer-events: none;
-}
-
-.navbar-toggler.active .line-1 {
-  transform: translateY(9px) rotate(45deg);
-}
-
-.navbar-toggler.active .line-2 {
-  opacity: 0;
-  transform: translateX(-10px);
-}
-
-.navbar-toggler.active .line-3 {
-  transform: translateY(-9px) rotate(-45deg);
-}
-
-.navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
-  width: 1.5em;
-  height: 1.5em;
-  transition: var(--fcnolimit-transition-fast);
-}
-
-/* ==================== */
-/* 6. Menú Móvil */
-/* ==================== */
-
-/* Base Navbar Collapse */
-.navbar-collapse {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  transition: all 0.3s ease;
-}
-
-/* Overlay para el fondo del menú móvil */
-.navbar-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.75);
-  z-index: 1040;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.navbar-overlay.show {
-  display: block;
-  opacity: 1;
-}
-
-.navbar-overlay.closing {
-  opacity: 0;
-}
-
-/* Animación de cierre del menú */
-.navbar-collapse.closing {
-  right: -100%;
-  transition: right 0.3s cubic-bezier(0.77, 0, 0.175, 1);
-}
-
-/* Animación de cierre para elementos internos */
-.navbar-collapse.closing .nav-item,
-.navbar-collapse.closing .user-profile-mobile {
-  opacity: 0;
-  transform: translateX(20px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-/* Animación del botón hamburguesa */
-.navbar-toggler.active .navbar-toggler-icon {
-  background-image: none !important;
-  position: relative;
-}
-
-.navbar-toggler.active .navbar-toggler-icon:before,
-.navbar-toggler.active .navbar-toggler-icon:after {
-  content: '';
-  position: absolute;
-  width: 24px;
-  height: 2px;
-  background-color: white;
-  left: 0;
-  top: 50%;
-  transition: all 0.3s ease;
-}
-
-.navbar-toggler.active .navbar-toggler-icon:before {
-  transform: rotate(45deg);
-}
-
-.navbar-toggler.active .navbar-toggler-icon:after {
-  transform: rotate(-45deg);
-}
-
-/* ==================== */
-/* 7. Animaciones */
-/* ==================== */
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes dropdownFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-8px) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* ==================== */
-/* 8. Media Queries */
-/* ==================== */
-
-/* Responsive container sizes */
-@media (min-width: 576px) {
-  .fc-container {
-    max-width: 540px;
-  }
-}
-
-@media (min-width: 768px) {
-  .fc-container {
-    max-width: 720px;
-  }
-}
-
-@media (min-width: 992px) {
-  .fc-container {
-    max-width: 960px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .fc-container {
-    max-width: 1140px;
-  }
-}
-
-@media (min-width: 1400px) {
-  .fc-container {
-    max-width: 1320px;
-  }
-}
-
-/* Ajustes para móvil y tablet */
-@media (max-width: 991px) {
-  /* Base adjustments */
-  .navbar {
-    padding: 0.6rem 1rem;
-  }
-  
-  .navbar-header {
-    border-right: none;
-    margin-right: 0;
-    padding-right: 0;
-    width: 80%;
-  }
-
-  /* Improved mobile brand */
-  .navbar-brand {
-    font-size: 1.2rem;
-  }
-  
-  .brand-slogan {
-    display: none;
-  }
-  
-  /* Mobile navbar toggler */
-  .navbar-toggler {
-    margin-left: auto;
-    padding: 0.4rem;
-    z-index: 1100;
-  }
-  
-  /* Mobile collapse panel */
-  .navbar-collapse {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 85%;
-    max-width: 320px;
-    height: 100vh;
-    background: linear-gradient(135deg, #1e2c3a, #121921);
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    margin-top: 0;
-    z-index: 1050;
-    transition: right 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    overflow: hidden;
-    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
-    border-left: 3px solid var(--fcnolimit-primary);
-    align-items: flex-start;
-    justify-content: flex-start;
-  }
-  
-  .navbar-collapse.show {
-    right: 0;
-    width: 100%;
-    max-width: 320px;
-  }
-  
-  .fc-container {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-
-  /* Header del menú lateral */
-  .mobile-menu-header {
-    width: 100%;
-    padding: 1rem 1.2rem;
-    background: linear-gradient(to right, rgba(255, 167, 38, 0.2), rgba(255, 167, 38, 0.05)) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .mobile-logo {
-    display: flex;
-    align-items: center;
-  }
-
-  .mobile-logo-icon {
-    font-size: 2rem;
-    color: var(--fcnolimit-primary);
-    margin-right: 0.8rem;
-    filter: drop-shadow(0 2px 4px rgba(255, 167, 38, 0.3));
-  }
-
-  .mobile-logo-text {
-    font-size: 1.3rem;
-    font-weight: 800;
-    color: var(--fcnolimit-text-light);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  }
-  
-  /* Botón de cierre */
-  .navbar-close-btn {
-    position: relative;
-    background: rgba(0, 0, 0, 0.2) !important;
-    border: none !important;
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 1051;
-    margin-left: 10px;
-    box-shadow: none !important;
-    -webkit-appearance: none !important;
-    appearance: none !important;
-  }
-
-  .navbar-close-btn:hover {
-    background: rgba(255, 167, 38, 0.3) !important;
-    transform: rotate(90deg);
-  }
-
-  .navbar-close-btn::before,
-  .navbar-close-btn::after {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 2px;
-    background-color: white !important;
-    border-radius: 1px;
-    transition: all 0.3s ease;
-  }
-
-  .navbar-close-btn::before {
-    transform: rotate(45deg);
-  }
-
-  .navbar-close-btn::after {
-    transform: rotate(-45deg);
-  }
-  
-  .navbar-close-btn * {
-    display: none !important;
-  }
-  
-  /* Contenedor principal del menú con scroll */
-  .mobile-menu-content {
-    width: 100%;
-    height: calc(100% - 80px);
-    overflow-y: auto;
-    padding: 1rem 0;
-    scrollbar-width: thin;
-    scrollbar-color: var(--fcnolimit-primary) rgba(0, 0, 0, 0.1);
-  }
-
-  .mobile-menu-content::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  .mobile-menu-content::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1);
-  }
-
-  .mobile-menu-content::-webkit-scrollbar-thumb {
-    background-color: var(--fcnolimit-primary);
-    border-radius: 4px;
-  }
-  
-  /* Sección de usuario en móvil */
-  .user-profile-mobile {
-    width: 100%;
-    padding: 2rem 1.5rem;
-    margin-bottom: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    background: rgba(0, 0, 0, 0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  }
-
-  .user-profile-mobile::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: radial-gradient(circle at top right, rgba(255, 167, 38, 0.1), transparent 70%);
-    pointer-events: none;
-  }
-
-  .user-avatar-mobile {
-    width: 85px;
-    height: 85px;
-    border-radius: 50%;
-    border: 3px solid var(--fcnolimit-primary);
-    overflow: hidden;
-    margin-bottom: 1rem;
-    box-shadow: 0 4px 15px rgba(255, 167, 38, 0.3);
-    transition: all 0.3s ease;
-  }
-
-  .user-avatar-mobile:hover {
-    transform: scale(1.05);
-    border-color: var(--fcnolimit-primary-light);
-    box-shadow: 0 5px 18px rgba(255, 167, 38, 0.4);
-  }
-
-  .user-name-mobile {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--fcnolimit-text-light);
-    margin-bottom: 0.5rem;
-  }
-
-  .user-role-mobile {
-    font-size: 0.8rem;
-    color: #fff;
-    background: linear-gradient(135deg, var(--fcnolimit-primary), #e65100);
-    padding: 0.25rem 1rem;
-    border-radius: 20px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-weight: 500;
-  }
-  
-  /* Menú de navegación móvil */
-  .navbar-nav {
-    flex-direction: column;
-    width: 100%;
-    padding: 0 1rem;
-    margin: 0;
-    gap: 0.5rem;
-  }
-
-  .navbar-nav .nav-item {
-    width: 100%;
-    margin: 0;
-    opacity: 0;
-    transform: translateX(30px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-
-  .navbar-collapse.show .nav-item {
-    opacity: 1;
-    transform: translateX(0);
-    animation: slideInRight 0.4s forwards;
-  }
-  
-  .navbar-collapse.show .nav-item:nth-child(1) { animation-delay: 0.1s; }
-  .navbar-collapse.show .nav-item:nth-child(2) { animation-delay: 0.15s; }
-  .navbar-collapse.show .nav-item:nth-child(3) { animation-delay: 0.2s; }
-  .navbar-collapse.show .nav-item:nth-child(4) { animation-delay: 0.25s; }
-  .navbar-collapse.show .nav-item:nth-child(5) { animation-delay: 0.3s; }
-  .navbar-collapse.show .nav-item:nth-child(6) { animation-delay: 0.35s; }
-
-  .navbar-nav .nav-link {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 1rem 1.2rem !important;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 10px;
-    transition: all 0.25s ease;
-    border-left: 3px solid transparent;
-  }
-
-  .navbar-nav .nav-link.active {
-    background: linear-gradient(to right, rgba(255, 167, 38, 0.2), rgba(255, 167, 38, 0.05));
-    border-left: 3px solid var(--fcnolimit-primary);
-    font-weight: 600;
-    position: relative;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .navbar-nav .nav-link.active::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    right: 1.2rem;
-    transform: translateY(-50%);
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--fcnolimit-primary);
-  }
-
-  .nav-link:hover {
-    background: rgba(255, 255, 255, 0.07);
-    transform: translateX(3px);
-  }
-
-  .nav-link ion-icon {
-    font-size: 1.4rem;
-    margin-right: 0.8rem;
-    color: #fff;
-    opacity: 0.9;
-    min-width: 24px;
-  }
-
-  .nav-link.active ion-icon {
-    color: var(--fcnolimit-primary);
-  }
-  
-  /* Título de sección */
-  .menu-section-title {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.5);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    padding: 0 1.5rem;
-    margin: 1.5rem 0 0.5rem;
-    font-weight: 600;
-  }
-  
-  /* Login button mobile */
-  .navbar-nav .nav-item:last-child {
-    margin-top: 1rem;
-  }
-  
-  .navbar-nav .nav-item:last-child .nav-link {
-    margin: 0.5rem 0 0;
-    justify-content: center;
-    padding: 1rem !important;
-    margin-left: 0;
-    background: linear-gradient(135deg, var(--fcnolimit-primary), var(--fcnolimit-primary-dark)) !important;
-  }
-  
-  /* Botones de acción del usuario */
-  .user-actions-mobile {
-    width: 100%;
-    padding: 1rem 1.5rem 2rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
-    margin-top: auto;
-    background: rgba(0, 0, 0, 0.2);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-  }
-
-  .user-action-btn {
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    color: var(--fcnolimit-text-light);
-    padding: 0.9rem 0.8rem;
-    font-size: 0.95rem;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    transition: all 0.25s ease;
-  }
-
-  .user-action-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    transform: translateY(-3px);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-  }
-
-  .user-action-btn ion-icon {
-    font-size: 1.2rem;
-    min-width: 20px;
-  }
-
-  .user-action-btn.logout-btn {
-    background: rgba(244, 67, 54, 0.15);
-    color: #ff5252;
-    grid-column: span 2;
-    margin-top: 0.5rem;
-    border: 1px solid rgba(244, 67, 54, 0.3);
-  }
-
-  .user-action-btn.logout-btn:hover {
-    background: rgba(244, 67, 54, 0.25);
-  }
-  
-  /* Ajustes específicos para el menú móvil */
-  .mobile-menu-content .navbar-nav .nav-link {
-    align-items: center;
-  }
-
-  .mobile-menu-content .navbar-nav .nav-link span {
-    display: inline-block;
-    visibility: visible;
-    opacity: 1;
-    margin-left: 10px;
-  }
-}
-
-/* Ajustes para dispositivos pequeños */
-@media (max-width: 576px) {
-  .navbar-brand {
-    font-size: 1.1rem;
-  }
-  
-  .navbar-brand ion-icon {
-    font-size: 1.6rem;
-    margin-right: 0.5rem;
-  }
-  
-  .navbar-collapse {
-    width: 100%;
-    max-width: none;
-  }
-  
-  .user-actions-mobile {
-    grid-template-columns: 1fr;
-  }
-  
-  .user-action-btn.logout-btn {
-    grid-column: span 1;
-  }
-}
-
-/* Ajustes para pantallas medianas */
-@media (min-width: 992px) {
-  /* Sobrescribir estilos móviles para desktop */
-  .navbar-collapse {
-    position: static !important;
-    width: auto !important;
-    height: auto !important;
-    background: none !important;
-    box-shadow: none !important;
-    border-left: none !important;
-    overflow: visible !important;
-    display: flex !important;
-    flex-direction: row !important;
-    padding: 0 !important;
-    right: 0 !important;
-    pointer-events: auto !important;
-  }
-  
-  .navbar-nav {
-    flex-direction: row !important;
-    padding-left: 1rem !important;
-    gap: 1rem !important;
-    align-items: center !important;
-    width: auto !important;
-  }
-  
-  .nav-item {
-    opacity: 1 !important;
-    transform: none !important;
-    width: auto !important;
-  }
-  
-  .nav-link {
-    width: auto !important;
-    justify-content: center !important;
-    border-left: none !important;
-    background: none !important;
-  }
-  
-  .nav-link:hover {
-    transform: translateY(-2px) !important;
-    padding-left: 1.2rem !important;
-  }
-  
-  .nav-link.active {
-    background: linear-gradient(135deg, var(--fcnolimit-primary), var(--fcnolimit-primary-dark)) !important;
-    border-left: none !important;
-    border-bottom: 2px solid var(--fcnolimit-primary-light) !important;
-  }
-  
-  .nav-link::after {
-    display: none !important;
-  }
-  
-  /* Ocultar elementos móviles en desktop */
-  .mobile-menu-header, .menu-section-title, .user-profile-mobile, .user-actions-mobile {
-    display: none !important;
-  }
-}
-
-/* Ajustes para pantallas medianas-grandes */
-@media (max-width: 1280px) {
-  .navbar .brand-slogan {
-    font-size: 0.7rem;
-  }
-  
-  .navbar-nav .nav-link {
-    padding: 0.5rem 0.6rem;
-    font-size: 0.9rem;
-  }
-  
-  .navbar-nav .nav-link ion-icon {
-    font-size: 1rem;
-    margin-right: 3px;
-  }
-}
-
-/* Ajustes específicos para resoluciones entre 1200px y 1280px */
-@media (min-width: 1200px) and (max-width: 1280px) {
-  .navbar-nav {
-    gap: 0.6rem !important;
-  }
-  
-  .navbar-nav .nav-link {
-    padding: 0.6rem 0.7rem !important;
-  }
-  
-  .navbar-nav .nav-link span {
-    font-size: 0.9rem;
-  }
-  
-  .navbar-header {
-    padding-right: 1.5rem;
-    margin-right: 1.5rem;
-  }
-}
-
-/* Ajustes para resoluciones entre 1120px y 1200px */
-@media (min-width: 1120px) and (max-width: 1200px) {
-  .navbar-nav {
-    gap: 0.5rem !important;
-  }
-  
-  .navbar-nav .nav-link {
-    padding: 0.5rem 0.6rem !important;
-    font-size: 0.85rem;
-  }
-  
-  .navbar-header {
-    padding-right: 1rem;
-    margin-right: 1rem;
-  }
-  
-  .user-button .user-name {
-    max-width: 130px;
-    font-size: 14px;
-  }
-}
-
-/* Ajustes para resoluciones entre 992px y 1120px */
-@media (min-width: 992px) and (max-width: 1120px) {
-  .navbar .brand-slogan {
-    display: none !important;
-  }
-  
-  .navbar-nav .nav-link {
-    padding: 0.5rem 0.4rem;
-  }
-  
-  .navbar-nav {
-    gap: 0.4rem !important;
-  }
-  
-  .user-button {
-    padding-left: 0.3rem !important;
-    padding-right: 0.3rem !important;
-  }
-}
-
-/* Ajuste específico para el ancho de 1233px donde se detecta el problema */
-@media (max-width: 1245px) and (min-width: 1220px) {
-  .navbar-nav {
-    gap: 0.5rem !important;
-  }
-  
-  .navbar-nav .nav-link {
-    padding: 0.5rem 0.5rem !important;
-    font-size: 0.85rem;
-  }
-  
-  .user-button {
-    padding-left: 0.2rem !important;
-    padding-right: 0.2rem !important;
-  }
-  
-  .user-button .user-name {
-    max-width: 120px;
-  }
-  
-  .navbar-header {
-    padding-right: 1rem;
-    margin-right: 1rem;
-  }
-}
-
-/* Ajustes específicos para el botón de usuario */
-@media (max-width: 1200px) {
-  .user-button .user-name {
-    max-width: 150px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}
-
-@media (max-width: 1120px) {
-  .user-button .user-name {
-    display: none;
-  }
-  
-  .user-button .user-dropdown-icon {
-    display: none;
-  }
-  
-  .user-button {
-    margin-left: 8px;
-  }
-}
-
-/* Ajustes para posicionar el avatar de usuario más a la derecha */
-.d-lg-block {
-  margin-left: auto;
-  padding-left: 0px;
-  padding-right: 15px;
-  display: flex;
-  justify-content: flex-end;
-  position: relative;
-}
-
-/* Ajustar la visualización del dropdown */
-ion-popover.user-popover::part(backdrop) {
-  background: transparent !important;
-}
-
-ion-popover.user-popover::part(arrow) {
-  display: none !important;
-}
-
-/* Estilos específicos para el menú desplegable de usuario */
-.user-menu-dropdown {
-  background-color: white;
-  border-radius: 12px;
-  overflow: hidden;
-  width: 280px;
-}
-
-/* Estilos mejorados para el dropdown personalizado */
-.custom-user-dropdown {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 15px;
-  width: 280px;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
-  z-index: 1100;
-  animation: dropdownFadeIn 0.2s ease;
-  transform-origin: top right;
-  overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.user-menu-header {
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  background-color: #fff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.user-avatar-dropdown {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-right: 12px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  border: 2px solid var(--fcnolimit-primary);
-}
-
-.user-avatar-dropdown img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.user-info-dropdown {
-  display: flex;
-  flex-direction: column;
-}
-
-.user-name-dropdown {
-  font-weight: 600;
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 3px;
-}
-
-.user-role-dropdown {
-  font-size: 13px;
-  color: #666;
-  opacity: 0.8;
-}
-
-/* Elementos del menú */
-.user-menu-items {
-  padding: 8px 0;
-}
-
-.user-menu-item {
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  color: #333;
-  transition: all 0.2s ease;
-  text-decoration: none !important;
-  border-left: 3px solid transparent;
-  cursor: pointer;
-  position: relative;
-}
-
-.user-menu-item:hover {
-  background-color: rgba(0, 0, 0, 0.03);
-  border-left: 3px solid var(--fcnolimit-primary);
-  color: var(--fcnolimit-primary);
-  text-decoration: none !important;
-  padding-left: 19px;
-}
-
-.user-menu-item ion-icon {
-  font-size: 20px;
-  margin-right: 12px;
-  color: #666;
-  min-width: 20px;
-  transition: all 0.2s ease;
-}
-
-.user-menu-item:hover ion-icon {
-  color: var(--fcnolimit-primary);
-  transform: translateX(2px);
-}
-
-/* Elemento de cierre de sesión */
-.user-menu-item.logout {
-  color: #e53935;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
-  margin-top: 5px;
-  padding-top: 14px;
-}
-
-.user-menu-item.logout:hover {
-  background-color: rgba(229, 57, 53, 0.05);
-  border-left: 3px solid #e53935;
-}
-
-.user-menu-item.logout ion-icon {
-  color: #e53935;
-}
-
-/* Posicionamiento y diseño del botón de usuario */
-.d-lg-block {
-  position: relative;
-}
-
-.user-button {
-  display: flex;
-  align-items: center;
-  padding: 4px 12px 4px 4px;
-  border-radius: 30px;
-  background: linear-gradient(135deg, var(--fcnolimit-primary), var(--fcnolimit-primary-dark));
-  transition: all 0.3s ease;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.user-button:hover {
-  background: linear-gradient(135deg, var(--fcnolimit-primary-light), var(--fcnolimit-primary));
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.user-avatar-container {
-  position: relative;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  margin-right: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border: 2px solid #ffffff;
-  overflow: hidden;
-}
-
 .user-name {
-  color: white;
+  color: #121921;
   font-weight: 600;
   font-size: 14px;
   max-width: 130px;
@@ -2843,7 +1378,7 @@ ion-popover.user-popover::part(arrow) {
 }
 
 .user-dropdown-icon {
-  color: white;
+  color: #121921;
   margin-left: 4px;
   font-size: 16px;
   transition: transform 0.3s ease;
@@ -2853,44 +1388,88 @@ ion-popover.user-popover::part(arrow) {
   transform: rotate(180deg);
 }
 
-/* Mejorar aspecto de IonPopover para este uso específico */
-ion-popover.user-popover {
-  --backdrop-opacity: 0 !important;
-  --background: transparent;
+/* --- Dropdown personalizado --- */
+.custom-user-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 220px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  z-index: 999;
+  margin-top: 8px;
+  animation: dropdownFadeIn 0.2s;
+  padding: 0;
+  overflow: hidden;
 }
 
-/* Soluciones para el problema de popover */
-ion-popover {
-  --backdrop-opacity: 0 !important;
-  --background: transparent !important;
-  --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
-  --width: auto !important;
-  --height: auto !important;
+.user-menu-header {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background: linear-gradient(135deg, #ff9800, #ff7300);
+  color: white;
 }
 
-ion-popover.user-popover::part(backdrop) {
-  display: none !important;
-  background: transparent !important;
-  opacity: 0 !important;
+.user-avatar-dropdown img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.8);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-ion-popover.user-popover::part(content) {
-  position: absolute !important;
-  right: 15px !important;
-  top: 60px !important;
-  left: auto !important;
+.user-info-dropdown {
+  margin-left: 16px;
 }
 
-/* Asegurarse que los clics fuera del popover lo cierren */
-body.backdrop-no-scroll {
-  overflow: auto !important;
-  pointer-events: auto !important;
+.user-name-dropdown {
+  font-size: 17px;
+  font-weight: 600;
 }
 
-/* Evitar que el backdrop capture eventos */
-ion-backdrop {
-  opacity: 0 !important;
-  z-index: -1 !important;
-  pointer-events: none !important;
-  display: none !important;
+.user-role-dropdown {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.user-menu-items {
+  padding: 8px 0;
+}
+
+.user-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  color: #121921;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  border: none;
+  background: none;
+  width: 100%;
+}
+
+.user-menu-item.logout {
+  color: #de1111;
+  font-weight: 500;
+}
+
+.user-menu-item:hover {
+  background: #f3f4f6;
+}
+
+/* --- Animación dropdown --- */
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }

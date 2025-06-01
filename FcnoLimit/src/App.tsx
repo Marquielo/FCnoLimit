@@ -58,6 +58,7 @@ import EntrenadorEstadisticas from './pages/admin/entrenador/estadistica/Entrena
 import EntrenadorEntrenamientos from './pages/admin/entrenador/entrenamientos/EntrenadorEntrenamientos';
 import EntrenadorPage from './pages/admin/entrenador/page';
 import EntrenadorTacticas from './pages/admin/entrenador/tactica/EntrenadorTacticas';
+import BuscarPage from './pages/home/buscar/BuscarPage';
 
 setupIonicReact({
   mode: 'md',
@@ -167,6 +168,13 @@ const App: React.FC = () => (
         <Route exact path="/perfil" render={() => (
           <ProtectedRoute>
             <PerfilPage />
+          </ProtectedRoute>
+        )} />
+
+        {/* Ruta para BuscarPage */}
+        <Route exact path="/home/buscar" render={() => (
+          <ProtectedRoute>
+            <BuscarPage />
           </ProtectedRoute>
         )} />
 

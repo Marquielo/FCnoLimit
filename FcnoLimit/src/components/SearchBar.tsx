@@ -45,13 +45,34 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <div style={{ marginBottom: 24, display: "flex", gap: 8, alignItems: "flex-end" }}>
+    <div
+      className="search-bar-root"
+      style={{
+        marginBottom: 0,
+        display: "flex",
+        gap: 0,
+        alignItems: "center",
+        width: "100%",
+        background: "none"
+      }}
+    >
       <input
         type="text"
         placeholder={placeholder}
         value={value}
         onChange={e => onChange(e.target.value)}
-        style={{ flex: 1, padding: 8, borderRadius: 6, border: "1px solid #ccc" }}
+        style={{
+          flex: 1,
+          padding: "12px 16px",
+          borderRadius: "6px 0 0 6px",
+          border: "none",
+          background: "#232323",
+          color: "#fff",
+          fontSize: "1.1rem",
+          fontWeight: 500,
+          outline: "none",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.04)"
+        }}
       />
       {/* Botón para desplegar el calendario */}
       {onDateChange && (
@@ -68,7 +89,25 @@ const SearchBar: React.FC<SearchBarProps> = ({
           </IonButton>
         </>
       )}
-      <IonButton color="primary" onClick={onSearch}>Buscar</IonButton>
+      <button
+        type="button"
+        onClick={onSearch}
+        style={{
+          background: "var(--fcnolimit-primary, #ffae26)",
+          color: "#fff",
+          fontWeight: 700,
+          border: "none",
+          borderRadius: "0 6px 6px 0",
+          padding: "12px 28px",
+          fontSize: "1.05rem",
+          cursor: "pointer",
+          transition: "background 0.2s",
+          boxShadow: "0 2px 8px rgba(255,174,38,0.09)",
+          marginLeft: "-1px"
+        }}
+      >
+        BUSCAR
+      </button>
     </div>
   );
 };
