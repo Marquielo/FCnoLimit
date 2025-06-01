@@ -69,7 +69,7 @@ module.exports = (pool) => {
   });
 
   // Buscar jugadores por id, usuario_id, equipo_id o posicion (solo admin)
-  router.get('/buscar', authenticateToken, isAdmin, async (req, res) => {
+  router.get('/buscar', authenticateToken, async (req, res) => {
     const { id, usuario_id, equipo_id, posicion } = req.query;
     let query = 'SELECT * FROM "fcnolimit".jugadores WHERE 1=1';
     const params = [];
