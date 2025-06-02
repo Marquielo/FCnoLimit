@@ -7,6 +7,8 @@ import SearchBar from "../../../components/SearchBar";
 import "./BuscarPage.css";
 
 const apiBaseUrl = 'https://fcnolimit-back.onrender.com';
+const defaultTeamLogo = '/assets/equipos/default.png';
+const defaultPlayerAvatar = '/assets/img/avatar-default.png';
 
 const BuscarPage: React.FC = () => {
   const [search, setSearch] = useState("");
@@ -122,12 +124,24 @@ const BuscarPage: React.FC = () => {
                     <div className="buscar-result-img">
                       {item._type === "equipo" ? (
                         <img
-                          src={item.escudo || item.imagen_url || "/assets/img/escudo-default.png"}
+                          src={
+                            item.escudo
+                              ? `${apiBaseUrl}${item.escudo.startsWith('/') ? item.escudo : '/' + item.escudo}`
+                              : item.imagen_url
+                                ? item.imagen_url
+                                : defaultTeamLogo
+                          }
                           alt={item.nombre}
                         />
                       ) : (
                         <img
-                          src={item.foto || item.imagen_url || "/assets/img/avatar-default.png"}
+                          src={
+                            item.foto
+                              ? item.foto
+                              : item.imagen_url
+                                ? item.imagen_url
+                                : defaultPlayerAvatar
+                          }
                           alt={item.nombre || item.nombre_completo || ""}
                         />
                       )}
