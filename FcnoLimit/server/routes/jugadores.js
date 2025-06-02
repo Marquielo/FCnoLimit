@@ -68,9 +68,9 @@ module.exports = (pool) => {
     }
   });
 
-  // Buscar jugadores por id, usuario_id, equipo_id o posicion (solo admin)
-  router.get('/buscar', authenticateToken, async (req, res) => {
-    const { id, usuario_id, equipo_id, posicion } = req.query;
+  // Buscar jugadores por id, usuario_id, equipo_id, posicion o nombre (público)
+  router.get('/buscar', async (req, res) => {
+    const { id, usuario_id, equipo_id, posicion, nombre } = req.query;
     let query = 'SELECT * FROM "fcnolimit".jugadores WHERE 1=1';
     const params = [];
 
@@ -89,6 +89,10 @@ module.exports = (pool) => {
     if (posicion) {
       params.push(`%${posicion}%`);
       query += ` AND posicion ILIKE $${params.length}`;
+    }
+    if (nombre) {
+      params.push(`%${nombre}%`);
+      query += ` AND nombre_completo ILIKE $${params.length}`;
     }
 
     try {

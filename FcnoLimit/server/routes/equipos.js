@@ -71,8 +71,8 @@ module.exports = (pool) => {
     }
   });
 
-  // Buscar equipos por id, nombre, categoria o liga_id (solo admin)
-  router.get('/buscar', authenticateToken, async (req, res) => {
+  // Buscar equipos por id, nombre, categoria o liga_id (público)
+  router.get('/buscar', async (req, res) => {
     const { id, nombre, categoria, liga_id } = req.query;
     let query = 'SELECT * FROM "fcnolimit".equipos WHERE 1=1';
     const params = [];
