@@ -92,7 +92,8 @@ module.exports = (pool) => {
     }
     if (nombre) {
       params.push(`%${nombre}%`);
-      query += ` AND nombre_completo ILIKE $${params.length}`;
+      // Búsqueda insensible a tildes y mayúsculas/minúsculas
+      query += ` AND unaccent(lower(nombre_completo)) ILIKE unaccent(lower($${params.length}))`;
     }
 
     try {

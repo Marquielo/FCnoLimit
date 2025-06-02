@@ -83,7 +83,8 @@ module.exports = (pool) => {
     }
     if (nombre) {
       params.push(`%${nombre}%`);
-      query += ` AND nombre ILIKE $${params.length}`;
+      // Búsqueda insensible a tildes y mayúsculas/minúsculas
+      query += ` AND unaccent(lower(nombre)) ILIKE unaccent(lower($${params.length}))`;
     }
     if (categoria) {
       params.push(`%${categoria}%`);
