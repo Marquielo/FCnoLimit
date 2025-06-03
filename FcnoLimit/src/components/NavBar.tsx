@@ -94,11 +94,26 @@ const NavBar: React.FC = () => {
 
   // Fetch equipos populares solo cuando se abre el dropdown
   useEffect(() => {
+    const fetchEquiposPopulares = async () => {
+      try {
+        // Obtener todos los equipos y seleccionar 8 al azar en el frontend
+        const res = await fetch(`${apiBaseUrl}/api/equipos`);
+        if (!res.ok) throw new Error();
+        const equipos = await res.json();
+        if (Array.isArray(equipos) && equipos.length > 0) {
+          // Selecciona 8 equipos aleatorios del array
+          const shuffled = equipos.sort(() => 0.5 - Math.random());
+          setEquiposPopulares(shuffled.slice(0, 8));
+        } else {
+          setEquiposPopulares([]);
+        }
+      } catch {
+        setEquiposPopulares([]);
+      }
+    };
+
     if (showEquiposDropdown && equiposPopulares.length === 0) {
-      fetch(`${apiBaseUrl}/api/equipos?top=8`)
-        .then(res => res.json())
-        .then(data => setEquiposPopulares(data))
-        .catch(() => setEquiposPopulares([]));
+      fetchEquiposPopulares();
     }
   }, [showEquiposDropdown, equiposPopulares.length]);
 
@@ -276,18 +291,20 @@ const NavBar: React.FC = () => {
   // Renderizado de los items de navegación según el perfil
   const renderNavItems = () => (
     <>
-      {navItems.map(item => (
-        <li className="nav-item" key={item.path}>
-          <button
-            className={`nav-link btn btn-link ${location.pathname === item.path ? "active" : ""}`}
-            onClick={() => handleNavClick(item.path)}
-            type="button"
-          >
-            <IonIcon icon={item.icon} />
-            <span className="nav-text-visible">{item.text}</span>
-          </button>
-        </li>
-      ))}
+      {navItems
+        .filter(item => item.path !== "/equipos") // Elimina el botón duplicado "Equipos"
+        .map(item => (
+          <li className="nav-item" key={item.path}>
+            <button
+              className={`nav-link btn btn-link ${location.pathname === item.path ? "active" : ""}`}
+              onClick={() => handleNavClick(item.path)}
+              type="button"
+            >
+              <IonIcon icon={item.icon} />
+              <span className="nav-text-visible">{item.text}</span>
+            </button>
+          </li>
+        ))}
     </>
   );
 
@@ -384,24 +401,33 @@ const NavBar: React.FC = () => {
                         top: "100%",
                         left: 0,
                         zIndex: 9999,
-                        minWidth: 220,
-                        background: "#fff",
-                        boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
-                        borderRadius: 12,
-                        marginTop: 4,
-                        padding: 8,
+                        minWidth: 260,
+                        background: "var(--fcnolimit-bg-dark)", // usa el mismo azul del navbar
+                        boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
+                        borderRadius: 14,
+                        marginTop: 8,
+                        padding: "14px 12px",
+                        border: "2px solid #ff9800", // naranja
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 6,
                       }}
                     >
-                      <div className="dropdown-title" style={{ fontWeight: 600, marginBottom: 8 }}>Equipos más buscados</div>
+                      <div className="dropdown-title" style={{ fontWeight: 700, marginBottom: 10, fontSize: 16, color: "#fff" }}>
+                        Equipos más buscados
+                      </div>
                       {equiposPopulares.length === 0 ? (
-                        <div className="dropdown-loading">Cargando...</div>
+                        <div className="dropdown-loading" style={{ padding: 12, textAlign: "center", color: "#fff" }}>Cargando...</div>
                       ) : (
                         equiposPopulares.map(eq => (
                           <button
                             key={eq.id}
                             className="dropdown-equipo-btn"
-                            onClick={() => {
+                            onClick={async () => {
                               setShowEquiposDropdown(false);
+                              // Guarda el id del equipo seleccionado en localStorage (opcional)
+                              localStorage.setItem("equipoSeleccionadoId", String(eq.id));
+                              // Redirige a la página EquiposPage.tsx con el id del equipo
                               history.push(`/equipos/${eq.id}`);
                               handleMenuClose();
                             }}
@@ -409,20 +435,41 @@ const NavBar: React.FC = () => {
                               display: "flex",
                               alignItems: "center",
                               width: "100%",
-                              padding: "8px",
+                              padding: "8px 10px",
                               border: "none",
                               background: "none",
                               cursor: "pointer",
                               borderRadius: 8,
-                              transition: "background 0.2s",
+                              transition: "background 0.18s",
+                              gap: 10,
+                              fontSize: 15,
+                              color: "#fff",
+                              fontWeight: 500,
+                              textAlign: "left",
                             }}
+                            onMouseOver={e => (e.currentTarget.style.background = "#ff9800")}
+                            onMouseOut={e => (e.currentTarget.style.background = "none")}
                           >
                             <img
-                              src={eq.logo || '/assets/equipos/default.png'}
+                              src={
+                                eq.imagen_url
+                                  ? (eq.imagen_url.startsWith("http") ? eq.imagen_url : `${apiBaseUrl}${eq.imagen_url}`)
+                                  : '/assets/equipos/default.png'
+                              }
                               alt={eq.nombre}
-                              style={{ width: 24, height: 24, marginRight: 8, borderRadius: '50%' }}
+                              style={{
+                                width: 32,
+                                height: 32,
+                                marginRight: 10,
+                                borderRadius: '50%',
+                                objectFit: 'cover',
+                                border: "1.5px solid #ff9800",
+                                background: "#fafafa"
+                              }}
                             />
-                            <span>{eq.nombre}</span>
+                            <span style={{ flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", color: "#fff" }}>
+                              {eq.nombre}
+                            </span>
                           </button>
                         ))
                       )}
