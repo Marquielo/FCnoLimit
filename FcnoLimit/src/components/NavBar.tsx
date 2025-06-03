@@ -273,6 +273,24 @@ const NavBar: React.FC = () => {
     return items;
   };
 
+  // Renderizado de los items de navegación según el perfil
+  const renderNavItems = () => (
+    <>
+      {navItems.map(item => (
+        <li className="nav-item" key={item.path}>
+          <button
+            className={`nav-link btn btn-link ${location.pathname === item.path ? "active" : ""}`}
+            onClick={() => handleNavClick(item.path)}
+            type="button"
+          >
+            <IonIcon icon={item.icon} />
+            <span className="nav-text-visible">{item.text}</span>
+          </button>
+        </li>
+      ))}
+    </>
+  );
+
   return (
     <>
       <nav className={`navbar navbar-expand-lg ${scrolled ? "scrolled" : ""}`} ref={navbarRef}>
@@ -348,7 +366,7 @@ const NavBar: React.FC = () => {
               <div className="menu-section-title d-lg-none">Navegación</div>
 
               <ul className="navbar-nav">
-                {/* Orden original de los botones */}
+                {/* Equipos dropdown */}
                 <li className="nav-item equipos-dropdown" ref={equiposDropdownRef} style={{ position: "relative" }}>
                   <button
                     className={`nav-link btn btn-link${showEquiposDropdown ? " active" : ""}`}
@@ -411,28 +429,9 @@ const NavBar: React.FC = () => {
                     </div>
                   )}
                 </li>
-                {/* Resto de los botones en su orden original */}
-                <li className="nav-item">
-                  <button
-                    className={`nav-link btn btn-link ${location.pathname === "/partidos" ? "active" : ""}`}
-                    onClick={() => handleNavClick("/partidos")}
-                    type="button"
-                  >
-                    <IonIcon icon={footballSharp} />
-                    <span className="nav-text-visible">Partidos</span>
-                  </button>
-                </li>
-                <li className="nav-item">
-                  <button
-                    className={`nav-link btn btn-link ${location.pathname === "/campeonatos" ? "active" : ""}`}
-                    onClick={() => handleNavClick("/campeonatos")}
-                    type="button"
-                  >
-                    <IonIcon icon={trophySharp} />
-                    <span className="nav-text-visible">Competicion</span>
-                  </button>
-                </li>
-                {/* ...otros items según rol y login... */}
+                {/* Renderiza los items de navegación según el perfil */}
+                {renderNavItems()}
+                {/* ...otros items según login... */}
                 {!usuario && (
                   <li className="nav-item">
                     <button
@@ -506,7 +505,7 @@ const NavBar: React.FC = () => {
             {usuario && (
               <div className="d-none d-lg-flex align-items-center gap-2">
                 {/* Botón de search a la izquierda del perfil */}
-                {userRole === 'persona_natural' && (
+                {usuario.rol === 'persona_natural' && (
                   <button
                     className="navbar-competition-style"
                     onClick={() => handleNavClick("/home/buscar")}
