@@ -103,6 +103,29 @@ module.exports = (pool) => {
     }
   });
 
+  // Obtener detalle de equipo e incrementar contador de búsqueda
+  router.get('/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+      // Incrementa el contador de búsquedas
+      await pool.query(
+        'UPDATE "fcnolimit".equipos SET busqueda = busqueda + 1 WHERE id = $1',
+        [id]
+      );
+      // Luego obtiene el equipo actualizado
+      const result = await pool.query(
+        'SELECT * FROM "fcnolimit".equipos WHERE id = $1',
+        [id]
+      );
+      if (result.rows.length === 0) {
+        return res.status(404).json({ message: 'Equipo no encontrado.' });
+      }
+      res.json(result.rows[0]);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   // Obtener jugadores por equipo_id
   router.get('/:equipo_id/jugadores', async (req, res) => {
     const { equipo_id } = req.params;
@@ -111,7 +134,7 @@ module.exports = (pool) => {
         `SELECT * FROM "fcnolimit".llamar_jugadores_por_equipo WHERE equipo_id = $1`,
         [equipo_id]
       );
-      res.json(result.rows);
+      res.json(result.rows);  
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

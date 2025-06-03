@@ -57,34 +57,7 @@ const EquiposPage: React.FC = () => {
             </IonButton>
           </div>
         </div>
-        <div className="content-container">
-          {loading ? (
-            <IonSpinner name="crescent" />
-          ) : error ? (
-            <p style={{ color: 'red' }}>{error}</p>
-          ) : Object.keys(equiposPorDivision).length === 0 ? (
-            <p>No hay divisiones registradas.</p>
-          ) : (
-            Object.entries(equiposPorDivision).map(([division, equipos]) => (
-              <section className="teams-section" key={division}>
-                <h2 className="section-title">{division}</h2>
-                <div className="teams-grid">
-                  {equipos.map((eq) => (
-                    <div className="team-card" key={eq.id}>
-                      <img src={eq.logo || '/assets/equipos/default.png'} alt={eq.nombre} className="team-logo"/>
-                      <h3>{eq.nombre}</h3>
-                      <p>{eq.descripcion}</p>
-                      <IonButton fill="outline" size="small">
-                        <IonIcon icon={peopleOutline} slot="start" />
-                        Ver detalles
-                      </IonButton>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            ))
-          )}
-        </div>
+        {/* No mostrar equipos aquí */}
         <Footer />
       </IonContent>
     </IonPage>

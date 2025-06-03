@@ -23,6 +23,8 @@ import {
 import { useHistory, useLocation } from "react-router-dom";
 import "./NavBar.css";
 
+const apiBaseUrl = 'https://fcnolimit-back.onrender.com';
+
 const NavBar: React.FC = () => {
   const history = useHistory();
   const location = useLocation();
@@ -30,9 +32,12 @@ const NavBar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [showEquiposDropdown, setShowEquiposDropdown] = useState(false);
+  const [equiposPopulares, setEquiposPopulares] = useState<any[]>([]);
   const navbarRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const userButtonRef = useRef<HTMLDivElement>(null);
+  const equiposDropdownRef = useRef<HTMLLIElement>(null); // Cambiado de HTMLDivElement a HTMLLIElement
 
   // Obtener el usuario del localStorage
   const usuario = localStorage.getItem("usuario") ? JSON.parse(localStorage.getItem("usuario")!) : null;
@@ -59,6 +64,14 @@ const NavBar: React.FC = () => {
       ) {
         setShowUserMenu(false);
       }
+
+      if (
+        showEquiposDropdown &&
+        equiposDropdownRef.current &&
+        !equiposDropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowEquiposDropdown(false);
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -77,7 +90,17 @@ const NavBar: React.FC = () => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.body.style.overflow = '';
     };
-  }, [isOpen, showUserMenu]);
+  }, [isOpen, showUserMenu, showEquiposDropdown]);
+
+  // Fetch equipos populares solo cuando se abre el dropdown
+  useEffect(() => {
+    if (showEquiposDropdown && equiposPopulares.length === 0) {
+      fetch(`${apiBaseUrl}/api/equipos?top=8`)
+        .then(res => res.json())
+        .then(data => setEquiposPopulares(data))
+        .catch(() => setEquiposPopulares([]));
+    }
+  }, [showEquiposDropdown, equiposPopulares.length]);
 
   // Definir las rutas de navegación según el rol del usuario
   const getNavItems = () => {
@@ -325,21 +348,91 @@ const NavBar: React.FC = () => {
               <div className="menu-section-title d-lg-none">Navegación</div>
 
               <ul className="navbar-nav">
-                {navItems.map((item) => (
-                  <li className="nav-item" key={item.path}>
-                    <button
-                      className={`nav-link btn btn-link ${
-                        location.pathname === item.path ? "active" : ""
-                      }`}
-                      onClick={() => handleNavClick(item.path)}
-                      type="button"
+                {/* Orden original de los botones */}
+                <li className="nav-item equipos-dropdown" ref={equiposDropdownRef} style={{ position: "relative" }}>
+                  <button
+                    className={`nav-link btn btn-link${showEquiposDropdown ? " active" : ""}`}
+                    type="button"
+                    onClick={() => setShowEquiposDropdown((v) => !v)}
+                  >
+                    <IonIcon icon={peopleSharp} />
+                    <span className="nav-text-visible">Equipos</span>
+                  </button>
+                  {showEquiposDropdown && (
+                    <div
+                      className="equipos-dropdown-menu"
+                      style={{
+                        position: "absolute",
+                        top: "100%",
+                        left: 0,
+                        zIndex: 9999,
+                        minWidth: 220,
+                        background: "#fff",
+                        boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                        borderRadius: 12,
+                        marginTop: 4,
+                        padding: 8,
+                      }}
                     >
-                      <IonIcon icon={item.icon} />
-                      <span className="nav-text-visible">{item.text}</span>
-                    </button>
-                  </li>
-                ))}
-                {/* Mostrar botón Login solo si NO está logueado */}
+                      <div className="dropdown-title" style={{ fontWeight: 600, marginBottom: 8 }}>Equipos más buscados</div>
+                      {equiposPopulares.length === 0 ? (
+                        <div className="dropdown-loading">Cargando...</div>
+                      ) : (
+                        equiposPopulares.map(eq => (
+                          <button
+                            key={eq.id}
+                            className="dropdown-equipo-btn"
+                            onClick={() => {
+                              setShowEquiposDropdown(false);
+                              history.push(`/equipos/${eq.id}`);
+                              handleMenuClose();
+                            }}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              width: "100%",
+                              padding: "8px",
+                              border: "none",
+                              background: "none",
+                              cursor: "pointer",
+                              borderRadius: 8,
+                              transition: "background 0.2s",
+                            }}
+                          >
+                            <img
+                              src={eq.logo || '/assets/equipos/default.png'}
+                              alt={eq.nombre}
+                              style={{ width: 24, height: 24, marginRight: 8, borderRadius: '50%' }}
+                            />
+                            <span>{eq.nombre}</span>
+                          </button>
+                        ))
+                      )}
+                    </div>
+                  )}
+                </li>
+                {/* Resto de los botones en su orden original */}
+                <li className="nav-item">
+                  <button
+                    className={`nav-link btn btn-link ${location.pathname === "/partidos" ? "active" : ""}`}
+                    onClick={() => handleNavClick("/partidos")}
+                    type="button"
+                  >
+                    <IonIcon icon={footballSharp} />
+                    <span className="nav-text-visible">Partidos</span>
+                  </button>
+                </li>
+                <li className="nav-item">
+                  <button
+                    className={`nav-link btn btn-link ${location.pathname === "/campeonatos" ? "active" : ""}`}
+                    onClick={() => handleNavClick("/campeonatos")}
+                    type="button"
+                  >
+                    <IonIcon icon={trophySharp} />
+                    <span className="nav-text-visible">Competicion</span>
+                  </button>
+                </li>
+                {/* ...otros items según rol y login... */}
                 {!usuario && (
                   <li className="nav-item">
                     <button
@@ -352,6 +445,7 @@ const NavBar: React.FC = () => {
                     </button>
                   </li>
                 )}
+                {/* ...otros items según rol... */}
               </ul>
             </div>
 
