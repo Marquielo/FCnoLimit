@@ -506,14 +506,16 @@ const NavBar: React.FC = () => {
             {usuario && (
               <div className="d-none d-lg-flex align-items-center gap-2">
                 {/* Botón de search a la izquierda del perfil */}
-                <button
-                  className="navbar-competition-style"
-                  onClick={() => handleNavClick("/home/buscar")}
-                  type="button"
-                >
-                  <IonIcon icon={searchOutline} className="navbar-search-icon" />
-                  Buscar
-                </button>
+                {userRole === 'persona_natural' && (
+                  <button
+                    className="navbar-competition-style"
+                    onClick={() => handleNavClick("/home/buscar")}
+                    type="button"
+                  >
+                    <IonIcon icon={searchOutline} className="navbar-search-icon" />
+                    Buscar
+                  </button>
+                )}
                 <div className="navbar-actions">
                   {userRole === 'jugador' && (
                     <button className="navbar-stats-btn">
