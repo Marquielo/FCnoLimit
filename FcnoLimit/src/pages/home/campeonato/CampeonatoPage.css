@@ -1,7 +1,8 @@
 .page-container {
   padding: 32px;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8ffae 0%, #43c6ac 100%);
+  background: linear-gradient(135deg, #232f36 0%, #185a9d 100%);
+  background-color: #185a9d;
 }
 
 .page-container h1 {
@@ -13,4 +14,183 @@
 .page-container p {
   color: #444;
   font-size: 1.1rem;
+}
+
+/* Banner igual al de EquiposPage */
+.equipo-banner-dark {
+  background: linear-gradient(120deg, #232323 60%, #181818 100%);
+  background-image: url('../../../assets/banner-fc-bg.png'), linear-gradient(120deg, #232323 60%, #181818 100%);
+  background-size: 100% 100%, cover;
+  background-repeat: no-repeat, no-repeat;
+  background-position: center center, center center;
+  padding: 48px 0 32px 0;
+  position: relative;
+  text-align: left;
+  min-height: 180px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  border-bottom: 5px solid #ffe600;
+}
+
+.equipo-banner-inner {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-left: 60px;
+}
+
+.equipo-banner-logo {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: #fff;
+  border: 4px solid #222;
+  object-fit: contain;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+}
+
+.equipo-banner-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 2px 2px 8px #000;
+}
+
+/* Responsive igual que EquiposPage */
+@media (max-width: 900px) {
+  .equipo-banner-inner {
+    margin-left: 0 !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .equipo-banner-title {
+    font-size: 2rem;
+  }
+  .equipo-banner-logo {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+/* Estilos para la tabla de clasificación */
+.tabla-clasificacion-container {
+  max-width: 1100px;
+  margin: 40px auto 0 auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.08);
+  padding: 32px 24px 24px 24px;
+}
+
+.tabla-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.tabla-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #232323;
+  margin: 0;
+}
+
+.tabla-ver-completa {
+  color: #ff9800;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: text-decoration 0.2s;
+}
+.tabla-ver-completa:hover {
+  text-decoration: underline;
+}
+
+.tabla-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.tabla-tab {
+  background: #fff;
+  border: 2px solid #eee;
+  border-radius: 8px 8px 0 0;
+  padding: 10px 28px;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #232323;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border 0.15s;
+  outline: none;
+}
+.tabla-tab-active,
+.tabla-tab:active,
+.tabla-tab:focus {
+  background: #ff9800;
+  color: #fff;
+  border-bottom: 3px solid #ff9800;
+}
+
+.tabla-scroll {
+  overflow-x: auto;
+}
+
+.tabla-clasificacion {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  font-size: 1.05rem;
+}
+
+.tabla-clasificacion th,
+.tabla-clasificacion td {
+  padding: 12px 10px;
+  text-align: center;
+  border-bottom: 1px solid #f3f3f3;
+}
+
+.tabla-clasificacion th {
+  background: #fafafa;
+  font-weight: 700;
+  color: #232323;
+  font-size: 1.08rem;
+}
+
+.tabla-clasificacion td {
+  color: #232323;
+}
+
+.tabla-clasificacion tr:last-child td {
+  border-bottom: none;
+}
+
+.tabla-top-row {
+  background: #fff6e6;
+}
+
+@media (max-width: 900px) {
+  .tabla-clasificacion-container {
+    padding: 18px 4px 12px 4px;
+  }
+  .tabla-title {
+    font-size: 1.2rem;
+  }
+  .tabla-tabs {
+    gap: 4px;
+  }
+  .tabla-tab {
+    padding: 8px 10px;
+    font-size: 0.98rem;
+  }
 }

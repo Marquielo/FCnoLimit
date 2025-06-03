@@ -150,6 +150,18 @@ const App: React.FC = () => (
             <EquiposPage />
           </ProtectedRoute>
         )} />
+        {/* Agrega esta ruta para ver el detalle de un equipo */}
+        <Route exact path="/equipos/:id" render={({ match }) => (
+          <ProtectedRoute>
+            <EquiposPage />
+          </ProtectedRoute>
+        )} />
+        {/* Agrega esta ruta para ver los partidos de un equipo */}
+        <Route exact path="/equipos/:id/partidos" render={({ match }) => (
+          <ProtectedRoute>
+            <PartidosPage />
+          </ProtectedRoute>
+        )} />
         <Route exact path="/partidos" render={() => (
           <ProtectedRoute>
             <PartidosPage />

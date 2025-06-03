@@ -4,6 +4,7 @@ import { calendarOutline, locationOutline, arrowForward } from 'ionicons/icons';
 import NavBar from '../../../components/NavBar';
 import Footer from '../../../components/Footer';
 import './PartidosPage.css';
+import bannerBg from '../../../assets/banner-fc-bg.png'; // Asegúrate de que la ruta sea correcta
 
 const apiBaseUrl = 'https://fcnolimit-back.onrender.com';
 
@@ -137,6 +138,24 @@ const PartidosPage: React.FC = () => {
     <IonPage>
       <NavBar />
       <IonContent fullscreen>
+        {/* Banner personalizado con la imagen proporcionada */}
+        <div
+          className="partidos-banner"
+          style={{
+            background: `url(${bannerBg}) center center / contain no-repeat`
+          }}
+        >
+          <div style={{
+            color: '#fff',
+            fontSize: '2.5rem',
+            fontWeight: 800,
+            letterSpacing: 2,
+            marginLeft: 48,
+            textShadow: '2px 2px 8px #000'
+          }}>
+            Partidos
+          </div>
+        </div>
         <div className="content-container">
           {/* SECCIÓN DE PARTIDOS PENDIENTES */}
           <section className="matches-section">

@@ -53,3 +53,346 @@
   object-fit: contain;
   margin-bottom: 1rem;
 }
+
+.equipo-onefootball,
+.equipos-content {
+  background: linear-gradient(120deg, #232323 60%, #181818 100%);
+  min-height: calc(100vh - 64px);
+  color: #fff;
+  font-family: 'Poppins', 'Inter', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.equipo-banner-dark {
+  background: linear-gradient(120deg, #232323 60%, #181818 100%);
+  background-image: url('../../../assets/banner-fc-bg.png'), linear-gradient(120deg, #232323 60%, #181818 100%);
+  background-size: 100% 100%, cover;
+  background-repeat: no-repeat, no-repeat;
+  background-position: center center, center center;
+  padding: 48px 0 32px 0;
+  position: relative;
+  text-align: left;
+  min-height: 180px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  border-bottom: 5px solid #ffe600; /* Borde dorado al final del banner */
+}
+
+.equipo-banner-inner {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-left: 60px;
+}
+
+.equipo-banner-logo {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: #fff;
+  border: 4px solid #222;
+  object-fit: contain;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+}
+
+.equipo-banner-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 2px 2px 8px #000;
+}
+
+.equipo-banner-follow {
+  margin-left: 32px;
+  background: #181818;
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  padding: 10px 28px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #0005;
+  transition: background 0.2s;
+}
+.equipo-banner-follow:hover {
+  background: #222;
+}
+
+.equipo-badges {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+.equipo-badge {
+  background: #222;
+  color: #fff;
+  border-radius: 12px;
+  padding: 4px 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.equipo-tabs {
+  display: flex;
+  gap: 28px;
+  background: #181818;
+  padding: 0 0 0 60px;
+  border-bottom: 2px solid #222;
+  margin-bottom: 24px;
+  font-size: 1.08rem;
+}
+.equipo-tab {
+  color: #bbb;
+  padding: 18px 0 12px 0;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-bottom 0.2s;
+}
+.equipo-tab.active {
+  color: #fff;
+  border-bottom: 2.5px solid #ffe600;
+}
+
+.equipo-main-row {
+  display: flex;
+  gap: 32px;
+  padding: 36px 60px 0 60px;
+  justify-content: flex-start;
+}
+.equipo-main-col {
+  flex: 1 1 0;
+  min-width: 260px;
+  max-width: 340px;
+}
+.equipo-videos {
+  max-width: 320px;
+}
+.equipo-section-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+.equipo-result-card {
+  background: #181818;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px #0006;
+  padding: 18px 18px 8px 18px;
+  margin-bottom: 10px;
+}
+.equipo-result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.equipo-result-team {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: #fff;
+}
+.equipo-result-team img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: contain;
+  background: #fff;
+  border: 1.5px solid #222;
+}
+.equipo-result-score {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #ffe600;
+  margin: 0 12px;
+}
+.equipo-result-date {
+  color: #bbb;
+  font-size: 1rem;
+  min-width: 80px;
+  text-align: right;
+}
+.equipo-result-league {
+  margin-top: 8px;
+  color: #ffe600;
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.equipo-link-row {
+  margin-top: 8px;
+}
+.equipo-link {
+  color: #ffe600;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.equipo-link:hover {
+  text-decoration: underline;
+}
+.equipo-video-card {
+  background: #181818;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px #0006;
+  padding: 32px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+}
+.equipo-video-circle {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 6px solid #ffe600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #111;
+}
+.equipo-video-logo {
+  font-size: 2.6rem;
+  color: #ffe600;
+  font-weight: 900;
+  font-family: 'Teko', 'Poppins', Arial, sans-serif;
+}
+
+.equipo-info-extra {
+  margin: 48px 0 0 0;
+  background: #181818;
+  border-radius: 16px 16px 0 0;
+  padding: 32px 0 24px 0;
+  color: #fff;
+  font-size: 1.08rem;
+  box-shadow: 0 2px 12px #0006;
+  display: block;
+  justify-content: unset;
+  flex: unset;
+}
+
+.equipo-info-row {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px 48px;
+  padding: 0 32px;
+}
+
+.equipo-info-row > div {
+  min-width: 220px;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 900px) {
+  .equipo-banner-inner, .equipo-tabs, .equipo-main-row, .equipo-info-extra {
+    margin-left: 0 !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  .equipo-main-row {
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px 16px 0 16px;
+  }
+  .equipo-info-extra {
+    margin: 32px 0 0 0;
+    padding: 24px 0 16px 0;
+  }
+  .equipo-info-row {
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .equipo-banner-title {
+    font-size: 2rem;
+  }
+  .equipo-banner-logo {
+    width: 70px;
+    height: 70px;
+  }
+  .equipo-main-row {
+    flex-direction: column;
+    gap: 18px;
+    padding: 16px 4px 0 4px;
+  }
+  .equipo-info-extra {
+    margin: 24px 0 0 0;
+    padding: 12px 0 8px 0;
+    font-size: 0.98rem;
+  }
+  .equipo-info-row {
+    padding: 0 4px;
+  }
+}
+
+/* Elimina cualquier espacio blanco entre el contenido y el footer */
+.equipos-content {
+  min-height: calc(100vh - 64px);
+  background: linear-gradient(120deg, #232323 60%, #181818 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-bottom: 0;
+}
+
+/* Elimina cualquier fondo blanco de IonContent/IonPage */
+ion-content,
+.IonContent,
+ion-page,
+.IonPage {
+  --background: transparent !important;
+  background: transparent !important;
+}
+
+/* Línea dorada arriba del footer */
+.footer-separator {
+  width: 100%;
+  height: 5px;
+  background: #ffe600;
+  margin: 0;
+  padding: 0;
+  border: none;
+  display: block;
+}
+
+/* Footer del color de la imagen adjunta (#232f36) */
+footer,
+.Footer,
+ion-footer,
+.IonFooter {
+  background: #232f36 !important;
+  color: #fff !important;
+  border-top: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  /* Línea dorada arriba del footer */
+  border-top: 5px solid #ffe600 !important;
+}
+
+footer > *,
+.Footer > *,
+ion-footer > *,
+.IonFooter > * {
+  background: #232f36 !important;
+  color: #fff !important;
+}

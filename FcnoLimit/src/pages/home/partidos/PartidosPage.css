@@ -225,3 +225,35 @@
   padding: 1rem;
 }
 */
+
+.partidos-banner {
+  position: relative;
+  width: 100%;
+  min-height: 220px;
+  height: 220px;
+  background-size: 100% 100% !important; /* Fuerza a estirar la imagen en ambas dimensiones */
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 32px;
+  padding: 0 0 32px 0;
+  overflow: hidden;
+}
+
+@media (max-width: 700px) {
+  .partidos-banner {
+    min-height: 140px;
+    height: 140px;
+    padding-bottom: 16px;
+  }
+}
+
+.partidos-banner-title {
+  color: #fff;
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-left: 48px;
+  text-shadow: 2px 2px 8px #000;
+}

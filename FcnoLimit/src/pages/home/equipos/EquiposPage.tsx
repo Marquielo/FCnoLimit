@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IonPage, IonContent, IonButton, IonIcon, IonSpinner } from '@ionic/react';
 import { useParams, useHistory } from 'react-router-dom';
-import { peopleOutline, footballOutline } from 'ionicons/icons';
+import { peopleOutline, footballOutline, chevronForward, calendarOutline } from 'ionicons/icons';
 import NavBar from '../../../components/NavBar';
 import Footer from '../../../components/Footer';
 import './EquiposPage.css';
@@ -28,7 +28,6 @@ interface Equipo {
 }
 
 const EquiposPage: React.FC = () => {
-  // useParams te permite obtener el id de la URL, por ejemplo /equipos/5
   const { id } = useParams<{ id?: string }>();
   const history = useHistory();
   const [equiposPorDivision, setEquiposPorDivision] = useState<{ [division: string]: Equipo[] }>({});
@@ -38,7 +37,6 @@ const EquiposPage: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      // Si hay id en la URL, busca la info de ese equipo
       setLoading(true);
       fetch(`${apiBaseUrl}/api/equipos/${id}`)
         .then(res => {
@@ -54,7 +52,6 @@ const EquiposPage: React.FC = () => {
           setLoading(false);
         });
     } else {
-      // Si no hay id, muestra el listado de equipos por división
       setEquipo(null);
       setLoading(true);
       fetch(`${apiBaseUrl}/api/divisiones/equipos`, { cache: 'no-store' })
@@ -90,37 +87,122 @@ const EquiposPage: React.FC = () => {
           ) : error ? (
             <div className="equipos-error">{error}</div>
           ) : equipo ? (
-            // Vista detalle de equipo
-            <div className="equipo-detalle">
-              <IonButton fill="clear" onClick={() => history.push('/equipos')}>
-                ← Volver a divisiones
-              </IonButton>
-              <div className="equipo-header">
-                <img
-                  src={
-                    equipo.imagen_url
-                      ? (equipo.imagen_url.startsWith('http') ? equipo.imagen_url : `${apiBaseUrl}${equipo.imagen_url}`)
-                      : '/assets/equipos/default.png'
-                  }
-                  alt={equipo.nombre}
-                  className="equipo-logo"
-                  style={{ width: 80, height: 80, borderRadius: '50%', objectFit: 'cover', border: '2px solid #ff9800', background: '#fafafa' }}
-                />
-                <h1>{equipo.nombre}</h1>
+            <div className="equipo-onefootball">
+              {/* Banner superior */}
+              <div className="equipo-banner-dark">
+                <div className="equipo-banner-inner">
+                  <img
+                    src={
+                      equipo.imagen_url
+                        ? (equipo.imagen_url.startsWith('http') ? equipo.imagen_url : `${apiBaseUrl}${equipo.imagen_url}`)
+                        : '/assets/equipos/default.png'
+                    }
+                    alt={equipo.nombre}
+                    className="equipo-banner-logo"
+                  />
+                  <div className="equipo-banner-title">{equipo.nombre}</div>
+                  <button className="equipo-banner-follow">★ Seguir</button>
+                </div>
               </div>
-              <div className="equipo-info">
-                <p><strong>País:</strong> {equipo.pais || 'Sin dato'}</p>
-                <p><strong>Ciudad:</strong> {equipo.ciudad || 'Sin dato'}</p>
-                <p><strong>Estadio:</strong> {equipo.estadio_nombre || 'Sin dato'}</p>
-                <p><strong>Capacidad estadio:</strong> {equipo.capacidad_estadio ?? 'Sin dato'}</p>
-                <p><strong>Fundación:</strong> {equipo.fundacion ? new Date(equipo.fundacion).toLocaleDateString() : 'Sin dato'}</p>
-                <p><strong>Valor mercado total:</strong> {equipo.valor_mercado_total ?? 'Sin dato'}</p>
-                <p><strong>Jugadores plantilla:</strong> {equipo.jugadores_plantilla ?? 'Sin dato'}</p>
-                <p><strong>Descripción:</strong> {equipo.descripcion || 'Sin descripción'}</p>
-                {equipo.division && <p><strong>División:</strong> {equipo.division}</p>}
-                {equipo.categoria && <p><strong>Categoría:</strong> {equipo.categoria}</p>}
-                {equipo.liga_id && <p><strong>Liga ID:</strong> {equipo.liga_id}</p>}
-                <p><strong>Creado en:</strong> {equipo.creado_en ? new Date(equipo.creado_en).toLocaleString() : 'Sin dato'}</p>
+              {/* Tabs navegación (solo visual) */}
+              <div className="equipo-tabs">
+                <div className="equipo-tab active">Resumen</div>
+                <div className="equipo-tab">Noticias</div>
+                <div className="equipo-tab">Partidos</div>
+                <div className="equipo-tab">Resultados</div>
+                <div className="equipo-tab">Plantilla</div>
+                <div className="equipo-tab">Fichajes</div>
+                <div className="equipo-tab">Oficial</div>
+              </div>
+              {/* Resultados y próximos partidos (simulado) */}
+              <div className="equipo-main-row">
+                <div className="equipo-main-col">
+                  <div className="equipo-section-title">Último resultado</div>
+                  <div className="equipo-result-card">
+                    <div className="equipo-result-row">
+                      <div className="equipo-result-team">
+                        <img src="/assets/equipos/default.png" alt="FC Fulham" />
+                        <span>FC Fulham</span>
+                      </div>
+                      <div className="equipo-result-score">0</div>
+                      <div className="equipo-result-date">25/05/25</div>
+                    </div>
+                    <div className="equipo-result-row">
+                      <div className="equipo-result-team">
+                        <img
+                          src={
+                            equipo.imagen_url
+                              ? (equipo.imagen_url.startsWith('http') ? equipo.imagen_url : `${apiBaseUrl}${equipo.imagen_url}`)
+                              : '/assets/equipos/default.png'
+                          }
+                          alt={equipo.nombre}
+                        />
+                        <span>{equipo.nombre}</span>
+                      </div>
+                      <div className="equipo-result-score">2</div>
+                      <div className="equipo-result-date">Fin del partido</div>
+                    </div>
+                    <div className="equipo-result-league">Premier League</div>
+                  </div>
+                  <div className="equipo-link-row">
+                    <a href="#" className="equipo-link">Ver todos los resultados <IonIcon icon={chevronForward} /></a>
+                  </div>
+                </div>
+                <div className="equipo-main-col">
+                  <div className="equipo-section-title">Siguiente partido</div>
+                  <div className="equipo-result-card">
+                    <div className="equipo-result-row">
+                      <div className="equipo-result-team">
+                        <img
+                          src={
+                            equipo.imagen_url
+                              ? (equipo.imagen_url.startsWith('http') ? equipo.imagen_url : `${apiBaseUrl}${equipo.imagen_url}`)
+                              : '/assets/equipos/default.png'
+                          }
+                          alt={equipo.nombre}
+                        />
+                        <span>{equipo.nombre}</span>
+                      </div>
+                      <div className="equipo-result-date">18/06/25</div>
+                    </div>
+                    <div className="equipo-result-row">
+                      <div className="equipo-result-team">
+                        <img src="/assets/equipos/default.png" alt="Wydad AC" />
+                        <span>Wydad AC</span>
+                      </div>
+                      <div className="equipo-result-date">13:00</div>
+                    </div>
+                    <div className="equipo-result-league">Copa Mundial de Clubes de la FIFA</div>
+                  </div>
+                  <div className="equipo-link-row">
+                    <a href="#" className="equipo-link">Ver todos los partidos <IonIcon icon={chevronForward} /></a>
+                  </div>
+                </div>
+                <div className="equipo-main-col equipo-videos">
+                  <div className="equipo-section-title">VIDEOS</div>
+                  <div className="equipo-video-card">
+                    <div className="equipo-video-circle">
+                      <span className="equipo-video-logo">1.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Info adicional */}
+              <div className="equipo-info-extra">
+                <div className="equipo-info-row">
+                  <div><strong>País:</strong> {equipo.pais || 'Sin dato'}</div>
+                  <div><strong>Ciudad:</strong> {equipo.ciudad || 'Sin dato'}</div>
+                  <div><strong>Estadio:</strong> {equipo.estadio_nombre || 'Sin dato'}</div>
+                  <div><strong>Capacidad estadio:</strong> {equipo.capacidad_estadio ?? 'Sin dato'}</div>
+                  <div><strong>Fundación:</strong> {equipo.fundacion ? new Date(equipo.fundacion).toLocaleDateString() : 'Sin dato'}</div>
+                  <div><strong>Valor mercado total:</strong> {equipo.valor_mercado_total ?? 'Sin dato'}</div>
+                  <div><strong>Jugadores plantilla:</strong> {equipo.jugadores_plantilla ?? 'Sin dato'}</div>
+                  <div><strong>Descripción:</strong> {equipo.descripcion || 'Sin descripción'}</div>
+                  {equipo.division && <div><strong>División:</strong> {equipo.division}</div>}
+                  {equipo.categoria && <div><strong>Categoría:</strong> {equipo.categoria}</div>}
+                  {equipo.liga_id && <div><strong>Liga ID:</strong> {equipo.liga_id}</div>}
+                  <div><strong>Creado en:</strong> {equipo.creado_en ? new Date(equipo.creado_en).toLocaleString() : 'Sin dato'}</div>
+                </div>
               </div>
             </div>
           ) : (
@@ -167,6 +249,7 @@ const EquiposPage: React.FC = () => {
             </>
           )}
         </div>
+        <div className="footer-separator"></div>
         <Footer />
       </IonContent>
     </IonPage>
