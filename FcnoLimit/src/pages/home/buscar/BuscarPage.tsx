@@ -89,6 +89,11 @@ const BuscarPage: React.FC = () => {
         // Filtra resultados de equipos y jugadores ignorando mayúsculas, minúsculas y tildes
         const equiposWithType = Array.isArray(equipos)
           ? equipos
+              .filter((item: any) => {
+                // Normaliza el nombre del equipo y lo compara con la búsqueda normalizada
+                const nombreEquipo = item.nombre ? normalizeText(item.nombre) : "";
+                return nombreEquipo.includes(normalizedSearch);
+              })
               .map((item: any) => ({ ...item, _type: "equipo" }))
           : [];
         const jugadoresWithType = Array.isArray(jugadores)
@@ -104,10 +109,8 @@ const BuscarPage: React.FC = () => {
                 ].filter(Boolean);
                 const normalizados = campos.map((str: string) => normalizeText(str));
                 // Coincidencia si alguna variante contiene el texto buscado (ambos normalizados)
-                // Normaliza también el texto de búsqueda aquí
-                const searchNorm = normalizeText(search.trim());
                 return normalizados.some(nombre =>
-                  nombre.includes(searchNorm)
+                  nombre.includes(normalizedSearch)
                 );
               })
               .map((item: any) => ({ ...item, _type: "jugador" }))
