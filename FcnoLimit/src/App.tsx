@@ -59,6 +59,7 @@ import EntrenadorEntrenamientos from './pages/admin/entrenador/entrenamientos/En
 import EntrenadorPage from './pages/admin/entrenador/page';
 import EntrenadorTacticas from './pages/admin/entrenador/tactica/EntrenadorTacticas';
 import BuscarPage from './pages/home/buscar/BuscarPage';
+import AdminPartidos from './pages/admin/AdminPartidos';
 
 setupIonicReact({
   mode: 'md',
@@ -121,6 +122,17 @@ const App: React.FC = () => (
         <Route exact path="/admin/dashboard" render={() => (
           <ProtectedRoute>
             <AdminDashboard />
+          </ProtectedRoute>
+        )} />
+        {/* Añadido para el botón Panel Admin del navbar */}
+        <Route exact path="/admin/AdminDashboard" render={() => (
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/admin/adminpartidos" render={() => (
+          <ProtectedRoute>
+            <AdminPartidos />
           </ProtectedRoute>
         )} />
         <Route exact path="/admin/jugadores" render={() => (

@@ -131,9 +131,7 @@ const NavBar: React.FC = () => {
       case 'administrador':
         return [
           ...commonItems,
-          { path: "/admin", icon: settingsOutline, text: "Panel Admin" },
-          { path: "/estadisticas", icon: statsChartSharp, text: "Estadísticas" },
-          { path: "/comparativas", icon: gitCompareSharp, text: "Comparativas" },
+          { path: "/admin/AdminDashboard", icon: settingsOutline, text: "Panel Admin" }, // <-- Cambiado aquí
         ];
       
       case 'jugador':
@@ -244,7 +242,7 @@ const NavBar: React.FC = () => {
         <a key="admin" href="#" className="user-menu-item" onClick={(e) => {
           e.preventDefault();
           setShowUserMenu(false);
-          history.push("/admin");
+          history.push("/admin/AdminDashboard"); // <-- Cambiado aquí
         }}>
           <IonIcon icon={settingsOutline} />
           Panel de administración

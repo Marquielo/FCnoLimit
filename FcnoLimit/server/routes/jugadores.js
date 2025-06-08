@@ -189,5 +189,19 @@ module.exports = (pool) => {
     }
   });
   
+  // Obtener jugadores por equipo y división (público)
+  router.get('/equipo/:equipo_id/division/:id_division', async (req, res) => {
+    const { equipo_id, id_division } = req.params;
+    try {
+      const result = await pool.query(
+        'SELECT * FROM fcnolimit.obtener_jugadores_equipo_y_division_directo($1, $2)',
+        [equipo_id, id_division]
+      );
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   return router;
 };

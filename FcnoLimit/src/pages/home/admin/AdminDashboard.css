@@ -1,71 +1,188 @@
-.admin-dashboard-flex {
+@import '../../../styles/variables.css';
+
+.admin-dashboard-bg {
+  background: #f7f8fa;
+  min-height: 100vh;
+  font-family: 'Montserrat', 'Raleway', Arial, sans-serif;
+}
+
+.elegant-admin {
   display: flex;
   min-height: 80vh;
-  gap: 24px;
-  background: #f5f6fa;
-  border-radius: 16px;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  max-width: 1200px;
+  margin: 2.5rem auto 0 auto;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(44,62,80,0.08);
+  background: #fff;
+  overflow: hidden;
 }
 
-.admin-sidebar {
-  min-width: 220px;
-  background: #23272f;
-  padding: 1.5rem 1rem;
-  border-radius: 16px;
+.elegant-sidebar {
+  background: linear-gradient(135deg, #ff9800 0%, #ffb347 100%);
+  min-width: 210px;
+  padding: 2.5rem 1.2rem 2rem 1.2rem;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  align-items: flex-start;
+  box-shadow: 2px 0 16px rgba(25,22,84,0.07);
 }
 
-.admin-sidebar .ion-button {
-  font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 8px;
-  border-radius: 8px;
-}
-
-.admin-main-content {
-  flex: 1;
-  background: #fff;
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-}
-
-.admin-main-content h2 {
+.sidebar-btn {
+  width: 100%;
   margin-bottom: 1.5rem;
-  color: #222;
+  font-weight: 700;
+  font-size: 1.08rem;
+  letter-spacing: 0.5px;
+  border-radius: 12px;
+  --background: transparent;
+  --color: #23263a;
+  --background-hover: #ececec;
+  --box-shadow: none;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  transition: background 0.2s, color 0.2s;
+}
+.sidebar-btn.active,
+.sidebar-btn:hover {
+  --background: var(--fcnolimit-primary);
+  --color: #fff;
+  background: var(--fcnolimit-primary) !important;
+  color: #fff !important;
+}
+.sidebar-btn-icon {
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+}
+.elegant-main {
+  flex: 1;
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  background: transparent;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.admin-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 2.2rem;
+}
+.admin-section-icon {
+  font-size: 2rem;
+  color: var(--fcnolimit-primary);
+  background: #19165410;
+  border-radius: 50%;
+  padding: 0.5rem;
+}
+.admin-section-title h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #23263a;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+.admin-loading, .admin-empty {
+  text-align: center;
+  color: #bbb;
+  font-size: 1.1rem;
+  margin: 2.5rem 0;
+}
+.admin-partidos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Tarjeta de partido minimalista y elegante */
+.admin-partido-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(25,22,84,0.07);
+  padding: 1.3rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  border: 1.5px solid #ececec;
+  transition: 
+    box-shadow 0.16s,
+    transform 0.13s,
+    border-color 0.16s,
+    background 0.16s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.admin-partido-card:focus,
+.admin-partido-card:hover {
+  background: #f5f6fa;
+  border-color: var(--fcnolimit-primary);
+  box-shadow: 0 6px 24px rgba(67,198,172,0.10);
+  transform: translateY(-2px) scale(1.01);
+}
+.admin-partido-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 1.08rem;
   font-weight: 600;
+  color: #23263a;
 }
-
-.admin-main-content .ion-button {
-  margin-bottom: 1rem;
-  font-size: 1rem;
+.admin-partido-equipos {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #23263a;
+  letter-spacing: 0.2px;
 }
-
+.admin-partido-local, .admin-partido-visitante {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.admin-partido-vs {
+  color: var(--fcnolimit-primary);
+  font-weight: 800;
+  font-size: 1.08rem;
+  margin: 0 0.5rem;
+  letter-spacing: 0.5px;
+}
+.admin-partido-fecha {
+  color: var(--fcnolimit-primary);
+  font-size: 0.98rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.1rem;
+}
+.admin-partido-info {
+  display: flex;
+  gap: 2rem;
+  font-size: 0.97rem;
+  color: #6b6f7a;
+  margin-top: 0.3rem;
+}
+.admin-partido-info ion-icon {
+  color: var(--fcnolimit-primary);
+  margin-right: 0.3rem;
+  font-size: 1.05rem;
+}
 @media (max-width: 900px) {
-  .admin-dashboard-flex {
-    flex-direction: column;
-    gap: 0;
-  }
-  .admin-sidebar {
-    flex-direction: row;
-    min-width: unset;
-    margin-right: 0;
-    margin-bottom: 1rem;
-    border-radius: 12px 12px 0 0;
-    justify-content: flex-start;
-    overflow-x: auto;
-  }
-  .admin-sidebar .ion-button {
-    margin-right: 8px;
-    margin-bottom: 0;
-    min-width: 120px;
-  }
-  .admin-main-content {
-    border-radius: 0 0 16px 16px;
-    padding: 1rem;
-  }
+  .elegant-admin { flex-direction: column; }
+  .elegant-sidebar { min-width: 100%; flex-direction: row; justify-content: flex-start; padding: 1.2rem 0.5rem; }
+  .elegant-main { padding: 1.2rem 0.7rem; }
+  .admin-partido-card { padding: 1rem 0.7rem; border-radius: 10px; }
+  .admin-section-title h2 { font-size: 1.3rem; }
+}
+@media (max-width: 600px) {
+  .elegant-admin { margin: 0; border-radius: 0; box-shadow: none; }
+  .elegant-sidebar { padding: 0.7rem 0.2rem; }
+  .elegant-main { padding: 0.7rem 0.2rem; }
+  .admin-partido-card { padding: 0.7rem 0.3rem; border-radius: 7px; }
+  .admin-section-title { gap: 0.4rem; }
 }
