@@ -9,13 +9,24 @@ import sections from "../../../config/sections";
 import fieldsMap from "../../../config/fieldsMap";
 import { useUserSearch } from "../../../hooks/useUserSearch";
 import api from "../../../api/axios";
+import { useHistory } from "react-router-dom";
 import "./AdminDashboard.css";
 
 const AdminDashboard: React.FC = () => {
+  const [partidos, setPartidos] = useState<any[]>([]);
+  const history = useHistory();
   const [selected, setSelected] = useState<string>("partidos");
   const [partidosPendientes, setPartidosPendientes] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const router = useIonRouter();
+
+  useEffect(() => {
+    // Cargar partidos al montar el componente
+    fetch("https://fcnolimit-back.onrender.com/api/partidos")
+      .then(res => res.json())
+      .then(data => setPartidos(Array.isArray(data) ? data : []))
+      .catch(() => setPartidos([]));
+  }, []);
 
   useEffect(() => {
     if (selected === "partidos") {
@@ -102,6 +113,23 @@ const AdminDashboard: React.FC = () => {
 
   const formConfig = getFormConfig();
 
+  // Función para navegar a AdminPartidos con los datos del partido
+  const handleSeleccionarPartido = (partido: any) => {
+    history.push("/admin/AdminPartidos", {
+      partido: {
+        id: partido.id,
+        equipoLocal: partido.equipo_local_nombre || partido.equipo_local || "",
+        equipoVisitante: partido.equipo_visitante_nombre || partido.equipo_visitante || "",
+        division: partido.nombre_division || "",
+        divisionEquipo: partido.nombre_division_equipo || "",
+        equipoLId: partido.equipo_local_id || null,
+        equipoVid: partido.equipo_visitante_id || null,
+        divisionId: partido.division_id || null, // <-- Cambiado aquí
+        // Puedes agregar más campos si lo necesitas
+      }
+    });
+  };
+
   return (
     <IonPage>
       <NavBar />
@@ -155,7 +183,7 @@ const AdminDashboard: React.FC = () => {
                       key={partido.id}
                       tabIndex={0}
                       style={{ cursor: "pointer" }}
-                      onClick={() => router.push(`/admin/adminpartidos?id=${partido.id}`, "forward")}
+                      onClick={() => handleSeleccionarPartido(partido)}
                     >
                       <div className="admin-partido-header">
                         <span className="admin-partido-equipos">

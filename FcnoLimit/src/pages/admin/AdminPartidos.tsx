@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import {
   IonPage,
   IonContent,
@@ -11,7 +12,6 @@ import {
   IonItem,
   IonToast
 } from "@ionic/react";
-import { useLocation } from "react-router-dom";
 import {
   footballOutline,
   checkmarkCircleOutline,
@@ -24,160 +24,101 @@ import Footer from "../../components/Footer";
 import bannerBg from "../../assets/banner-fc-bg.png";
 import "./AdminPartidos.css";
 
-const apiBaseUrl = "https://fcnolimit-back.onrender.com";
-
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
-
 const AdminPartidos: React.FC = () => {
-  const query = useQuery();
-  const partidoId = query.get("id");
-  const [partido, setPartido] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const location = useLocation<any>();
+  // Recibe los datos del partido si vienen por location.state
+  const partido = (location.state && (location.state as any).partido) || null;
+
+  // Guardar id del equipo local y visitante y de la división en variables locales
+  const equipoLocalId = partido?.equipoId || partido?.equipoLId || partido?.equipo_local_id || null;
+  const equipoVisitanteId = partido?.equipoVisitanteId || partido?.equipoVid || partido?.equipo_visitante_id || null;
+  const divisionId = partido?.divisionId || partido?.division_id || partido?.division_equipo_id || null;
 
   const [isJugado, setIsJugado] = useState(false);
-  const [golesLocal, setGolesLocal] = useState<number>(0);
-  const [golesVisitante, setGolesVisitante] = useState<number>(0);
-  const [goleadoresLocal, setGoleadoresLocal] = useState<{ jugador: string; }[]>([]);
-  const [goleadoresVisitante, setGoleadoresVisitante] = useState<{ jugador: string; }[]>([]);
+
+  // Estados para jugadores de cada equipo
   const [jugadoresLocal, setJugadoresLocal] = useState<any[]>([]);
   const [jugadoresVisitante, setJugadoresVisitante] = useState<any[]>([]);
-  // Agrega estados de carga para los jugadores
-  const [cargandoJugadoresLocal, setCargandoJugadoresLocal] = useState(false);
-  const [cargandoJugadoresVisitante, setCargandoJugadoresVisitante] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMsg, setToastMsg] = useState("");
+
+  // Estados para goles y responsables
+  const [golesLocal, setGolesLocal] = useState(0);
+  const [golesVisitante, setGolesVisitante] = useState(0);
+  const [responsablesLocal, setResponsablesLocal] = useState<string[]>([]);
+  const [responsablesVisitante, setResponsablesVisitante] = useState<string[]>([]);
+
+  // Cargar jugadores del equipo local
+  useEffect(() => {
+    console.log("equipoLocalId:", equipoLocalId, "divisionId:", divisionId);
+    const fetchJugadoresLocal = async () => {
+      if (equipoLocalId && divisionId) {
+        try {
+          const res = await fetch(`https://fcnolimit-back.onrender.com/api/jugadores/equipo/${equipoLocalId}/division/${divisionId}`);
+          const data = await res.json();
+          setJugadoresLocal(Array.isArray(data) ? data : []);
+        } catch {
+          setJugadoresLocal([]);
+        }
+      }
+    };
+    fetchJugadoresLocal();
+  }, [equipoLocalId, divisionId]);
+
+  // Cargar jugadores del equipo visitante
+  useEffect(() => {
+    console.log("equipoVisitanteId:", equipoVisitanteId, "divisionId:", divisionId);
+    if (equipoVisitanteId && divisionId) {
+      const fetchJugadoresVisitante = async () => {
+        try {
+          const res = await fetch(`https://fcnolimit-back.onrender.com/api/jugadores/equipo/${equipoVisitanteId}/division/${divisionId}`);
+          const data = await res.json();
+          setJugadoresVisitante(Array.isArray(data) ? data : []);
+        } catch {
+          setJugadoresVisitante([]);
+        }
+      };
+      fetchJugadoresVisitante();
+    }
+  }, [equipoVisitanteId, divisionId]);
+
+  // Actualizar arrays de responsables cuando cambia la cantidad de goles
+  useEffect(() => {
+    setResponsablesLocal(prev =>
+      Array.from({ length: golesLocal }, (_, i) => prev[i] || "")
+    );
+  }, [golesLocal]);
 
   useEffect(() => {
-    if (partidoId) {
-      fetch(`${apiBaseUrl}/api/partidos/${partidoId}`)
-        .then(res => res.json())
-        .then(async data => {
-          let equipo_local_nombre = data.equipo_local_nombre || "";
-          let equipo_visitante_nombre = data.equipo_visitante_nombre || "";
-          if ((!equipo_local_nombre || !equipo_visitante_nombre) && (data.equipo_local_id || data.equipo_visitante_id)) {
-            const ids = [];
-            if (data.equipo_local_id) ids.push(data.equipo_local_id);
-            if (data.equipo_visitante_id) ids.push(data.equipo_visitante_id);
-            if (ids.length > 0) {
-              const equiposRes = await fetch(`${apiBaseUrl}/api/equipos?ids=${ids.join(",")}`);
-              const equiposData = await equiposRes.json();
-              const equiposMap: Record<string, string> = {};
-              equiposData.forEach((eq: any) => {
-                equiposMap[String(eq.id)] = eq.nombre;
-              });
-              equipo_local_nombre = equiposMap[String(data.equipo_local_id)] || data.equipo_local || "";
-              equipo_visitante_nombre = equiposMap[String(data.equipo_visitante_id)] || data.equipo_visitante || "";
-            }
-          }
-          setPartido({
-            ...data,
-            equipo_local_nombre,
-            equipo_visitante_nombre
-          });
+    setResponsablesVisitante(prev =>
+      Array.from({ length: golesVisitante }, (_, i) => prev[i] || "")
+    );
+  }, [golesVisitante]);
 
-          // Simplificado: obtener jugadores por equipo y división
-          // Asegura que los parámetros sean números
-          const equipoLocalId = Number(data.equipo_local_id);
-          const equipoVisitanteId = Number(data.equipo_visitante_id);
-          const idDivision = Number(data.id_division);
-
-          if (equipoLocalId && idDivision) {
-            fetch(`${apiBaseUrl}/api/equipo/${equipoLocalId}/division/${idDivision}`)
-              .then(res => res.json())
-              .then(jugs => {
-                setJugadoresLocal(Array.isArray(jugs) ? jugs : []);
-              });
-          } else {
-            setJugadoresLocal([]);
-          }
-
-          if (equipoVisitanteId && idDivision) {
-            fetch(`${apiBaseUrl}/api/equipo/${equipoVisitanteId}/division/${idDivision}`)
-              .then(res => res.json())
-              .then(jugs => {
-                setJugadoresVisitante(Array.isArray(jugs) ? jugs : []);
-              });
-          } else {
-            setJugadoresVisitante([]);
-          }
-
-          setLoading(false);
+  // Cambiar el endpoint y agregar el token de autenticación
+  const handleGuardarResultado = async () => {
+    if (!partido?.id) return;
+    const token = localStorage.getItem('token');
+    try {
+      const res = await fetch(`https://fcnolimit-back.onrender.com/api/partidos/${partido.id}/resultado`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          estado: "jugado",
+          goles_local: golesLocal,
+          goles_visitante: golesVisitante
         })
-        .catch(() => setLoading(false));
-    }
-  }, [partidoId]);
-
-  // Nuevo useEffect para cargar jugadores al entrar en modo "jugado" o cambiar partido
-  useEffect(() => {
-    if (isJugado && partido) {
-      // Asegura que los parámetros sean números
-      const equipoLocalId = Number(partido.equipo_local_id);
-      const equipoVisitanteId = Number(partido.equipo_visitante_id);
-      const idDivision = Number(partido.id_division);
-
-      if (equipoLocalId && idDivision) {
-        setCargandoJugadoresLocal(true);
-        fetch(`${apiBaseUrl}/api/equipo/${equipoLocalId}/division/${idDivision}`)
-          .then(res => res.json())
-          .then(jugs => {
-            setJugadoresLocal(Array.isArray(jugs) ? jugs : []);
-          })
-          .finally(() => setCargandoJugadoresLocal(false));
+      });
+      if (res.ok) {
+        setIsJugado(false);
+        // Aquí puedes mostrar un toast de éxito si lo deseas
       } else {
-        setJugadoresLocal([]);
-        setCargandoJugadoresLocal(false);
+        // Aquí puedes mostrar un toast de error si lo deseas
       }
-      if (equipoVisitanteId && idDivision) {
-        setCargandoJugadoresVisitante(true);
-        fetch(`${apiBaseUrl}/api/equipo/${equipoVisitanteId}/division/${idDivision}`)
-          .then(res => res.json())
-          .then(jugs => {
-            setJugadoresVisitante(Array.isArray(jugs) ? jugs : []);
-          })
-          .finally(() => setCargandoJugadoresVisitante(false));
-      } else {
-        setJugadoresVisitante([]);
-        setCargandoJugadoresVisitante(false);
-      }
+    } catch (err) {
+      // Aquí puedes mostrar un toast de error si lo deseas
     }
-  }, [isJugado, partido]);
-
-  const equipoLocal = partido?.equipo_local_nombre || partido?.equipo_local || "";
-  const equipoVisitante = partido?.equipo_visitante_nombre || partido?.equipo_visitante || "";
-
-  const handleGolesLocalChange = (value: number) => {
-    setGolesLocal(value);
-    setGoleadoresLocal(Array.from({ length: value }, (_, i) => goleadoresLocal[i] || { jugador: "" }));
-  };
-  const handleGolesVisitanteChange = (value: number) => {
-    setGolesVisitante(value);
-    setGoleadoresVisitante(Array.from({ length: value }, (_, i) => goleadoresVisitante[i] || { jugador: "" }));
-  };
-
-  const handleGoleadorLocalChange = (idx: number, jugadorId: string) => {
-    setGoleadoresLocal(prev => prev.map((g, i) => i === idx ? { jugador: jugadorId } : g));
-  };
-  const handleGoleadorVisitanteChange = (idx: number, jugador: string) => {
-    setGoleadoresVisitante(prev => prev.map((g, i) => i === idx ? { jugador } : g));
-  };
-
-  const handleGuardarResultado = () => {
-    if (
-      golesLocal < 0 ||
-      golesVisitante < 0 ||
-      goleadoresLocal.some(g => !g.jugador) ||
-      goleadoresVisitante.some(g => !g.jugador)
-    ) {
-      setToastMsg("Completa todos los campos de goles y responsables.");
-      setShowToast(true);
-      return;
-    }
-    setToastMsg("Resultado guardado correctamente.");
-    setShowToast(true);
-    setIsJugado(false);
-    // Aquí puedes hacer la petición a la API para guardar el resultado
   };
 
   return (
@@ -189,43 +130,45 @@ const AdminPartidos: React.FC = () => {
           style={{ backgroundImage: `url(${bannerBg})` }}
         >
           <div className="admin-partidos-banner-content">
-            {loading && "Cargando..."}
-            {!loading && partido && equipoLocal && equipoVisitante && (
-              <span>
-                <span className="admin-partidos-banner-team">{equipoLocal}</span>
-                {" "}
-                <span className="admin-partidos-banner-vs">vs</span>
-                {" "}
-                <span className="admin-partidos-banner-team">{equipoVisitante}</span>
+            <span>
+              <span className="admin-partidos-banner-team">
+                {partido?.equipoLocal || "Equipo Local"}
               </span>
-            )}
-            {!loading && (!partido || !equipoLocal || !equipoVisitante) && "Partido no encontrado"}
+              {" "}
+              <span className="admin-partidos-banner-vs">vs</span>
+              {" "}
+              <span className="admin-partidos-banner-team">
+                {partido?.equipoVisitante || "Equipo Visitante"}
+              </span>
+            </span>
           </div>
         </div>
-
         <div className="admin-partidos-container">
           <h1 className="admin-partidos-title">Detalle del Partido</h1>
           <div className="admin-partidos-id">
-            <span className="admin-partidos-id-label">ID del partido:</span> {partidoId}
+            <span className="admin-partidos-id-label">ID del partido:</span> {partido?.id || 123}
           </div>
-          {/* Mostrar división y división equipo si existen */}
-          {!loading && partido && (
-            <div className="admin-partidos-divisiones">
-              <span className="admin-partidos-division-label">
-                División:
-              </span>{" "}
-              <span className="admin-partidos-division-value">
-                {partido.nombre_division || "Sin división"}
-              </span>
-              <span className="admin-partidos-division-sep">|</span>
-              <span className="admin-partidos-division-label">
-                División equipo:
-              </span>{" "}
-              <span className="admin-partidos-division-value">
-                {partido.nombre_division_equipo || "Sin división equipo"}
-              </span>
-            </div>
-          )}
+          {/* Mostrar los IDs para depuración */}
+          <div style={{margin: "10px 0", padding: "10px", background: "#f8f9fa", borderRadius: "8px", color: "#333"}}>
+            <strong>ID equipo local:</strong> {String(equipoLocalId) || "N/A"}<br />
+            <strong>ID equipo visitante:</strong> {String(equipoVisitanteId) || "N/A"}<br />
+            <strong>ID división:</strong> {String(divisionId) || "N/A"}
+          </div>
+          <div className="admin-partidos-divisiones">
+            <span className="admin-partidos-division-label">
+              División:
+            </span>{" "}
+            <span className="admin-partidos-division-value">
+              {partido?.division || "División 1"}
+            </span>
+            <span className="admin-partidos-division-sep">|</span>
+            <span className="admin-partidos-division-label">
+              División equipo:
+            </span>{" "}
+            <span className="admin-partidos-division-value">
+              {partido?.divisionEquipo || "División equipo 1"}
+            </span>
+          </div>
           {!isJugado && (
             <>
               <IonButton
@@ -242,11 +185,6 @@ const AdminPartidos: React.FC = () => {
                 expand="block"
                 className="admin-partidos-reagendar-btn"
                 style={{ marginTop: 12, fontWeight: 700, fontSize: "1.1rem", borderRadius: 12 }}
-                onClick={() => {
-                  // Aquí puedes abrir un modal o lógica para reagendar
-                  setToastMsg("Funcionalidad de reagendar próximamente.");
-                  setShowToast(true);
-                }}
               >
                 <IonIcon icon={addCircleOutline} slot="start" />
                 Reagendar partido
@@ -261,7 +199,7 @@ const AdminPartidos: React.FC = () => {
                 <div className="admin-partidos-goles-equipo">
                   <div className="admin-partidos-goles-equipo-title">
                     <IonIcon icon={footballOutline} className="admin-partidos-goles-icon" />
-                    <span>{equipoLocal}</span>
+                    <span>Equipo Local</span>
                   </div>
                   <IonItem lines="none" className="admin-partidos-goles-item">
                     <IonLabel position="stacked">Goles</IonLabel>
@@ -269,38 +207,34 @@ const AdminPartidos: React.FC = () => {
                       type="number"
                       min={0}
                       value={golesLocal}
-                      onIonChange={e => handleGolesLocalChange(Number(e.detail.value) || 0)}
+                      onIonChange={e => setGolesLocal(Number(e.detail.value) || 0)}
                       className="admin-partidos-goles-input"
-                      inputmode="numeric"
+                      inputMode="numeric"
                     />
                   </IonItem>
+                  {/* Un selector por cada gol */}
                   {Array.from({ length: golesLocal }).map((_, idx) => (
-                    <IonItem lines="none" key={idx} className="admin-partidos-goles-item">
+                    <IonItem lines="none" className="admin-partidos-goles-item" key={idx}>
                       <IonLabel position="stacked">
                         Responsable del gol #{idx + 1}
                       </IonLabel>
                       <IonSelect
-                        value={goleadoresLocal[idx]?.jugador || ""}
-                        placeholder={
-                          cargandoJugadoresLocal
-                            ? "Cargando jugadores..."
-                            : jugadoresLocal.length === 0
-                              ? "Sin jugadores"
-                              : "Selecciona jugador"
-                        }
-                        disabled={cargandoJugadoresLocal || jugadoresLocal.length === 0}
-                        onIonChange={e => handleGoleadorLocalChange(idx, e.detail.value)}
+                        placeholder="Selecciona jugador"
                         interface="action-sheet"
                         className="admin-partidos-goles-select"
+                        value={responsablesLocal[idx] || ""}
+                        onIonChange={e => {
+                          const arr = [...responsablesLocal];
+                          arr[idx] = e.detail.value;
+                          setResponsablesLocal(arr);
+                        }}
                       >
                         <IonSelectOption value="">-- Selecciona --</IonSelectOption>
-                        {jugadoresLocal.length > 0 &&
-                          jugadoresLocal.map(j => (
-                            <IonSelectOption key={j.id} value={j.id}>
-                              <IonIcon icon={personCircleOutline} className="admin-partidos-goles-person-icon" />
-                              {j.nombre_completo || j.nombre}
-                            </IonSelectOption>
-                          ))}
+                        {jugadoresLocal.map(j => (
+                          <IonSelectOption key={j.jugador_id} value={j.jugador_id}>
+                            {j.nombre_completo || j.nombre || `Jugador ${j.jugador_id}`}
+                          </IonSelectOption>
+                        ))}
                       </IonSelect>
                     </IonItem>
                   ))}
@@ -309,7 +243,7 @@ const AdminPartidos: React.FC = () => {
                 <div className="admin-partidos-goles-equipo">
                   <div className="admin-partidos-goles-equipo-title">
                     <IonIcon icon={footballOutline} className="admin-partidos-goles-icon" />
-                    <span>{equipoVisitante}</span>
+                    <span>Equipo Visitante</span>
                   </div>
                   <IonItem lines="none" className="admin-partidos-goles-item">
                     <IonLabel position="stacked">Goles</IonLabel>
@@ -317,38 +251,34 @@ const AdminPartidos: React.FC = () => {
                       type="number"
                       min={0}
                       value={golesVisitante}
-                      onIonChange={e => handleGolesVisitanteChange(Number(e.detail.value) || 0)}
+                      onIonChange={e => setGolesVisitante(Number(e.detail.value) || 0)}
                       className="admin-partidos-goles-input"
-                      inputmode="numeric"
+                      inputMode="numeric"
                     />
                   </IonItem>
+                  {/* Un selector por cada gol */}
                   {Array.from({ length: golesVisitante }).map((_, idx) => (
-                    <IonItem lines="none" key={idx} className="admin-partidos-goles-item">
+                    <IonItem lines="none" className="admin-partidos-goles-item" key={idx}>
                       <IonLabel position="stacked">
                         Responsable del gol #{idx + 1}
                       </IonLabel>
                       <IonSelect
-                        value={goleadoresVisitante[idx]?.jugador || ""}
-                        placeholder={
-                          cargandoJugadoresVisitante
-                            ? "Cargando jugadores..."
-                            : jugadoresVisitante.length === 0
-                              ? "Sin jugadores"
-                              : "Selecciona jugador"
-                        }
-                        disabled={cargandoJugadoresVisitante || jugadoresVisitante.length === 0}
-                        onIonChange={e => handleGoleadorVisitanteChange(idx, e.detail.value)}
+                        placeholder="Selecciona jugador"
                         interface="action-sheet"
                         className="admin-partidos-goles-select"
+                        value={responsablesVisitante[idx] || ""}
+                        onIonChange={e => {
+                          const arr = [...responsablesVisitante];
+                          arr[idx] = e.detail.value;
+                          setResponsablesVisitante(arr);
+                        }}
                       >
                         <IonSelectOption value="">-- Selecciona --</IonSelectOption>
-                        {jugadoresVisitante.length > 0 &&
-                          jugadoresVisitante.map(j => (
-                            <IonSelectOption key={j.id} value={j.id}>
-                              <IonIcon icon={personCircleOutline} className="admin-partidos-goles-person-icon" />
-                              {j.nombre_completo || j.nombre}
-                            </IonSelectOption>
-                          ))}
+                        {jugadoresVisitante.map(j => (
+                          <IonSelectOption key={j.jugador_id} value={j.jugador_id}>
+                            {j.nombre_completo || j.nombre || `Jugador ${j.jugador_id}`}
+                          </IonSelectOption>
+                        ))}
                       </IonSelect>
                     </IonItem>
                   ))}
@@ -377,11 +307,10 @@ const AdminPartidos: React.FC = () => {
         </div>
         <Footer />
         <IonToast
-          isOpen={showToast}
-          message={toastMsg}
+          isOpen={false}
+          message=""
           duration={2200}
-          color={toastMsg.includes("guardado") ? "success" : "danger"}
-          onDidDismiss={() => setShowToast(false)}
+          color="success"
           position="top"
           className="admin-partidos-toast"
         />
@@ -391,19 +320,3 @@ const AdminPartidos: React.FC = () => {
 };
 
 export default AdminPartidos;
-
-// Para probar el endpoint:
-// 1. Abre la consola de tu navegador (F12 > Consola) o usa Node.js.
-// 2. Copia y pega el siguiente código en la consola.
-// 3. Cambia los valores de equipoId y idDivision por valores reales de tu base de datos.
-// 4. Presiona Enter y revisa el resultado.
-
-const equipoId = 1; // Cambia por un id real de equipo
-const idDivision = 2; // Cambia por un id real de división
-
-fetch(`https://fcnolimit-back.onrender.com/api/equipo/${equipoId}/division/${idDivision}`)
-  .then(res => res.json())
-  .then(data => console.log("Jugadores del equipo y división:", data))
-  .catch(err => console.error("Error al probar endpoint:", err));
-
-// Si ves un array de jugadores en la consola, el endpoint funciona correctamente.

@@ -202,5 +202,41 @@ module.exports = (pool) => {
     }
   });
 
+  // Ruta rápida para actualizar solo goles y estado de un partido (admin)
+  router.patch(
+    '/:id/resultado',
+    tokenHeaderValidation,
+    authenticateToken,
+    isAdmin,
+    [
+      body('goles_local').isInt({ min: 0 }).withMessage('goles_local debe ser un número entero mayor o igual a 0'),
+      body('goles_visitante').isInt({ min: 0 }).withMessage('goles_visitante debe ser un número entero mayor o igual a 0'),
+      body('estado').notEmpty().withMessage('El estado es obligatorio'),
+    ],
+    (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+      next();
+    },
+    async (req, res) => {
+      const { id } = req.params;
+      const { goles_local, goles_visitante, estado } = req.body;
+      try {
+        const result = await pool.query(
+          `UPDATE "fcnolimit".partidos SET goles_local=$1, goles_visitante=$2, estado=$3 WHERE id=$4 RETURNING *`,
+          [goles_local, goles_visitante, estado, id]
+        );
+        if (!result.rows[0]) {
+          return res.status(404).json({ error: 'Partido no encontrado o no actualizado' });
+        }
+        res.json(result.rows[0]);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    }
+  );
+
   return router;
 };
