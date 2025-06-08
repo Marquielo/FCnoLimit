@@ -175,20 +175,6 @@ module.exports = (pool) => {
     }
   });
 
-  // GET /api/jugadores/:jugador_id
-  router.get('/:jugador_id', async (req, res) => {
-    const { jugador_id } = req.params;
-    try {
-      const result = await pool.query(
-        `SELECT * FROM "fcnolimit".vista_detalle_jugador WHERE jugador_id = $1`,
-        [jugador_id]
-      );
-      res.json(result.rows[0]);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  });
-  
   // Obtener jugadores por equipo y división (público)
   router.get('/equipo/:equipo_id/division/:id_division', async (req, res) => {
     const { equipo_id, id_division } = req.params;
@@ -198,6 +184,20 @@ module.exports = (pool) => {
         [equipo_id, id_division]
       );
       res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // GET /api/jugadores/:jugador_id (debe ir después de las rutas más específicas)
+  router.get('/:jugador_id', async (req, res) => {
+    const { jugador_id } = req.params;
+    try {
+      const result = await pool.query(
+        `SELECT * FROM "fcnolimit".vista_detalle_jugador WHERE jugador_id = $1`,
+        [jugador_id]
+      );
+      res.json(result.rows[0]);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
