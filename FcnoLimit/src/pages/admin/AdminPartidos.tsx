@@ -43,6 +43,9 @@ const AdminPartidos: React.FC = () => {
   const [goleadoresVisitante, setGoleadoresVisitante] = useState<{ jugador: string; }[]>([]);
   const [jugadoresLocal, setJugadoresLocal] = useState<any[]>([]);
   const [jugadoresVisitante, setJugadoresVisitante] = useState<any[]>([]);
+  // Agrega estados de carga para los jugadores
+  const [cargandoJugadoresLocal, setCargandoJugadoresLocal] = useState(false);
+  const [cargandoJugadoresVisitante, setCargandoJugadoresVisitante] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
 
@@ -75,8 +78,13 @@ const AdminPartidos: React.FC = () => {
           });
 
           // Simplificado: obtener jugadores por equipo y división
-          if (data.equipo_local_id && data.id_division) {
-            fetch(`${apiBaseUrl}/api/equipo/${data.equipo_local_id}/division/${data.id_division}`)
+          // Asegura que los parámetros sean números
+          const equipoLocalId = Number(data.equipo_local_id);
+          const equipoVisitanteId = Number(data.equipo_visitante_id);
+          const idDivision = Number(data.id_division);
+
+          if (equipoLocalId && idDivision) {
+            fetch(`${apiBaseUrl}/api/equipo/${equipoLocalId}/division/${idDivision}`)
               .then(res => res.json())
               .then(jugs => {
                 setJugadoresLocal(Array.isArray(jugs) ? jugs : []);
@@ -85,8 +93,8 @@ const AdminPartidos: React.FC = () => {
             setJugadoresLocal([]);
           }
 
-          if (data.equipo_visitante_id && data.id_division) {
-            fetch(`${apiBaseUrl}/api/equipo/${data.equipo_visitante_id}/division/${data.id_division}`)
+          if (equipoVisitanteId && idDivision) {
+            fetch(`${apiBaseUrl}/api/equipo/${equipoVisitanteId}/division/${idDivision}`)
               .then(res => res.json())
               .then(jugs => {
                 setJugadoresVisitante(Array.isArray(jugs) ? jugs : []);
@@ -100,6 +108,41 @@ const AdminPartidos: React.FC = () => {
         .catch(() => setLoading(false));
     }
   }, [partidoId]);
+
+  // Nuevo useEffect para cargar jugadores al entrar en modo "jugado" o cambiar partido
+  useEffect(() => {
+    if (isJugado && partido) {
+      // Asegura que los parámetros sean números
+      const equipoLocalId = Number(partido.equipo_local_id);
+      const equipoVisitanteId = Number(partido.equipo_visitante_id);
+      const idDivision = Number(partido.id_division);
+
+      if (equipoLocalId && idDivision) {
+        setCargandoJugadoresLocal(true);
+        fetch(`${apiBaseUrl}/api/equipo/${equipoLocalId}/division/${idDivision}`)
+          .then(res => res.json())
+          .then(jugs => {
+            setJugadoresLocal(Array.isArray(jugs) ? jugs : []);
+          })
+          .finally(() => setCargandoJugadoresLocal(false));
+      } else {
+        setJugadoresLocal([]);
+        setCargandoJugadoresLocal(false);
+      }
+      if (equipoVisitanteId && idDivision) {
+        setCargandoJugadoresVisitante(true);
+        fetch(`${apiBaseUrl}/api/equipo/${equipoVisitanteId}/division/${idDivision}`)
+          .then(res => res.json())
+          .then(jugs => {
+            setJugadoresVisitante(Array.isArray(jugs) ? jugs : []);
+          })
+          .finally(() => setCargandoJugadoresVisitante(false));
+      } else {
+        setJugadoresVisitante([]);
+        setCargandoJugadoresVisitante(false);
+      }
+    }
+  }, [isJugado, partido]);
 
   const equipoLocal = partido?.equipo_local_nombre || partido?.equipo_local || "";
   const equipoVisitante = partido?.equipo_visitante_nombre || partido?.equipo_visitante || "";
@@ -238,8 +281,14 @@ const AdminPartidos: React.FC = () => {
                       </IonLabel>
                       <IonSelect
                         value={goleadoresLocal[idx]?.jugador || ""}
-                        placeholder={jugadoresLocal.length === 0 ? "Cargando jugadores..." : "Selecciona jugador"}
-                        disabled={jugadoresLocal.length === 0}
+                        placeholder={
+                          cargandoJugadoresLocal
+                            ? "Cargando jugadores..."
+                            : jugadoresLocal.length === 0
+                              ? "Sin jugadores"
+                              : "Selecciona jugador"
+                        }
+                        disabled={cargandoJugadoresLocal || jugadoresLocal.length === 0}
                         onIonChange={e => handleGoleadorLocalChange(idx, e.detail.value)}
                         interface="action-sheet"
                         className="admin-partidos-goles-select"
@@ -280,8 +329,14 @@ const AdminPartidos: React.FC = () => {
                       </IonLabel>
                       <IonSelect
                         value={goleadoresVisitante[idx]?.jugador || ""}
-                        placeholder={jugadoresVisitante.length === 0 ? "Cargando jugadores..." : "Selecciona jugador"}
-                        disabled={jugadoresVisitante.length === 0}
+                        placeholder={
+                          cargandoJugadoresVisitante
+                            ? "Cargando jugadores..."
+                            : jugadoresVisitante.length === 0
+                              ? "Sin jugadores"
+                              : "Selecciona jugador"
+                        }
+                        disabled={cargandoJugadoresVisitante || jugadoresVisitante.length === 0}
                         onIonChange={e => handleGoleadorVisitanteChange(idx, e.detail.value)}
                         interface="action-sheet"
                         className="admin-partidos-goles-select"
@@ -336,3 +391,19 @@ const AdminPartidos: React.FC = () => {
 };
 
 export default AdminPartidos;
+
+// Para probar el endpoint:
+// 1. Abre la consola de tu navegador (F12 > Consola) o usa Node.js.
+// 2. Copia y pega el siguiente código en la consola.
+// 3. Cambia los valores de equipoId y idDivision por valores reales de tu base de datos.
+// 4. Presiona Enter y revisa el resultado.
+
+const equipoId = 1; // Cambia por un id real de equipo
+const idDivision = 2; // Cambia por un id real de división
+
+fetch(`https://fcnolimit-back.onrender.com/api/equipo/${equipoId}/division/${idDivision}`)
+  .then(res => res.json())
+  .then(data => console.log("Jugadores del equipo y división:", data))
+  .catch(err => console.error("Error al probar endpoint:", err));
+
+// Si ves un array de jugadores en la consola, el endpoint funciona correctamente.
