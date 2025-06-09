@@ -203,5 +203,31 @@ module.exports = (pool) => {
     }
   });
 
+  // Sumar goles a varios jugadores (admin)
+  router.post('/sumar-goles-masivo', authenticateToken, isAdmin, async (req, res) => {
+    const { golesPorJugador } = req.body; // [{ jugador_id, cantidad_goles }]
+    if (!Array.isArray(golesPorJugador)) {
+      return res.status(400).json({ error: 'Formato inválido, se espera un array golesPorJugador' });
+    }
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+      for (const item of golesPorJugador) {
+        if (!item.jugador_id || typeof item.cantidad_goles !== 'number') continue;
+        await client.query(
+          'UPDATE "fcnolimit".jugadores SET goles = COALESCE(goles,0) + $1 WHERE id = $2',
+          [item.cantidad_goles, item.jugador_id]
+        );
+      }
+      await client.query('COMMIT');
+      res.json({ message: 'Goles actualizados correctamente' });
+    } catch (error) {
+      await client.query('ROLLBACK');
+      res.status(500).json({ error: error.message });
+    } finally {
+      client.release();
+    }
+  });
+
   return router;
 };

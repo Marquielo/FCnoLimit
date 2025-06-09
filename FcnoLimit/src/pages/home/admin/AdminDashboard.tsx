@@ -32,7 +32,7 @@ const AdminDashboard: React.FC = () => {
     if (selected === "partidos") {
       setLoading(true);
       // Traer partidos pendientes y los nombres de los equipos
-      fetch("https://fcnolimit-back.onrender.com/api/partidos?estado=pendiente")
+      fetch("https://fcnolimit-back.onrender.com/api/partidos/pendientes")
         .then(res => res.json())
         .then(async data => {
           const partidosOrdenados = Array.isArray(data)

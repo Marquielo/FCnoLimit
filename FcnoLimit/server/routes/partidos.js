@@ -208,21 +208,12 @@ module.exports = (pool) => {
     tokenHeaderValidation,
     authenticateToken,
     isAdmin,
-    [
-      body('goles_local').isInt({ min: 0 }).withMessage('goles_local debe ser un número entero mayor o igual a 0'),
-      body('goles_visitante').isInt({ min: 0 }).withMessage('goles_visitante debe ser un número entero mayor o igual a 0'),
-      body('estado').notEmpty().withMessage('El estado es obligatorio'),
-    ],
-    (req, res, next) => {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      }
-      next();
-    },
     async (req, res) => {
       const { id } = req.params;
       const { goles_local, goles_visitante, estado } = req.body;
+      if (typeof goles_local !== 'number' || typeof goles_visitante !== 'number' || !estado) {
+        return res.status(400).json({ error: 'Datos incompletos o inválidos' });
+      }
       try {
         const result = await pool.query(
           `UPDATE "fcnolimit".partidos SET goles_local=$1, goles_visitante=$2, estado=$3 WHERE id=$4 RETURNING *`,

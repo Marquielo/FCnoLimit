@@ -111,6 +111,28 @@ const AdminPartidos: React.FC = () => {
         })
       });
       if (res.ok) {
+        // Agrupar responsables locales y visitantes
+        const todosResponsables = [...responsablesLocal, ...responsablesVisitante].filter(Boolean);
+        // Contar goles por jugador
+        const conteo: Record<string, number> = {};
+        todosResponsables.forEach(id => {
+          if (id) conteo[id] = (conteo[id] || 0) + 1;
+        });
+        // Preparar payload
+        const golesPorJugador = Object.entries(conteo).map(([jugador_id, cantidad_goles]) => ({
+          jugador_id: Number(jugador_id),
+          cantidad_goles
+        }));
+        if (golesPorJugador.length > 0) {
+          await fetch('https://fcnolimit-back.onrender.com/api/jugadores/sumar-goles-masivo', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ golesPorJugador })
+          });
+        }
         setIsJugado(false);
         // Aquí puedes mostrar un toast de éxito si lo deseas
       } else {
