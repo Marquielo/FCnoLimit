@@ -60,6 +60,7 @@ import EntrenadorPage from './pages/admin/entrenador/page';
 import EntrenadorTacticas from './pages/admin/entrenador/tactica/EntrenadorTacticas';
 import BuscarPage from './pages/home/buscar/BuscarPage';
 import AdminPartidos from './pages/admin/AdminPartidos';
+import CrearPartido from './pages/admin/CrearPartido';
 
 setupIonicReact({
   mode: 'md',
@@ -148,6 +149,11 @@ const App: React.FC = () => (
         <Route exact path="/admin/campeonatos" render={() => (
           <ProtectedRoute>
             <CampeonatosPage />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/admin/crear-partido" render={() => (
+          <ProtectedRoute>
+            <CrearPartido />
           </ProtectedRoute>
         )} />
 

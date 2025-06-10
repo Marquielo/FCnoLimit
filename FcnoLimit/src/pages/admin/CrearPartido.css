@@ -1,0 +1,64 @@
+.crear-partido-container {
+  max-width: 480px;
+  margin: 2.5rem auto 0 auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.08);
+  padding: 2.5rem 2rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.crear-partido-title {
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: var(--ion-color-primary, #1e3a8a);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.crear-partido-form ion-item {
+  --background: #f8f9fa;
+  --border-radius: 12px;
+  margin-bottom: 1.1rem;
+  box-shadow: 0 1px 4px 0 rgba(30,58,138,0.04);
+}
+
+.crear-partido-form ion-label {
+  font-weight: 600;
+  color: var(--ion-color-primary, #1e3a8a);
+}
+
+.crear-partido-form ion-input,
+.crear-partido-form ion-select {
+  font-size: 1.08rem;
+  color: #222;
+  --padding-start: 10px;
+  --padding-end: 10px;
+}
+
+.crear-partido-btn {
+  margin-top: 1.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-radius: 12px;
+  background: var(--ion-color-primary, #1e3a8a);
+  color: #fff;
+  box-shadow: 0 2px 8px 0 rgba(30,58,138,0.08);
+  transition: background 0.2s;
+}
+
+.crear-partido-btn:hover {
+  background: var(--ion-color-primary-shade, #16306b);
+}
+
+@media (max-width: 600px) {
+  .crear-partido-container {
+    max-width: 98vw;
+    padding: 1.2rem 0.5rem 1.5rem 0.5rem;
+  }
+  .crear-partido-title {
+    font-size: 1.3rem;
+  }
+}

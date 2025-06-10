@@ -122,9 +122,9 @@ const AdminDashboard: React.FC = () => {
         equipoVisitante: partido.equipo_visitante_nombre || partido.equipo_visitante || "",
         division: partido.nombre_division || "",
         divisionEquipo: partido.nombre_division_equipo || "",
-        equipoLId: partido.equipo_local_id || null,
-        equipoVid: partido.equipo_visitante_id || null,
-        divisionId: partido.division_id || null, // <-- Cambiado aquí
+        equipoLId: partido.equipo_local_id, // <-- nombre exacto del backend
+        equipoVid: partido.equipo_visitante_id, // <-- nombre exacto del backend
+        divisionId: partido.division_id, // <-- nombre exacto del backend
         // Puedes agregar más campos si lo necesitas
       }
     });
@@ -146,6 +146,18 @@ const AdminDashboard: React.FC = () => {
                 <IonIcon icon={calendarOutline} />
               </span>
               Partidos
+            </IonButton>
+            <IonButton
+              expand="block"
+              color={selected === "crear-partido" ? "primary" : "light"}
+              className={`sidebar-btn ${selected === "crear-partido" ? "active" : ""}`}
+              onClick={() => history.push("/admin/crear-partido")}
+              style={{ marginTop: 8 }}
+            >
+              <span className="sidebar-btn-icon">
+                <IonIcon icon={calendarOutline} />
+              </span>
+              Crear Partido
             </IonButton>
           </aside>
           <main className="admin-main-content elegant-main">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import {
   IonPage,
   IonContent,
@@ -26,6 +26,7 @@ import "./AdminPartidos.css";
 
 const AdminPartidos: React.FC = () => {
   const location = useLocation<any>();
+  const history = useHistory();
   // Recibe los datos del partido si vienen por location.state
   const partido = (location.state && (location.state as any).partido) || null;
 
@@ -113,12 +114,6 @@ const AdminPartidos: React.FC = () => {
           goles_visitante: golesVisitante
         })
       });
-      console.log({
-        id: partido?.id,
-        goles_local: golesLocal,
-        goles_visitante: golesVisitante,
-        estado: "jugado"
-      });
       if (res.ok) {
         // Agrupar responsables locales y visitantes
         const todosResponsables = [...responsablesLocal, ...responsablesVisitante].filter(Boolean);
@@ -143,7 +138,8 @@ const AdminPartidos: React.FC = () => {
           });
         }
         setIsJugado(false);
-        // Aquí puedes mostrar un toast de éxito si lo deseas
+        history.push("/admin/AdminDashboard");
+        window.location.reload(); // recarga la página actual
       } else {
         // Aquí puedes mostrar un toast de error si lo deseas
       }
