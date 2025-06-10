@@ -229,5 +229,32 @@ module.exports = (pool) => {
     }
   );
 
+  // Ruta para actualizar solo la fecha de un partido (admin)
+  router.patch(
+    '/:id/fecha',
+    tokenHeaderValidation,
+    authenticateToken,
+    isAdmin,
+    async (req, res) => {
+      const { id } = req.params;
+      const { fecha } = req.body;
+      if (!fecha) {
+        return res.status(400).json({ error: 'Fecha requerida' });
+      }
+      try {
+        const result = await pool.query(
+          `UPDATE "fcnolimit".partidos SET fecha=$1 WHERE id=$2 RETURNING *`,
+          [fecha, id]
+        );
+        if (!result.rows[0]) {
+          return res.status(404).json({ error: 'Partido no encontrado o no actualizado' });
+        }
+        res.json(result.rows[0]);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    }
+  );
+
   return router;
 };

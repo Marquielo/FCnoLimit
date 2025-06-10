@@ -35,6 +35,9 @@ const AdminPartidos: React.FC = () => {
   const divisionId = partido?.divisionId || partido?.division_id || partido?.division_equipo_id || null;
 
   const [isJugado, setIsJugado] = useState(false);
+  const [showReagendar, setShowReagendar] = useState(false);
+  const [nuevaFecha, setNuevaFecha] = useState<string>("");
+  const [toastMsg, setToastMsg] = useState<string>("");
 
   // Estados para jugadores de cada equipo
   const [jugadoresLocal, setJugadoresLocal] = useState<any[]>([]);
@@ -110,6 +113,12 @@ const AdminPartidos: React.FC = () => {
           goles_visitante: golesVisitante
         })
       });
+      console.log({
+        id: partido?.id,
+        goles_local: golesLocal,
+        goles_visitante: golesVisitante,
+        estado: "jugado"
+      });
       if (res.ok) {
         // Agrupar responsables locales y visitantes
         const todosResponsables = [...responsablesLocal, ...responsablesVisitante].filter(Boolean);
@@ -140,6 +149,29 @@ const AdminPartidos: React.FC = () => {
       }
     } catch (err) {
       // Aquí puedes mostrar un toast de error si lo deseas
+    }
+  };
+
+  const handleReagendar = async () => {
+    if (!partido?.id || !nuevaFecha) return;
+    const token = localStorage.getItem('token');
+    try {
+      const res = await fetch(`https://fcnolimit-back.onrender.com/api/partidos/${partido.id}/fecha`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ fecha: nuevaFecha })
+      });
+      if (res.ok) {
+        setToastMsg("Fecha actualizada correctamente");
+        setShowReagendar(false);
+      } else {
+        setToastMsg("Error al actualizar la fecha");
+      }
+    } catch {
+      setToastMsg("Error de conexión");
     }
   };
 
@@ -207,6 +239,7 @@ const AdminPartidos: React.FC = () => {
                 expand="block"
                 className="admin-partidos-reagendar-btn"
                 style={{ marginTop: 12, fontWeight: 700, fontSize: "1.1rem", borderRadius: 12 }}
+                onClick={() => setShowReagendar(true)}
               >
                 <IonIcon icon={addCircleOutline} slot="start" />
                 Reagendar partido
@@ -326,15 +359,33 @@ const AdminPartidos: React.FC = () => {
               </div>
             </div>
           )}
+          {showReagendar && (
+            <div style={{ margin: "16px 0" }}>
+              <IonItem>
+                <IonLabel position="stacked">Nueva fecha</IonLabel>
+                <IonInput
+                  type="datetime-local"
+                  value={nuevaFecha}
+                  onIonChange={e => setNuevaFecha(e.detail.value!)}
+                />
+              </IonItem>
+              <IonButton color="primary" onClick={handleReagendar} style={{ marginTop: 8 }}>
+                Guardar nueva fecha
+              </IonButton>
+              <IonButton color="medium" onClick={() => setShowReagendar(false)} style={{ marginLeft: 8, marginTop: 8 }}>
+                Cancelar
+              </IonButton>
+            </div>
+          )}
         </div>
         <Footer />
         <IonToast
-          isOpen={false}
-          message=""
+          isOpen={!!toastMsg}
+          message={toastMsg}
           duration={2200}
-          color="success"
+          color={toastMsg.includes('correctamente') ? 'success' : 'danger'}
           position="top"
-          className="admin-partidos-toast"
+          onDidDismiss={() => setToastMsg("")}
         />
       </IonContent>
     </IonPage>
