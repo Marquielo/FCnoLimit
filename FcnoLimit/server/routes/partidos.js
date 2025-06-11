@@ -257,5 +257,15 @@ module.exports = (pool) => {
     }
   );
 
+  // Endpoint para obtener el detalle de partidos jugados con nombres de división y división equipo
+  router.get('/jugados/detalle', async (req, res) => {
+    try {
+      const result = await pool.query('SELECT * FROM "fcnolimit".v_partidos_jugados_detalle');
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   return router;
 };
