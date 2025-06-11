@@ -18,6 +18,7 @@ const AdminDashboard: React.FC = () => {
   const [selected, setSelected] = useState<string>("partidos");
   const [partidosPendientes, setPartidosPendientes] = useState<any[]>([]);
   const [partidosJugados, setPartidosJugados] = useState<any[]>([]);
+  const [solicitudes, setSolicitudes] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const router = useIonRouter();
 
@@ -76,6 +77,15 @@ const AdminDashboard: React.FC = () => {
             ? data.sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime())
             : [];
           setPartidosJugados(partidosOrdenados);
+          setLoading(false);
+        })
+        .catch(() => setLoading(false));
+    } else if (selected === "solicitudes") {
+      setLoading(true);
+      fetch("https://fcnolimit-back.onrender.com/api/solicitudes/inscripciones")
+        .then(res => res.json())
+        .then(data => {
+          setSolicitudes(Array.isArray(data) ? data : []);
           setLoading(false);
         })
         .catch(() => setLoading(false));
@@ -212,7 +222,7 @@ const AdminDashboard: React.FC = () => {
             {!loading && selected === "partidos-jugados" && partidosJugados.length === 0 && (
               <div className="admin-empty">No hay partidos jugados.</div>
             )}
-            {!loading && selected === "solicitudes" && (
+            {!loading && selected === "solicitudes" && solicitudes.length === 0 && (
               <div className="admin-empty">No hay solicitudes para mostrar.</div>
             )}
             {!loading && selected === "partidos" && partidosPendientes.length > 0 && (
@@ -307,11 +317,11 @@ const AdminDashboard: React.FC = () => {
                       <div className="admin-partido-info">
                         <span>
                           <IonIcon icon={trophyOutline} />
-                          División: {partido.nombre_division || "Sin división"}
+                          División: {partido.division_nombre || "Sin división"}
                         </span>
                         <span>
                           <IonIcon icon={peopleOutline} />
-                          División equipo: {partido.nombre_division_equipo || "Sin división equipo"}
+                          División equipo: {partido.equipo_nombre_division || "Sin división equipo"}
                         </span>
                         <span>
                           <IonIcon icon={trophyOutline} />
@@ -319,11 +329,49 @@ const AdminDashboard: React.FC = () => {
                         </span>
                       </div>
                       <div style={{marginTop: "0.7rem", fontSize: "0.97rem", color: "#888"}}>
-                        <strong>Detalle del partido:</strong> División: {partido.nombre_division || "Sin división"} | División equipo: {partido.nombre_division_equipo || "Sin división equipo"}
+                        <strong>Detalle del partido:</strong> División: {partido.division_nombre || "Sin división"} | División equipo: {partido.equipo_nombre_division || "Sin división equipo"}
                       </div>
                     </div>
                   );
                 })}
+              </div>
+            )}
+            {!loading && selected === "solicitudes" && solicitudes.length > 0 && (
+              <div className="admin-partidos-list">
+                {solicitudes.map((sol) => (
+                  <div className="admin-partido-card" key={sol.id} tabIndex={0}>
+                    <div className="admin-partido-header">
+                      <span className="admin-partido-equipos">
+                        <span className="admin-partido-local">{sol.nombres} {sol.apellido_paterno} {sol.apellido_materno}</span>
+                        <span className="admin-partido-vs">-</span>
+                        <span className="admin-partido-visitante">RUT: {sol.rut}</span>
+                      </span>
+                      <span className="admin-partido-fecha">
+                        Fecha solicitud: {sol.fecha_solicitud ? new Date(sol.fecha_solicitud).toLocaleString() : "-"}
+                      </span>
+                    </div>
+                    <div className="admin-partido-info">
+                      <span>Tipo: {sol.tipo_solic_inscripcion}</span>
+                      <span>Club a inscribir: {sol.club_a_inscribir_id}</span>
+                      <span>Club proveniente: {sol.club_proveniente_id}</span>
+                      <span>Asociación: {sol.asociacion}</span>
+                      <span>Estado: {sol.estado || "Pendiente"}</span>
+                    </div>
+                    <div style={{marginTop: "0.7rem", fontSize: "0.97rem", color: "#888"}}>
+                      <strong>Fecha nacimiento:</strong> {sol.fecha_nacimiento ? new Date(sol.fecha_nacimiento).toLocaleDateString() : "-"}
+                    </div>
+                    {sol.foto_url && (
+                      <div style={{marginTop: "0.5rem"}}>
+                        <img src={sol.foto_url} alt="Foto" style={{maxWidth: 80, borderRadius: 8}} />
+                      </div>
+                    )}
+                    {sol.firma_url && (
+                      <div style={{marginTop: "0.5rem"}}>
+                        <img src={sol.firma_url} alt="Firma" style={{maxWidth: 80, borderRadius: 8}} />
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
             )}
           </main>
