@@ -7,8 +7,8 @@ import "./CrearPartido.css";
 const CrearPartido: React.FC = () => {
   const [equipos, setEquipos] = useState<any[]>([]);
   const [divisiones, setDivisiones] = useState<any[]>([]);
-  const [divisionEquipos, setDivisionEquipos] = useState<any[]>([]);
   const [ligas, setLigas] = useState<any[]>([]);
+  const [divisionEquipos, setDivisionEquipos] = useState<any[]>([]);
   const [form, setForm] = useState({
     equipo_local_id: "",
     equipo_visitante_id: "",
@@ -39,13 +39,30 @@ const CrearPartido: React.FC = () => {
       .then(data => setDivisionEquipos(Array.isArray(data) ? data : []));
   }, []);
 
+  // Elimino el filtrado de divisionEquipos por division
+  const divisionEquiposFiltrados = divisionEquipos;
+
+  // Filtrar equipos según la división equipo seleccionada
+  const equiposFiltrados = form.division_equipo_id
+    ? equipos.filter(eq => String(eq.division_equipo_id) === String(form.division_equipo_id))
+    : equipos;
+
+  // Filtrar equipos visitantes para que no incluya el equipo local seleccionado
+  const equiposVisitanteFiltrados = form.equipo_local_id
+    ? equiposFiltrados.filter(eq => String(eq.id) !== String(form.equipo_local_id))
+    : equiposFiltrados;
+
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
+    // Si cambia la división equipo, resetea equipos
+    if (name === "division_equipo_id") {
+      setForm(prev => ({ ...prev, equipo_local_id: "", equipo_visitante_id: "", division_equipo_id: value }));
+    }
   };
 
   const handleSubmit = async () => {
-    if (!form.equipo_local_id || !form.equipo_visitante_id || !form.fecha || !form.liga_id || !form.division_id || !form.division_equipo_id) {
+    if (!form.division_id || !form.division_equipo_id || !form.equipo_local_id || !form.equipo_visitante_id || !form.fecha || !form.liga_id) {
       setToastMsg("Completa todos los campos obligatorios");
       return;
     }
@@ -54,6 +71,18 @@ const CrearPartido: React.FC = () => {
       return;
     }
     const token = localStorage.getItem('token');
+    // Asegurar que los IDs sean números
+    const payload = {
+      ...form,
+      division_id: Number(form.division_id),
+      division_equipo_id: Number(form.division_equipo_id),
+      equipo_local_id: Number(form.equipo_local_id),
+      equipo_visitante_id: Number(form.equipo_visitante_id),
+      liga_id: Number(form.liga_id),
+      goles_local: null,
+      goles_visitante: null,
+      jugado_en: null
+    };
     try {
       const res = await fetch("https://fcnolimit-back.onrender.com/api/partidos", {
         method: "POST",
@@ -61,7 +90,7 @@ const CrearPartido: React.FC = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify(form)
+        body: JSON.stringify(payload)
       });
       if (res.ok) {
         setToastMsg("Partido creado correctamente");
@@ -93,9 +122,27 @@ const CrearPartido: React.FC = () => {
           <h1 className="crear-partido-title">Crear Partido</h1>
           <form className="crear-partido-form" onSubmit={e => { e.preventDefault(); handleSubmit(); }}>
             <IonItem>
+              <IonLabel position="stacked">División Equipo</IonLabel>
+              <IonSelect name="division_equipo_id" value={form.division_equipo_id} onIonChange={handleChange} placeholder="Selecciona división equipo">
+                {divisionEquiposFiltrados.map(deq => (
+                  <IonSelectOption key={deq.id} value={deq.id}>
+                    {deq.nombre_division ? `${deq.nombre_division} - ${deq.nombre_equipo}` : (deq.nombre || `ID ${deq.id}`)}
+                  </IonSelectOption>
+                ))}
+              </IonSelect>
+            </IonItem>
+            <IonItem>
+              <IonLabel position="stacked">División</IonLabel>
+              <IonSelect name="division_id" value={form.division_id} onIonChange={handleChange} placeholder="Selecciona división">
+                {divisiones.map(d => (
+                  <IonSelectOption key={d.division_id || d.id} value={d.division_id || d.id}>{d.nombre_division || d.nombre}</IonSelectOption>
+                ))}
+              </IonSelect>
+            </IonItem>
+            <IonItem>
               <IonLabel position="stacked">Equipo Local</IonLabel>
               <IonSelect name="equipo_local_id" value={form.equipo_local_id} onIonChange={handleChange} placeholder="Selecciona equipo local">
-                {equipos.map(eq => (
+                {equiposFiltrados.map(eq => (
                   <IonSelectOption key={eq.id} value={eq.id}>{eq.nombre}</IonSelectOption>
                 ))}
               </IonSelect>
@@ -103,7 +150,7 @@ const CrearPartido: React.FC = () => {
             <IonItem>
               <IonLabel position="stacked">Equipo Visitante</IonLabel>
               <IonSelect name="equipo_visitante_id" value={form.equipo_visitante_id} onIonChange={handleChange} placeholder="Selecciona equipo visitante">
-                {equipos.map(eq => (
+                {equiposVisitanteFiltrados.map(eq => (
                   <IonSelectOption key={eq.id} value={eq.id}>{eq.nombre}</IonSelectOption>
                 ))}
               </IonSelect>
@@ -121,24 +168,6 @@ const CrearPartido: React.FC = () => {
               <IonSelect name="liga_id" value={form.liga_id} onIonChange={handleChange} placeholder="Selecciona liga">
                 {ligas.map(l => (
                   <IonSelectOption key={l.id} value={l.id}>{l.nombre}</IonSelectOption>
-                ))}
-              </IonSelect>
-            </IonItem>
-            <IonItem>
-              <IonLabel position="stacked">División</IonLabel>
-              <IonSelect name="division_id" value={form.division_id} onIonChange={handleChange} placeholder="Selecciona división">
-                {divisiones.map(d => (
-                  <IonSelectOption key={d.division_id || d.id} value={d.division_id || d.id}>{d.nombre_division || d.nombre}</IonSelectOption>
-                ))}
-              </IonSelect>
-            </IonItem>
-            <IonItem>
-              <IonLabel position="stacked">División Equipo</IonLabel>
-              <IonSelect name="division_equipo_id" value={form.division_equipo_id} onIonChange={handleChange} placeholder="Selecciona división equipo">
-                {divisionEquipos.map(deq => (
-                  <IonSelectOption key={deq.id} value={deq.id}>
-                    {deq.nombre_division ? `${deq.nombre_division} - ${deq.nombre_equipo}` : (deq.nombre || `ID ${deq.id}`)}
-                  </IonSelectOption>
                 ))}
               </IonSelect>
             </IonItem>

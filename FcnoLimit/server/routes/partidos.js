@@ -94,14 +94,15 @@ module.exports = (pool) => {
     async (req, res) => {
       const {
         equipo_local_id, equipo_visitante_id, goles_local, goles_visitante,
-        fecha, estadio, liga_id, administrador_id, estado, jugado_en
+        fecha, estadio, liga_id, administrador_id, estado, jugado_en,
+        division_id, division_equipo_id
       } = req.body;
       try {
         const result = await pool.query(
           `INSERT INTO "fcnolimit".partidos
-          (equipo_local_id, equipo_visitante_id, goles_local, goles_visitante, fecha, estadio, liga_id, administrador_id, estado, jugado_en)
-          VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
-          [equipo_local_id, equipo_visitante_id, goles_local, goles_visitante, fecha, estadio, liga_id, administrador_id, estado, jugado_en]
+          (equipo_local_id, equipo_visitante_id, goles_local, goles_visitante, fecha, estadio, liga_id, administrador_id, estado, jugado_en, division_id, division_equipo_id)
+          VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *`,
+          [equipo_local_id, equipo_visitante_id, goles_local, goles_visitante, fecha, estadio, liga_id, administrador_id, estado, jugado_en, division_id, division_equipo_id]
         );
         res.status(201).json(result.rows[0]);
       } catch (error) {
