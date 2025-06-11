@@ -28,7 +28,7 @@ const CrearPartido: React.FC = () => {
     fetch("https://fcnolimit-back.onrender.com/api/equipos")
       .then(res => res.json())
       .then(data => setEquipos(Array.isArray(data) ? data : []));
-    fetch("https://fcnolimit-back.onrender.com/api/divisiones/vista")
+    fetch("https://fcnolimit-back.onrender.com/api/divisiones/vista_division_jugadores")
       .then(res => res.json())
       .then(data => setDivisiones(Array.isArray(data) ? data : []));
     fetch("https://fcnolimit-back.onrender.com/api/ligas")
