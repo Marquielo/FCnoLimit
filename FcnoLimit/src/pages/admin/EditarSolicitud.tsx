@@ -82,8 +82,8 @@ const EditarSolicitud: React.FC = () => {
                 <IonInput
                   name="fecha_nacimiento"
                   type="date"
-                  value={form.fecha_nacimiento}
-                  onIonChange={handleChange}
+                  value={form.fecha_nacimiento ? new Date(form.fecha_nacimiento).toISOString().slice(0, 10) : ''}
+                  readonly
                   style={{flex: 1}}
                 />
                 {form.fecha_nacimiento && (() => {

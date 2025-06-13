@@ -154,7 +154,8 @@ const AdminDashboard: React.FC = () => {
   };
 
   const handleSeleccionarSolicitud = (solicitud: any) => {
-    history.push("/admin/EditarSolicitud", { solicitud });
+    // Enviar todos los datos relevantes, incluyendo nombre_equipo
+    history.push("/admin/EditarSolicitud", { solicitud: { ...solicitud } });
   };
 
   return (
@@ -356,8 +357,7 @@ const AdminDashboard: React.FC = () => {
                     </div>
                     <div className="admin-partido-info">
                       <span>Tipo: {sol.tipo_solic_inscripcion}</span>
-                      <span>Club a inscribir: {sol.club_a_inscribir_id}</span>
-                      <span>Club proveniente: {sol.club_proveniente_id}</span>
+                      <span>Club a inscribir: {sol.nombre_equipo}</span>
                       <span>Asociación: {sol.asociacion}</span>
                       <span>Estado: {sol.estado || "Pendiente"}</span>
                     </div>
