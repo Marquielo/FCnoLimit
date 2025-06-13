@@ -72,6 +72,7 @@ app.use('/api/copas', require('./routes/copas')(pool));
 app.use('/api/asociaciones', require('./routes/asociaciones')(pool));
 app.use('/api/estadios', require('./routes/estadios')(pool));
 app.use('/equipos', express.static(path.join(__dirname, 'public/equipos')));
+app.use('/api/vistas', require('./routes/vistas_tablas')(pool));
 
 const PORT = process.env.PORT || 3001;
 app.listen(port, () => {
