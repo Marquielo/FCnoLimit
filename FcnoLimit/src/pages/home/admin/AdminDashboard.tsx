@@ -153,6 +153,10 @@ const AdminDashboard: React.FC = () => {
     });
   };
 
+  const handleSeleccionarSolicitud = (solicitud: any) => {
+    history.push("/admin/EditarSolicitud", { solicitud });
+  };
+
   return (
     <IonPage>
       <NavBar />
@@ -305,9 +309,9 @@ const AdminDashboard: React.FC = () => {
                     >
                       <div className="admin-partido-header">
                         <span className="admin-partido-equipos">
-                          <span className="admin-partido-local">{partido.equipo_local_nombre || partido.equipo_local}</span>
+                          <span className="admin-partido-local">{partido.equipo_local}</span>
                           <span className="admin-partido-vs">vs</span>
-                          <span className="admin-partido-visitante">{partido.equipo_visitante_nombre || partido.equipo_visitante}</span>
+                          <span className="admin-partido-visitante">{partido.equipo_visitante}</span>
                         </span>
                         <span className="admin-partido-fecha">
                           <IonIcon icon={timeOutline} />
@@ -339,7 +343,7 @@ const AdminDashboard: React.FC = () => {
             {!loading && selected === "solicitudes" && solicitudes.length > 0 && (
               <div className="admin-partidos-list">
                 {solicitudes.map((sol) => (
-                  <div className="admin-partido-card" key={sol.id} tabIndex={0}>
+                  <div className="admin-partido-card" key={sol.id} tabIndex={0} style={{ cursor: "pointer" }} onClick={() => handleSeleccionarSolicitud(sol)}>
                     <div className="admin-partido-header">
                       <span className="admin-partido-equipos">
                         <span className="admin-partido-local">{sol.nombres} {sol.apellido_paterno} {sol.apellido_materno}</span>
