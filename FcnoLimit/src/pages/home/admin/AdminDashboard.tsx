@@ -227,8 +227,8 @@ const AdminDashboard: React.FC = () => {
             {!loading && selected === "partidos-jugados" && partidosJugados.length === 0 && (
               <div className="admin-empty">No hay partidos jugados.</div>
             )}
-            {!loading && selected === "solicitudes" && solicitudes.length === 0 && (
-              <div className="admin-empty">No hay solicitudes para mostrar.</div>
+            {!loading && selected === "solicitudes" && solicitudes.filter(sol => (sol.estado || '').toLowerCase() === 'pendiente').length === 0 && (
+              <div className="admin-empty">No hay solicitudes pendientes para mostrar.</div>
             )}
             {!loading && selected === "partidos" && partidosPendientes.length > 0 && (
               <div className="admin-partidos-list">
@@ -341,9 +341,9 @@ const AdminDashboard: React.FC = () => {
                 })}
               </div>
             )}
-            {!loading && selected === "solicitudes" && solicitudes.length > 0 && (
+            {!loading && selected === "solicitudes" && solicitudes.filter(sol => (sol.estado || '').toLowerCase() === 'pendiente').length > 0 && (
               <div className="admin-partidos-list">
-                {solicitudes.map((sol) => (
+                {solicitudes.filter(sol => (sol.estado || '').toLowerCase() === 'pendiente').map((sol) => (
                   <div className="admin-partido-card" key={sol.id} tabIndex={0} style={{ cursor: "pointer" }} onClick={() => handleSeleccionarSolicitud(sol)}>
                     <div className="admin-partido-header">
                       <span className="admin-partido-equipos">
