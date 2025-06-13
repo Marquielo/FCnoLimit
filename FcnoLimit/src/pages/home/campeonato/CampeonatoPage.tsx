@@ -8,50 +8,13 @@ import './CampeonatoPage.css';
 
 const apiBaseUrl = 'https://fcnolimit-back.onrender.com'; // Igual que en AuthPage
 
-const tablaEjemplo = [
-  {
-    pos: 1,
-    logo: '/assets/equipos/man_city.png',
-    nombre: 'Manchester City',
-    pj: 10, g: 8, e: 1, p: 1, gf: 24, gc: 8, dg: '+16', pts: 25, forma: ['G', 'G', 'G', 'G', 'E']
-  },
-  {
-    pos: 2,
-    logo: '/assets/equipos/inter_milan.png',
-    nombre: 'Inter Milan',
-    pj: 10, g: 6, e: 3, p: 1, gf: 18, gc: 9, dg: '+9', pts: 21, forma: ['G', 'E', 'G', 'G', 'E']
-  },
-  {
-    pos: 3,
-    logo: '/assets/equipos/barcelona.png',
-    nombre: 'FC Barcelona',
-    pj: 10, g: 6, e: 2, p: 2, gf: 20, gc: 12, dg: '+8', pts: 20, forma: ['P', 'G', 'G', 'G', 'E']
-  },
-  {
-    pos: 4,
-    logo: '/assets/equipos/man_united.png',
-    nombre: 'Manchester United',
-    pj: 10, g: 5, e: 3, p: 2, gf: 15, gc: 10, dg: '+5', pts: 18, forma: ['G', 'G', 'E', 'P', 'E']
-  },
-  {
-    pos: 5,
-    logo: '/assets/equipos/chelsea.png',
-    nombre: 'Chelsea',
-    pj: 10, g: 4, e: 3, p: 3, gf: 14, gc: 12, dg: '+2', pts: 15, forma: ['G', 'E', 'G', 'E', 'P']
-  }
-];
-
-const colorForma = (f: string) => {
-  if (f === 'G') return { background: '#4caf50', color: '#fff' }; // verde
-  if (f === 'E') return { background: '#ffc107', color: '#fff' }; // amarillo
-  if (f === 'P') return { background: '#f44336', color: '#fff' }; // rojo
-  return {};
-};
-
 const CampeonatoPage: React.FC = () => {
   const [campeonatos, setCampeonatos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [tablaPosiciones, setTablaPosiciones] = useState<any[]>([]);
+  const [loadingTabla, setLoadingTabla] = useState(true);
+  const [errorTabla, setErrorTabla] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchCampeonatos = async () => {
@@ -69,6 +32,22 @@ const CampeonatoPage: React.FC = () => {
       }
     };
     fetchCampeonatos();
+  }, []);
+
+  useEffect(() => {
+    const fetchTabla = async () => {
+      try {
+        const res = await fetch(`${apiBaseUrl}/api/vistas/tabla-posiciones/division-equipo`);
+        if (!res.ok) throw new Error('Error al cargar la tabla de posiciones');
+        const data = await res.json();
+        setTablaPosiciones(Array.isArray(data) ? data : []);
+        setLoadingTabla(false);
+      } catch (err) {
+        setErrorTabla('No se pudo cargar la tabla de posiciones');
+        setLoadingTabla(false);
+      }
+    };
+    fetchTabla();
   }, []);
 
   return (
@@ -129,53 +108,31 @@ const CampeonatoPage: React.FC = () => {
                   <th>GC</th>
                   <th>DG</th>
                   <th>Pts</th>
-                  <th>Forma</th>
                 </tr>
               </thead>
               <tbody>
-                {tablaEjemplo.map((row, idx) => (
-                  <tr key={row.pos} className={idx < 2 ? "tabla-top-row" : ""}>
-                    <td>{row.pos}</td>
-                    <td>
-                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <img src={row.logo} alt={row.nombre} style={{
-                          width: 36, height: 36, borderRadius: "50%", background: "#fff", border: "2px solid #eee"
-                        }} />
-                        <span>{row.nombre}</span>
-                      </div>
-                    </td>
-                    <td>{row.pj}</td>
-                    <td>{row.g}</td>
-                    <td>{row.e}</td>
-                    <td>{row.p}</td>
-                    <td>{row.gf}</td>
-                    <td>{row.gc}</td>
-                    <td>{row.dg}</td>
-                    <td style={{ fontWeight: 700 }}>{row.pts}</td>
-                    <td>
-                      <div style={{ display: "flex", gap: 6 }}>
-                        {row.forma.map((f, i) => (
-                          <span
-                            key={i}
-                            style={{
-                              ...colorForma(f),
-                              borderRadius: "50%",
-                              width: 26,
-                              height: 26,
-                              display: "inline-flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              fontWeight: 700,
-                              fontSize: 15
-                            }}
-                          >
-                            {f}
-                          </span>
-                        ))}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                {loadingTabla ? (
+                  <tr><td colSpan={10} style={{textAlign:'center'}}><IonSpinner name="crescent" /></td></tr>
+                ) : errorTabla ? (
+                  <tr><td colSpan={10} style={{color:'red',textAlign:'center'}}>{errorTabla}</td></tr>
+                ) : tablaPosiciones.length === 0 ? (
+                  <tr><td colSpan={10} style={{textAlign:'center'}}>No hay datos de posiciones.</td></tr>
+                ) : (
+                  tablaPosiciones.map((row, idx) => (
+                    <tr key={row.id} className={idx < 2 ? "tabla-top-row" : ""}>
+                      <td>{idx + 1}</td>
+                      <td>{row.equipo_nombre}</td>
+                      <td>{row.partidos_jugados}</td>
+                      <td>{row.ganados}</td>
+                      <td>{row.empatados}</td>
+                      <td>{row.perdidos}</td>
+                      <td>{row.goles_favor}</td>
+                      <td>{row.goles_contra}</td>
+                      <td>{row.diferencia_goles}</td>
+                      <td style={{ fontWeight: 700 }}>{row.puntos}</td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
