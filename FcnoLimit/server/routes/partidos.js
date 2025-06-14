@@ -267,5 +267,56 @@ module.exports = (pool) => {
     }
   });
 
+  // Obtener el último partido jugado de un equipo (público)
+  router.get('/jugados/ultimo/:equipo_id', async (req, res) => {
+    const { equipo_id } = req.params;
+    try {
+      const result = await pool.query(
+        `SELECT p.*, el.imagen_url AS imagen_local, ev.imagen_url AS imagen_visitante, d.nombre AS division_nombre
+         FROM fcnolimit.partidos p
+         JOIN fcnolimit.equipos el ON p.equipo_local_id = el.id
+         JOIN fcnolimit.equipos ev ON p.equipo_visitante_id = ev.id
+         LEFT JOIN fcnolimit.divisiones d ON p.division_id = d.id
+         WHERE (p.equipo_local_id = $1 OR p.equipo_visitante_id = $1)
+           AND p.estado = 'jugado'
+         ORDER BY p.fecha DESC
+         LIMIT 1`,
+        [equipo_id]
+      );
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: 'No se encontró partido jugado para ese equipo' });
+      }
+      res.json(result.rows[0]);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Obtener el partido pendiente más próximo de un equipo (público)
+  router.get('/pendientes/proximo/:equipo_id', async (req, res) => {
+    const { equipo_id } = req.params;
+    try {
+      const result = await pool.query(
+        `SELECT p.*, el.imagen_url AS imagen_local, ev.imagen_url AS imagen_visitante, d.nombre AS division_nombre
+         FROM fcnolimit.partidos p
+         JOIN fcnolimit.equipos el ON p.equipo_local_id = el.id
+         JOIN fcnolimit.equipos ev ON p.equipo_visitante_id = ev.id
+         LEFT JOIN fcnolimit.divisiones d ON p.division_id = d.id
+         WHERE (p.equipo_local_id = $1 OR p.equipo_visitante_id = $1)
+           AND p.estado = 'pendiente'
+           AND p.fecha >= NOW()
+         ORDER BY p.fecha ASC
+         LIMIT 1`,
+        [equipo_id]
+      );
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: 'No se encontró partido pendiente para ese equipo' });
+      }
+      res.json(result.rows[0]);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   return router;
 };
