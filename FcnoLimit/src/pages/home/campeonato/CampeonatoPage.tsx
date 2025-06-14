@@ -17,6 +17,23 @@ const CampeonatoPage: React.FC = () => {
   const [errorTabla, setErrorTabla] = useState<string | null>(null);
   const [equipos, setEquipos] = useState<any[]>([]);
 
+  const divisiones = [
+    { id: 1, nombre: 'Primera Adulto' },
+    { id: 2, nombre: 'Segunda Adulto' },
+    { id: 3, nombre: 'Tercera Adulto' },
+    { id: 4, nombre: 'Seniors' },
+    { id: 5, nombre: 'Juvenil' },
+    { id: 6, nombre: 'Primera Infantil' },
+    { id: 7, nombre: 'Segunda Infantil' },
+    { id: 8, nombre: 'Tercera Infantil' },
+  ];
+  const divisionEquipos = [
+    { id: 1, nombre: '1A' },
+    { id: 2, nombre: '1B' },
+  ];
+  const [selectedDivision, setSelectedDivision] = useState(6); // default: Primera Infantil
+  const [selectedDivisionEquipo, setSelectedDivisionEquipo] = useState(1); // default: 1A
+
   useEffect(() => {
     const fetchCampeonatos = async () => {
       try {
@@ -38,10 +55,7 @@ const CampeonatoPage: React.FC = () => {
   useEffect(() => {
     const fetchTabla = async () => {
       try {
-        // Puedes cambiar estos valores por los que necesites filtrar
-        const division_id = 6;
-        const division_equipo_id = 1;
-        const res = await fetch(`${apiBaseUrl}/api/vistas/tabla-posiciones/division-equipo?division_id=${division_id}&division_equipo_id=${division_equipo_id}`);
+        const res = await fetch(`${apiBaseUrl}/api/vistas/tabla-posiciones/division-equipo?division_id=${selectedDivision}&division_equipo_id=${selectedDivisionEquipo}`);
         if (!res.ok) throw new Error('Error al cargar la tabla de posiciones');
         const data = await res.json();
         setTablaPosiciones(Array.isArray(data) ? data : []);
@@ -52,7 +66,7 @@ const CampeonatoPage: React.FC = () => {
       }
     };
     fetchTabla();
-  }, []);
+  }, [selectedDivision, selectedDivisionEquipo]);
 
   useEffect(() => {
     const fetchEquipos = async () => {
@@ -110,14 +124,55 @@ const CampeonatoPage: React.FC = () => {
           <div className="tabla-header-row">
             <h2 className="tabla-title">
               <span style={{ color: "#ff9800", marginRight: 8, fontSize: 28, verticalAlign: "middle" }}>📊</span>
-              Clasificación <span style={{ color: "#ff9800" }}>actual</span>
+              Tabla de posiciones
             </h2>
-            <a href="#" className="tabla-ver-completa">Ver completa &rarr;</a>
+            <div className="tabla-selectores" style={{ display: 'flex', gap: 12, alignItems: 'center', margin: '16px 0' }}>
+              <select
+                className="tabla-select"
+                value={selectedDivision}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedDivision(Number(e.target.value))}
+                style={{
+                  padding: '8px 16px',
+                  border: '2px solid #ffe600',
+                  borderRadius: 8,
+                  fontWeight: 600,
+                  fontSize: 16,
+                  background: '#ff9800',
+                  color: '#fff',
+                  outline: 'none',
+                  boxShadow: '0 2px 8px #0002',
+                  minWidth: 180
+                }}
+              >
+                {divisiones.map(d => (
+                  <option key={d.id} value={d.id}>{d.nombre}</option>
+                ))}
+              </select>
+              <select
+                className="tabla-select"
+                value={selectedDivisionEquipo}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedDivisionEquipo(Number(e.target.value))}
+                style={{
+                  padding: '8px 16px',
+                  border: '2px solid #ffe600',
+                  borderRadius: 8,
+                  fontWeight: 600,
+                  fontSize: 16,
+                  background: '#ff9800',
+                  color: '#fff',
+                  outline: 'none',
+                  boxShadow: '0 2px 8px #0002',
+                  minWidth: 100
+                }}
+              >
+                {divisionEquipos.map(de => (
+                  <option key={de.id} value={de.id}>{de.nombre}</option>
+                ))}
+              </select>
+            </div>
           </div>
           <div className="tabla-tabs">
-            <button className="tabla-tab tabla-tab-active">Liga Amateur</button>
-            <button className="tabla-tab">Copa FCnoLimit</button>
-            <button className="tabla-tab">Torneo Verano</button>
+            <button className="tabla-tab tabla-tab-active">Liga Osman Perez Freire 2025</button>
           </div>
           <div className="tabla-scroll">
             <table className="tabla-clasificacion">

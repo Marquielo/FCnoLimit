@@ -55,7 +55,7 @@ module.exports = (pool) => {
     const { division_equipo_id, division_id } = req.params;
     try {
       const result = await pool.query(
-        `SELECT * FROM "fcnolimit".v_partidos_por_jugar_division WHERE division_equipo_id = $1 AND division_id = $2`,
+        `SELECT * FROM "fcnolimit".v_partidos_por_jugar WHERE division_equipo_id = $1 AND division_id = $2`,
         [division_equipo_id, division_id]
       );
       res.json(result.rows);

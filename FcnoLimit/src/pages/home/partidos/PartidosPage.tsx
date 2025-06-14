@@ -11,7 +11,24 @@ import { RenderMatchCard } from '../../../components/RenderMatchCard';
 const apiBaseUrl = 'https://fcnolimit-back.onrender.com';
 
 const PartidosPage: React.FC = () => {
-  const { jugados, pendientes, loading, error } = usePartidos();
+  const divisiones = [
+    { id: 1, nombre: 'Primera Adulto' },
+    { id: 2, nombre: 'Segunda Adulto' },
+    { id: 3, nombre: 'Tercera Adulto' },
+    { id: 4, nombre: 'Seniors' },
+    { id: 5, nombre: 'Juvenil' },
+    { id: 6, nombre: 'Primera Infantil' },
+    { id: 7, nombre: 'Segunda Infantil' },
+    { id: 8, nombre: 'Tercera Infantil' },
+  ];
+  const divisionEquipos = [
+    { id: 1, nombre: '1A' },
+    { id: 2, nombre: '1B' },
+  ];
+  const [selectedDivision, setSelectedDivision] = React.useState<number>(6);
+  const [selectedDivisionEquipo, setSelectedDivisionEquipo] = React.useState<number>(1);
+
+  const { jugados, pendientes, loading, error } = usePartidos(selectedDivision, selectedDivisionEquipo);
 
   return (
     <IonPage>
@@ -36,6 +53,50 @@ const PartidosPage: React.FC = () => {
           </div>
         </div>
         <div className="content-container">
+          <div className="tabla-selectores" style={{ display: 'flex', gap: 12, alignItems: 'center', margin: '16px 0' }}>
+            <select
+              className="tabla-select"
+              value={selectedDivision}
+              onChange={e => setSelectedDivision(Number(e.target.value))}
+              style={{
+                padding: '8px 16px',
+                border: '2px solid #ffe600',
+                borderRadius: 8,
+                fontWeight: 600,
+                fontSize: 16,
+                background: '#ff9800',
+                color: '#fff',
+                outline: 'none',
+                boxShadow: '0 2px 8px #0002',
+                minWidth: 180
+              }}
+            >
+              {divisiones.map(d => (
+                <option key={d.id} value={d.id}>{d.nombre}</option>
+              ))}
+            </select>
+            <select
+              className="tabla-select"
+              value={selectedDivisionEquipo}
+              onChange={e => setSelectedDivisionEquipo(Number(e.target.value))}
+              style={{
+                padding: '8px 16px',
+                border: '2px solid #ffe600',
+                borderRadius: 8,
+                fontWeight: 600,
+                fontSize: 16,
+                background: '#ff9800',
+                color: '#fff',
+                outline: 'none',
+                boxShadow: '0 2px 8px #0002',
+                minWidth: 100
+              }}
+            >
+              {divisionEquipos.map(de => (
+                <option key={de.id} value={de.id}>{de.nombre}</option>
+              ))}
+            </select>
+          </div>
           {/* SECCIÓN DE PARTIDOS PENDIENTES */}
           <section className="matches-section">
             <h2 className="section-title">Próximos Partidos</h2>
