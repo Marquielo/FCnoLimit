@@ -15,6 +15,7 @@ const CampeonatoPage: React.FC = () => {
   const [tablaPosiciones, setTablaPosiciones] = useState<any[]>([]);
   const [loadingTabla, setLoadingTabla] = useState(true);
   const [errorTabla, setErrorTabla] = useState<string | null>(null);
+  const [equipos, setEquipos] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchCampeonatos = async () => {
@@ -37,7 +38,10 @@ const CampeonatoPage: React.FC = () => {
   useEffect(() => {
     const fetchTabla = async () => {
       try {
-        const res = await fetch(`${apiBaseUrl}/api/vistas/tabla-posiciones/division-equipo`);
+        // Puedes cambiar estos valores por los que necesites filtrar
+        const division_id = 6;
+        const division_equipo_id = 1;
+        const res = await fetch(`${apiBaseUrl}/api/vistas/tabla-posiciones/division-equipo?division_id=${division_id}&division_equipo_id=${division_equipo_id}`);
         if (!res.ok) throw new Error('Error al cargar la tabla de posiciones');
         const data = await res.json();
         setTablaPosiciones(Array.isArray(data) ? data : []);
@@ -49,6 +53,27 @@ const CampeonatoPage: React.FC = () => {
     };
     fetchTabla();
   }, []);
+
+  useEffect(() => {
+    const fetchEquipos = async () => {
+      try {
+        const res = await fetch(`${apiBaseUrl}/api/equipos`);
+        if (!res.ok) throw new Error('Error al cargar equipos');
+        const data = await res.json();
+        setEquipos(Array.isArray(data) ? data : []);
+      } catch {
+        setEquipos([]);
+      }
+    };
+    fetchEquipos();
+  }, []);
+
+  const colorForma = (f: string) => {
+    if (f === 'G') return { background: '#4caf50', color: '#fff' }; // verde
+    if (f === 'E') return { background: '#ffc107', color: '#fff' }; // amarillo
+    if (f === 'P') return { background: '#f44336', color: '#fff' }; // rojo
+    return {};
+  };
 
   return (
     <IonPage>
@@ -108,30 +133,51 @@ const CampeonatoPage: React.FC = () => {
                   <th>GC</th>
                   <th>DG</th>
                   <th>Pts</th>
+                  <th>Forma</th>
                 </tr>
               </thead>
               <tbody>
                 {loadingTabla ? (
-                  <tr><td colSpan={10} style={{textAlign:'center'}}><IonSpinner name="crescent" /></td></tr>
+                  <tr><td colSpan={11} style={{textAlign:'center'}}><IonSpinner name="crescent" /></td></tr>
                 ) : errorTabla ? (
-                  <tr><td colSpan={10} style={{color:'red',textAlign:'center'}}>{errorTabla}</td></tr>
+                  <tr><td colSpan={11} style={{color:'red',textAlign:'center'}}>{errorTabla}</td></tr>
                 ) : tablaPosiciones.length === 0 ? (
-                  <tr><td colSpan={10} style={{textAlign:'center'}}>No hay datos de posiciones.</td></tr>
+                  <tr><td colSpan={11} style={{textAlign:'center'}}>No hay datos de posiciones.</td></tr>
                 ) : (
-                  tablaPosiciones.map((row, idx) => (
-                    <tr key={row.id} className={idx < 2 ? "tabla-top-row" : ""}>
-                      <td>{idx + 1}</td>
-                      <td>{row.equipo_nombre}</td>
-                      <td>{row.partidos_jugados}</td>
-                      <td>{row.ganados}</td>
-                      <td>{row.empatados}</td>
-                      <td>{row.perdidos}</td>
-                      <td>{row.goles_favor}</td>
-                      <td>{row.goles_contra}</td>
-                      <td>{row.diferencia_goles}</td>
-                      <td style={{ fontWeight: 700 }}>{row.puntos}</td>
-                    </tr>
-                  ))
+                  tablaPosiciones.map((row, idx) => {
+                    let logoUrl = "/assets/equipos/default.png";
+                    const equipo = equipos.find(eq => eq.id === row.equipo_id);
+                    if (equipo && equipo.imagen_url) {
+                      // Si la imagen_url ya es absoluta, úsala tal cual. Si no, prepende el dominio backend
+                      logoUrl = equipo.imagen_url.startsWith("http")
+                        ? equipo.imagen_url
+                        : `${apiBaseUrl}${equipo.imagen_url.startsWith("/") ? equipo.imagen_url : "/" + equipo.imagen_url}`;
+                    }
+                    return (
+                      <tr key={row.id} className={idx < 2 ? "tabla-top-row" : ""}>
+                        <td>{idx + 1}</td>
+                        <td>
+                          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                            <img src={logoUrl} alt={row.equipo_nombre} style={{ width: 36, height: 36, borderRadius: "50%", background: "#fff", border: "2px solid #eee" }} />
+                            <span>{row.equipo_nombre}</span>
+                          </div>
+                        </td>
+                        <td>{row.partidos_jugados}</td>
+                        <td>{row.ganados}</td>
+                        <td>{row.empatados}</td>
+                        <td>{row.perdidos}</td>
+                        <td>{row.goles_favor}</td>
+                        <td>{row.goles_contra}</td>
+                        <td>{row.diferencia_goles}</td>
+                        <td style={{ fontWeight: 700 }}>{row.puntos}</td>
+                        <td>
+                          <div style={{ display: "flex", gap: 6 }}>
+                            -
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
                 )}
               </tbody>
             </table>
