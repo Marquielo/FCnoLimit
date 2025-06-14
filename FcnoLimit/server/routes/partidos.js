@@ -272,7 +272,7 @@ module.exports = (pool) => {
     const { equipo_id } = req.params;
     try {
       const result = await pool.query(
-        `SELECT p.*, el.imagen_url AS imagen_local, ev.imagen_url AS imagen_visitante, d.nombre AS division_nombre
+        `SELECT p.*, el.imagen_url AS imagen_local, el.nombre AS nombre_local, ev.imagen_url AS imagen_visitante, ev.nombre AS nombre_visitante, d.nombre AS division_nombre
          FROM fcnolimit.partidos p
          JOIN fcnolimit.equipos el ON p.equipo_local_id = el.id
          JOIN fcnolimit.equipos ev ON p.equipo_visitante_id = ev.id
@@ -297,7 +297,7 @@ module.exports = (pool) => {
     const { equipo_id } = req.params;
     try {
       const result = await pool.query(
-        `SELECT p.*, el.imagen_url AS imagen_local, ev.imagen_url AS imagen_visitante, d.nombre AS division_nombre
+        `SELECT p.*, el.imagen_url AS imagen_local, el.nombre AS nombre_local, ev.imagen_url AS imagen_visitante, ev.nombre AS nombre_visitante, d.nombre AS division_nombre
          FROM fcnolimit.partidos p
          JOIN fcnolimit.equipos el ON p.equipo_local_id = el.id
          JOIN fcnolimit.equipos ev ON p.equipo_visitante_id = ev.id

@@ -34,6 +34,8 @@ const EquiposPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [equipo, setEquipo] = useState<Equipo | null>(null);
+  const [ultimoPartido, setUltimoPartido] = useState<any>(null);
+  const [proximoPartido, setProximoPartido] = useState<any>(null);
 
   useEffect(() => {
     if (id) {
@@ -51,6 +53,16 @@ const EquiposPage: React.FC = () => {
           setError('No se pudo cargar el equipo');
           setLoading(false);
         });
+      // Traer último partido jugado
+      fetch(`${apiBaseUrl}/api/partidos/jugados/ultimo/${id}`)
+        .then(res => res.ok ? res.json() : null)
+        .then(data => setUltimoPartido(data))
+        .catch(() => setUltimoPartido(null));
+      // Traer próximo partido pendiente
+      fetch(`${apiBaseUrl}/api/partidos/pendientes/proximo/${id}`)
+        .then(res => res.ok ? res.json() : null)
+        .then(data => setProximoPartido(data))
+        .catch(() => setProximoPartido(null));
     } else {
       setEquipo(null);
       setLoading(true);
@@ -119,30 +131,37 @@ const EquiposPage: React.FC = () => {
                 <div className="equipo-main-col">
                   <div className="equipo-section-title">Último resultado</div>
                   <div className="equipo-result-card">
-                    <div className="equipo-result-row">
-                      <div className="equipo-result-team">
-                        <img src="/assets/equipos/default.png" alt="FC Fulham" />
-                        <span>FC Fulham</span>
-                      </div>
-                      <div className="equipo-result-score">0</div>
-                      <div className="equipo-result-date">25/05/25</div>
-                    </div>
-                    <div className="equipo-result-row">
-                      <div className="equipo-result-team">
-                        <img
-                          src={
-                            equipo.imagen_url
-                              ? (equipo.imagen_url.startsWith('http') ? equipo.imagen_url : `${apiBaseUrl}${equipo.imagen_url}`)
-                              : '/assets/equipos/default.png'
-                          }
-                          alt={equipo.nombre}
-                        />
-                        <span>{equipo.nombre}</span>
-                      </div>
-                      <div className="equipo-result-score">2</div>
-                      <div className="equipo-result-date">Fin del partido</div>
-                    </div>
-                    <div className="equipo-result-league">Premier League</div>
+                    {ultimoPartido ? (
+                      <>
+                        <div className="equipo-result-row">
+                          <div className="equipo-result-team">
+                            <img src={
+                              ultimoPartido.imagen_local
+                                ? (ultimoPartido.imagen_local.startsWith('http') ? ultimoPartido.imagen_local : `${apiBaseUrl}${ultimoPartido.imagen_local}`)
+                                : '/assets/equipos/default.png'
+                            } alt={ultimoPartido.equipo_local} />
+                            <span>{ultimoPartido.equipo_local}</span>
+                          </div>
+                          <div className="equipo-result-score">{ultimoPartido.goles_local}</div>
+                          <div className="equipo-result-date">{ultimoPartido.fecha ? new Date(ultimoPartido.fecha).toLocaleDateString() : ''}</div>
+                        </div>
+                        <div className="equipo-result-row">
+                          <div className="equipo-result-team">
+                            <img src={
+                              ultimoPartido.imagen_visitante
+                                ? (ultimoPartido.imagen_visitante.startsWith('http') ? ultimoPartido.imagen_visitante : `${apiBaseUrl}${ultimoPartido.imagen_visitante}`)
+                                : '/assets/equipos/default.png'
+                            } alt={ultimoPartido.equipo_visitante} />
+                            <span>{ultimoPartido.equipo_visitante}</span>
+                          </div>
+                          <div className="equipo-result-score">{ultimoPartido.goles_visitante}</div>
+                          <div className="equipo-result-date">Fin del partido</div>
+                        </div>
+                        <div className="equipo-result-league">{ultimoPartido.division_nombre || 'Sin división'}</div>
+                      </>
+                    ) : (
+                      <div style={{ color: '#bbb', textAlign: 'center', padding: 12 }}>No hay partidos jugados.</div>
+                    )}
                   </div>
                   <div className="equipo-link-row">
                     <a href="#" className="equipo-link">Ver todos los resultados <IonIcon icon={chevronForward} /></a>
@@ -151,28 +170,35 @@ const EquiposPage: React.FC = () => {
                 <div className="equipo-main-col">
                   <div className="equipo-section-title">Siguiente partido</div>
                   <div className="equipo-result-card">
-                    <div className="equipo-result-row">
-                      <div className="equipo-result-team">
-                        <img
-                          src={
-                            equipo.imagen_url
-                              ? (equipo.imagen_url.startsWith('http') ? equipo.imagen_url : `${apiBaseUrl}${equipo.imagen_url}`)
-                              : '/assets/equipos/default.png'
-                          }
-                          alt={equipo.nombre}
-                        />
-                        <span>{equipo.nombre}</span>
-                      </div>
-                      <div className="equipo-result-date">18/06/25</div>
-                    </div>
-                    <div className="equipo-result-row">
-                      <div className="equipo-result-team">
-                        <img src="/assets/equipos/default.png" alt="Wydad AC" />
-                        <span>Wydad AC</span>
-                      </div>
-                      <div className="equipo-result-date">13:00</div>
-                    </div>
-                    <div className="equipo-result-league">Copa Mundial de Clubes de la FIFA</div>
+                    {proximoPartido ? (
+                      <>
+                        <div className="equipo-result-row">
+                          <div className="equipo-result-team">
+                            <img src={
+                              proximoPartido.imagen_local
+                                ? (proximoPartido.imagen_local.startsWith('http') ? proximoPartido.imagen_local : `${apiBaseUrl}${proximoPartido.imagen_local}`)
+                                : '/assets/equipos/default.png'
+                            } alt={proximoPartido.equipo_local} />
+                            <span>{proximoPartido.equipo_local}</span>
+                          </div>
+                          <div className="equipo-result-date">{proximoPartido.fecha ? new Date(proximoPartido.fecha).toLocaleDateString() : ''}</div>
+                        </div>
+                        <div className="equipo-result-row">
+                          <div className="equipo-result-team">
+                            <img src={
+                              proximoPartido.imagen_visitante
+                                ? (proximoPartido.imagen_visitante.startsWith('http') ? proximoPartido.imagen_visitante : `${apiBaseUrl}${proximoPartido.imagen_visitante}`)
+                                : '/assets/equipos/default.png'
+                            } alt={proximoPartido.equipo_visitante} />
+                            <span>{proximoPartido.equipo_visitante}</span>
+                          </div>
+                          <div className="equipo-result-date">{proximoPartido.fecha ? new Date(proximoPartido.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}</div>
+                        </div>
+                        <div className="equipo-result-league">{proximoPartido.division_nombre || 'Sin división'}</div>
+                      </>
+                    ) : (
+                      <div style={{ color: '#bbb', textAlign: 'center', padding: 12 }}>No hay partidos próximos.</div>
+                    )}
                   </div>
                   <div className="equipo-link-row">
                     <a href="#" className="equipo-link">Ver todos los partidos <IonIcon icon={chevronForward} /></a>
