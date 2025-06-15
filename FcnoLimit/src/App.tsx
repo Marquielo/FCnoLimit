@@ -62,6 +62,8 @@ import BuscarPage from './pages/home/buscar/BuscarPage';
 import AdminPartidos from './pages/admin/AdminPartidos';
 import CrearPartido from './pages/admin/CrearPartido';
 import EditarSolicitud from './pages/admin/EditarSolicitud';
+import EquipoPartidosPage from './pages/home/equipos/EquipoPartidosPage';
+import EquiposResultadosPage from './pages/home/equipos/EquiposResultadosPage';
 
 
 setupIonicReact({
@@ -181,10 +183,15 @@ const App: React.FC = () => (
             <EquiposPage />
           </ProtectedRoute>
         )} />
-        {/* Agrega esta ruta para ver los partidos de un equipo */}
+        {/* Agrega esta ruta para ver los partidos de un equipo (pendientes o jugados) */}
         <Route exact path="/equipos/:id/partidos" render={({ match }) => (
           <ProtectedRoute>
-            <PartidosPage />
+            <EquipoPartidosPage />
+          </ProtectedRoute>
+        )} />
+        <Route exact path="/equipos/:id/resultados" render={() => (
+          <ProtectedRoute>
+            <EquiposResultadosPage />
           </ProtectedRoute>
         )} />
         <Route exact path="/partidos" render={() => (

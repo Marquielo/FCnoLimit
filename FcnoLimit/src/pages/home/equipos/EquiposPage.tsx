@@ -119,12 +119,26 @@ const EquiposPage: React.FC = () => {
               {/* Tabs navegación (solo visual) */}
               <div className="equipo-tabs">
                 <div className="equipo-tab active">Resumen</div>
-                <div className="equipo-tab">Noticias</div>
-                <div className="equipo-tab">Partidos</div>
-                <div className="equipo-tab">Resultados</div>
-                <div className="equipo-tab">Plantilla</div>
-                <div className="equipo-tab">Fichajes</div>
-                <div className="equipo-tab">Oficial</div>
+                <button
+                  className="equipo-tab"
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#fff', fontWeight: 600 }}
+                  onClick={() => {
+                    if (id) localStorage.setItem('equipoId', id.toString());
+                    history.push(`/equipos/${id}/partidos`);
+                  }}
+                >
+                  Partidos
+                </button>
+                <button
+                  className="equipo-tab"
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#fff', fontWeight: 600 }}
+                  onClick={() => {
+                    if (id) localStorage.setItem('equipoId', id.toString());
+                    history.push(`/equipos/${id}/resultados`);
+                  }}
+                >
+                  Resultados
+                </button>
               </div>
               {/* Resultados y próximos partidos (simulado) */}
               <div className="equipo-main-row">
@@ -139,11 +153,14 @@ const EquiposPage: React.FC = () => {
                               ultimoPartido.imagen_local
                                 ? (ultimoPartido.imagen_local.startsWith('http') ? ultimoPartido.imagen_local : `${apiBaseUrl}${ultimoPartido.imagen_local}`)
                                 : '/assets/equipos/default.png'
-                            } alt={ultimoPartido.equipo_local} />
-                            <span>{ultimoPartido.equipo_local}</span>
+                            } alt={ultimoPartido.nombre_local} />
+                            <span>{ultimoPartido.nombre_local}</span>
                           </div>
                           <div className="equipo-result-score">{ultimoPartido.goles_local}</div>
                           <div className="equipo-result-date">{ultimoPartido.fecha ? new Date(ultimoPartido.fecha).toLocaleDateString() : ''}</div>
+                        </div>
+                        <div className="equipo-result-row" style={{ justifyContent: 'center', fontWeight: 700, color: '#ffe600', fontSize: '1.1rem' }}>
+                          VS
                         </div>
                         <div className="equipo-result-row">
                           <div className="equipo-result-team">
@@ -151,8 +168,8 @@ const EquiposPage: React.FC = () => {
                               ultimoPartido.imagen_visitante
                                 ? (ultimoPartido.imagen_visitante.startsWith('http') ? ultimoPartido.imagen_visitante : `${apiBaseUrl}${ultimoPartido.imagen_visitante}`)
                                 : '/assets/equipos/default.png'
-                            } alt={ultimoPartido.equipo_visitante} />
-                            <span>{ultimoPartido.equipo_visitante}</span>
+                            } alt={ultimoPartido.nombre_visitante} />
+                            <span>{ultimoPartido.nombre_visitante}</span>
                           </div>
                           <div className="equipo-result-score">{ultimoPartido.goles_visitante}</div>
                           <div className="equipo-result-date">Fin del partido</div>
@@ -178,10 +195,13 @@ const EquiposPage: React.FC = () => {
                               proximoPartido.imagen_local
                                 ? (proximoPartido.imagen_local.startsWith('http') ? proximoPartido.imagen_local : `${apiBaseUrl}${proximoPartido.imagen_local}`)
                                 : '/assets/equipos/default.png'
-                            } alt={proximoPartido.equipo_local} />
-                            <span>{proximoPartido.equipo_local}</span>
+                            } alt={proximoPartido.nombre_local} />
+                            <span>{proximoPartido.nombre_local}</span>
                           </div>
                           <div className="equipo-result-date">{proximoPartido.fecha ? new Date(proximoPartido.fecha).toLocaleDateString() : ''}</div>
+                        </div>
+                        <div className="equipo-result-row" style={{ justifyContent: 'center', fontWeight: 700, color: '#ffe600', fontSize: '1.1rem' }}>
+                          VS
                         </div>
                         <div className="equipo-result-row">
                           <div className="equipo-result-team">
@@ -189,8 +209,8 @@ const EquiposPage: React.FC = () => {
                               proximoPartido.imagen_visitante
                                 ? (proximoPartido.imagen_visitante.startsWith('http') ? proximoPartido.imagen_visitante : `${apiBaseUrl}${proximoPartido.imagen_visitante}`)
                                 : '/assets/equipos/default.png'
-                            } alt={proximoPartido.equipo_visitante} />
-                            <span>{proximoPartido.equipo_visitante}</span>
+                            } alt={proximoPartido.nombre_visitante} />
+                            <span>{proximoPartido.nombre_visitante}</span>
                           </div>
                           <div className="equipo-result-date">{proximoPartido.fecha ? new Date(proximoPartido.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}</div>
                         </div>
