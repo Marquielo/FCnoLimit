@@ -202,7 +202,13 @@ const EquiposPage: React.FC = () => {
                     )}
                   </div>
                   <div className="equipo-link-row">
-                    <a href="#" className="equipo-link">Ver todos los resultados <IonIcon icon={chevronForward} /></a>
+                    <button
+                      className="equipo-link"
+                      style={{ background: 'linear-gradient(90deg, #ffe066 0%, #ffd700 100%)', border: 'none', color: '#232323', cursor: 'pointer', fontWeight: 700, display: 'flex', alignItems: 'center', borderRadius: 8, padding: '8px 18px', fontSize: '1rem', boxShadow: '0 2px 8px #ffd70044', transition: 'background 0.2s' }}
+                      onClick={() => history.push(`/equipos/${id}/resultados`)}
+                    >
+                      Ver todos los resultados <IonIcon icon={chevronForward} style={{ marginLeft: 6 }} />
+                    </button>
                   </div>
                 </div>
                 <div className="equipo-main-col">
@@ -250,7 +256,13 @@ const EquiposPage: React.FC = () => {
                     )}
                   </div>
                   <div className="equipo-link-row">
-                    <a href="#" className="equipo-link">Ver todos los partidos <IonIcon icon={chevronForward} /></a>
+                    <button
+                      className="equipo-link"
+                      style={{ background: 'linear-gradient(90deg, #ffe066 0%, #ffd700 100%)', border: 'none', color: '#232323', cursor: 'pointer', fontWeight: 700, display: 'flex', alignItems: 'center', borderRadius: 8, padding: '8px 18px', fontSize: '1rem', boxShadow: '0 2px 8px #ffd70044', transition: 'background 0.2s' }}
+                      onClick={() => history.push(`/equipos/${id}/partidos`)}
+                    >
+                      Ver todos los partidos <IonIcon icon={chevronForward} style={{ marginLeft: 6 }} />
+                    </button>
                   </div>
                 </div>
                 <div className="equipo-main-col equipo-videos">

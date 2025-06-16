@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { IonCard, IonCardContent, IonIcon } from '@ionic/react';
+import { useHistory } from 'react-router-dom';
 import { medalOutline } from 'ionicons/icons';
 import { PartidoVista } from '../hooks/usePartidos';
 import { formatFecha } from '../utils/formatFecha';
@@ -11,12 +12,18 @@ const apiBaseUrl = 'https://fcnolimit-back.onrender.com';
 const defaultLogo = '/assets/equipos/default.png';
 
 interface RenderMatchCardProps {
-  partido: PartidoVista & { division_nombre?: string; division?: string };
+  partido: PartidoVista & {
+    division_nombre?: string;
+    division?: string;
+    equipo_local_id?: number;
+    equipo_visitante_id?: number;
+  };
   isJugado: boolean;
 }
 
 export const RenderMatchCard: React.FC<RenderMatchCardProps> = ({ partido: p, isJugado }) => {
   const cardRef = useRef<HTMLDivElement>(null);
+  const history = useHistory();
   let completeTimeout: NodeJS.Timeout | null = null;
   let progressInterval: NodeJS.Timeout | null = null;
 
@@ -78,7 +85,7 @@ export const RenderMatchCard: React.FC<RenderMatchCardProps> = ({ partido: p, is
           </div>
           <div className="match-teams">
             <div className="team">
-              <div className="team-logo">
+              <div className="team-logo" style={{ cursor: 'pointer' }} onClick={() => p.equipo_local_id && history.push(`/equipos/${p.equipo_local_id}`)}>
                 <img
                   src={p.logo_local ? `${apiBaseUrl}${p.logo_local}` : defaultLogo}
                   alt={p.equipo_local || 'Logo Local'}
@@ -92,7 +99,7 @@ export const RenderMatchCard: React.FC<RenderMatchCardProps> = ({ partido: p, is
               <div className="vs-badge">VS</div>
             </div>
             <div className="team">
-              <div className="team-logo">
+              <div className="team-logo" style={{ cursor: 'pointer' }} onClick={() => p.equipo_visitante_id && history.push(`/equipos/${p.equipo_visitante_id}`)}>
                 <img
                   src={p.logo_visitante ? `${apiBaseUrl}${p.logo_visitante}` : defaultLogo}
                   alt={p.equipo_visitante || 'Logo Visitante'}

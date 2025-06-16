@@ -78,5 +78,17 @@
   letter-spacing: 1px;
 }
 
+.matches-slider {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .matches-slider {
+    gap: 12px;
+  }
+}
 
 /* Script para mover el degradado con el mouse */
