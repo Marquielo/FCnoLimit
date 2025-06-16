@@ -4,6 +4,7 @@ import { IonPage, IonContent, IonSpinner } from '@ionic/react';
 import NavBar from '../../../components/NavBar';
 import Footer from '../../../components/Footer';
 import { RenderMatchCard } from '../../../components/RenderMatchCard';
+import './EquiposResultadosPage.css';
 
 const apiBaseUrl = 'https://fcnolimit-back.onrender.com';
 

@@ -302,7 +302,7 @@
 }
 
 @media (max-width: 900px) {
-  .equipo-banner-inner, .equipo-tabs, .equipo-main-row, .equipo-info-extra {
+  .equipos-content, .equipo-main-row, .equipo-info-extra {
     margin-left: 0 !important;
     padding-left: 16px !important;
     padding-right: 16px !important;

@@ -1,0 +1,15 @@
+body, .IonPage, ion-page {
+  min-height: 100vh;
+  background: linear-gradient(120deg, #181818 0%, #232323 60%, #bdbdbd 100%);
+  background-size: 200% 200%;
+  transition: background-position 0.3s;
+}
+
+html {
+  background: #181818;
+}
+
+/* Efecto de movimiento del degradado con el mouse */
+body {
+  transition: background-position 0.3s;
+}

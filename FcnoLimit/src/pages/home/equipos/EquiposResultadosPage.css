@@ -1,0 +1,40 @@
+/* EquiposResultadosPage.css */
+.equipos-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 12px 48px 12px;
+}
+
+.matches-slider {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: center;
+}
+
+.equipos-error {
+  color: #ff5252;
+  text-align: center;
+  margin: 24px 0;
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .equipos-content {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .equipos-content {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+  .equipos-content {
+    padding: 12px 2px 32px 2px;
+  }
+  .matches-slider {
+    gap: 8px;
+  }
+}

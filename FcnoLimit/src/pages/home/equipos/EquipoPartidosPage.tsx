@@ -1,29 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { IonPage, IonContent, IonSpinner } from '@ionic/react';
 import NavBar from '../../../components/NavBar';
 import Footer from '../../../components/Footer';
 import { RenderMatchCard } from '../../../components/RenderMatchCard';
+import { startGlobalParticlesEffect } from '../../../effects/globalParticlesEffect';
+import './EquipoPartidosPage.css';
 
 const apiBaseUrl = 'https://fcnolimit-back.onrender.com';
 
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
-
 const EquipoPartidosPage: React.FC = () => {
   const { id: idParam } = useParams<{ id: string }>();
-  const location = useLocation();
-  const query = useQuery();
   const [partidos, setPartidos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [equipo, setEquipo] = useState<any>(null);
 
   const equipoId = idParam || localStorage.getItem('equipoId') || '';
 
   useEffect(() => {
     setLoading(true);
     setError(null);
+    // Traer datos del equipo
+    fetch(`${apiBaseUrl}/api/equipos/${equipoId}`)
+      .then(res => res.ok ? res.json() : Promise.reject('Error al cargar equipo'))
+      .then(data => setEquipo(data))
+      .catch(() => setEquipo(null));
+    // Traer partidos
     const endpoint = `/api/partidos/pendientes/equipo/${equipoId}`;
     fetch(`${apiBaseUrl}${endpoint}`)
       .then(res => res.ok ? res.json() : Promise.reject('Error al cargar partidos'))
@@ -37,41 +40,86 @@ const EquipoPartidosPage: React.FC = () => {
       });
   }, [equipoId]);
 
-  const normalizaUrl = (img: string | null | undefined) => {
-    if (!img) return '/assets/equipos/default.png';
-    return img.startsWith('http') ? img : `${apiBaseUrl}/equipos/${img}`;
-  };
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      const pos = `${x * 100}% ${y * 100}%`;
+      document.body.style.setProperty('background-position', pos, 'important');
+      const ionPages = document.querySelectorAll('ion-page, .IonPage');
+      ionPages.forEach(page => {
+        (page as HTMLElement).style.setProperty('background-position', pos, 'important');
+      });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  // Efecto de partículas animadas en el fondo
+  useEffect(() => {
+    const stopParticles = startGlobalParticlesEffect();
+    return () => {
+      if (typeof stopParticles === 'function') stopParticles();
+    };
+  }, []);
 
   return (
     <IonPage>
       <NavBar />
       <IonContent fullscreen>
         <div className="equipos-content">
-          <h2 style={{marginTop: 24, marginBottom: 16, color: '#ff9800'}}>
+          {/* Banner superior igual que EquiposPage */}
+          {equipo && (
+            <div className="equipo-banner-dark">
+              <div className="equipo-banner-inner">
+                <img
+                  src={
+                    equipo.imagen_url
+                      ? (equipo.imagen_url.startsWith('http')
+                          ? equipo.imagen_url
+                          : equipo.imagen_url.startsWith('/equipos/')
+                            ? `${apiBaseUrl}${equipo.imagen_url}`
+                            : `${apiBaseUrl}/equipos/${equipo.imagen_url.replace(/^\/+/,'')}`)
+                      : '/assets/equipos/default.png'
+                  }
+                  alt={equipo.nombre}
+                  className="equipo-banner-logo"
+                />
+                <div className="equipo-banner-title">{equipo.nombre}</div>
+              </div>
+            </div>
+          )}
+          <h2 className="equipo-section-title fcnolimit-title" style={{ marginTop: 32, marginBottom: 24, textAlign: 'center', letterSpacing: 1 }}>
             Próximos partidos del equipo
           </h2>
           {loading ? (
-            <IonSpinner name="crescent" />
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 500 }}>
+              <IonSpinner name="crescent" />
+            </div>
           ) : error ? (
             <div className="equipos-error">{error}</div>
           ) : partidos.length === 0 ? (
-            <div style={{ color: '#bbb', textAlign: 'center', padding: 12 }}>
+            <div style={{ color: '#bbb', textAlign: 'center', padding: 24, fontSize: '1.1rem' }}>
               No hay partidos pendientes.
             </div>
           ) : (
             <div className="matches-slider">
-              {partidos.map((p: any) => {
-                const partidoConImagenes = {
-                  ...p,
-                  logo_local: normalizaUrl(p.imagen_url_local),
-                  logo_visitante: normalizaUrl(p.imagen_url_visitante),
-                };
-                return (
-                  <RenderMatchCard key={p.partido_id || p.id} partido={partidoConImagenes} isJugado={false} />
-                );
-              })}
+              {partidos.map((p: any) => (
+                <RenderMatchCard
+                  key={p.partido_id || p.id}
+                  partido={{
+                    ...p,
+                    logo_local: p.imagen_url_local,
+                    logo_visitante: p.imagen_url_visitante
+                  }}
+                  isJugado={false}
+                />
+              ))}
             </div>
           )}
+          <div className="footer-separator"></div>
         </div>
         <Footer />
       </IonContent>

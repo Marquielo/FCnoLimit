@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IonPage, IonContent, IonButton, IonIcon, IonSpinner } from '@ionic/react';
 import { locationOutline, arrowForward } from 'ionicons/icons';
 import NavBar from '../../../components/NavBar';
@@ -7,6 +7,7 @@ import './PartidosPage.css';
 import bannerBg from '../../../assets/banner-fc-bg.png'; // Asegúrate de que la ruta sea correcta
 import { usePartidos } from '../../../hooks/usePartidos';
 import { RenderMatchCard } from '../../../components/RenderMatchCard';
+import { startGlobalParticlesEffect } from '../../../effects/globalParticlesEffect';
 
 const apiBaseUrl = 'https://fcnolimit-back.onrender.com';
 
@@ -29,6 +30,13 @@ const PartidosPage: React.FC = () => {
   const [selectedDivisionEquipo, setSelectedDivisionEquipo] = React.useState<number>(1);
 
   const { jugados, pendientes, loading, error } = usePartidos(selectedDivision, selectedDivisionEquipo);
+
+  useEffect(() => {
+    const stopParticles = startGlobalParticlesEffect();
+    return () => {
+      if (typeof stopParticles === 'function') stopParticles();
+    };
+  }, []);
 
   return (
     <IonPage>

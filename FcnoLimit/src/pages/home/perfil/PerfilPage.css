@@ -87,7 +87,22 @@
   text-align: center;
 }
 
+@media (max-width: 900px) {
+  /* Ajusta los selectores y propiedades según la estructura de la página */
+  .page-container, .main-content, .content-container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
 @media (max-width: 600px) {
+  .page-title, .main-title, h1 {
+    font-size: 2rem;
+  }
+  .page-container, .main-content, .content-container {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
   .perfil-section-title {
     font-size: 1.3rem;
     margin-bottom: 1.2rem;

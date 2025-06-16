@@ -4681,3 +4681,20 @@ h2 ion-icon {
 .fcnl-highlights-swiper .swiper-slide:nth-child(3) {
   animation-delay: 0.5s;
 }
+
+@media (max-width: 900px) {
+  .inicio-container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .inicio-title, h1 {
+    font-size: 1.5rem;
+  }
+  .inicio-container {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+}

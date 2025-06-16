@@ -1,0 +1,75 @@
+.match-card {
+  background: linear-gradient(135deg, #232526 0%, #414345 100%) !important;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 1.7rem 1.3rem;
+  max-width: 420px;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #232526;
+  min-width: 300px;
+  transition: box-shadow 0.2s;
+  font-family: Inter, Arial, sans-serif;
+}
+
+.match-card-header-date {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #fff !important;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.team-name {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 7px;
+  color: #fff !important;
+  white-space: normal;
+  max-width: none;
+  overflow: visible;
+  text-overflow: unset;
+  text-align: center;
+}
+
+.match-info-item.stadium {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #232526 0%, #414345 100%) !important;
+  color: #fff;
+  font-weight: 500;
+  font-size: 1.01rem;
+  margin-top: 0.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  width: 100%;
+  text-align: center;
+}
+
+.match-info-item.stadium .icon {
+  color: #ffe600;
+  font-size: 19px;
+  margin-right: 0;
+  margin-left: 0;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.match-info-item.stadium span {
+  color: #fff !important;
+  white-space: normal;
+  max-width: none;
+  overflow: visible;
+  text-overflow: unset;
+  text-align: center;
+  font-size: 1.01rem;
+  font-weight: 500;
+  width: auto;
+  display: inline-block;
+  vertical-align: middle;
+}
+

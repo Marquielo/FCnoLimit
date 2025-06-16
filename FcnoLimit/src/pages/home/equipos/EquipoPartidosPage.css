@@ -1,0 +1,82 @@
+@media (max-width: 900px) {
+  .equipo-banner-inner, .equipo-tabs, .equipo-main-row, .equipo-info-extra {
+    margin-left: 0 !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  .equipo-main-row {
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px 16px 0 16px;
+  }
+  .equipo-info-extra {
+    margin: 32px 0 0 0;
+    padding: 24px 0 16px 0;
+  }
+  .equipo-info-row {
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .equipo-banner-title {
+    font-size: 2rem;
+  }
+  .equipo-banner-logo {
+    width: 70px;
+    height: 70px;
+  }
+  .equipo-main-row {
+    flex-direction: column;
+    gap: 18px;
+    padding: 16px 4px 0 4px;
+  }
+  .equipo-info-extra {
+    margin: 24px 0 0 0;
+    padding: 12px 0 8px 0;
+    font-size: 0.98rem;
+  }
+  .equipo-info-row {
+    padding: 0 4px;
+  }
+}
+
+.equipos-content {
+  max-width: none !important;
+  margin: 0 !important;
+  width: 100% !important;
+  min-height: 100vh !important;
+  padding: 0 !important;
+  background: radial-gradient(circle at 50% 50%, #232323 0%, #181818 60%, #232323 100%) !important;
+  background-size: 200% 200% !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-bottom: 0;
+  border-left: none !important;
+  border-bottom: none !important;
+  border-top: none !important;
+  box-shadow: none !important;
+  transition: background-position 0.3s !important;
+}
+
+
+.footer-separator {
+  display: none !important;
+}
+
+
+.fcnolimit-title {
+  background: linear-gradient(90deg, #ffe066 0%, #ffd700 50%, #fffbe6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-family: 'Teko', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  letter-spacing: 1px;
+}
+
+
+/* Script para mover el degradado con el mouse */

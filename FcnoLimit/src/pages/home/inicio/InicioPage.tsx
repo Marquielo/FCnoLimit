@@ -25,6 +25,7 @@ import './InicioPage.css';
 import NavBar from '../../../components/NavBar';
 import Footer from '../../../components/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { startGlobalParticlesEffect } from '../../../effects/globalParticlesEffect';
 
 // Opciones de configuración para el slider (ajustado para Swiper)
 const swiperParams = {
@@ -82,6 +83,14 @@ const InicioPage: React.FC = () => {
     return () => {
       hiddenElements.forEach(el => observer.unobserve(el));
       clearInterval(interval);
+    };
+  }, []);
+
+  // Importar y ejecutar el efecto de partículas global
+  useEffect(() => {
+    const stopParticles = startGlobalParticlesEffect();
+    return () => {
+      if (typeof stopParticles === 'function') stopParticles();
     };
   }, []);
 

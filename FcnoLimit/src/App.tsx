@@ -64,171 +64,181 @@ import CrearPartido from './pages/admin/CrearPartido';
 import EditarSolicitud from './pages/admin/EditarSolicitud';
 import EquipoPartidosPage from './pages/home/equipos/EquipoPartidosPage';
 import EquiposResultadosPage from './pages/home/equipos/EquiposResultadosPage';
-
+import { startGlobalParticlesEffect } from './effects/globalParticlesEffect';
+import React, { useEffect } from 'react';
 
 setupIonicReact({
   mode: 'md',
   animated: true
 });
 
-const App: React.FC = () => (
-  <IonApp className="light-theme">
-    <IonReactRouter>
-      <IonRouterOutlet>
-        {/* Rutas públicas */}
-        <Route exact path="/inicio" component={InicioPage} />
-        <Route exact path="/auth" component={AuthPage} />
+const App: React.FC = () => {
+  useEffect(() => {
+    const stopParticles = startGlobalParticlesEffect();
+    return () => {
+      if (typeof stopParticles === 'function') stopParticles();
+    };
+  }, []);
 
-        {/* Rutas de Jugador */}
-        <Route exact path="/jugador/perfil" render={() => (
-          <ProtectedRoute>
-            <JugadorPerfil />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/jugador/estadisticas" render={() => (
-          <ProtectedRoute>
-            <JugadorEstadisticas />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/jugador/entrenamientos" render={() => (
-          <ProtectedRoute>
-            <JugadorEntrenamientos />
-          </ProtectedRoute>
-        )} />
+  return (
+    <IonApp className="light-theme">
+      <IonReactRouter>
+        <IonRouterOutlet>
+          {/* Rutas públicas */}
+          <Route exact path="/inicio" component={InicioPage} />
+          <Route exact path="/auth" component={AuthPage} />
 
-        {/* Rutas de Entrenador */}
-        <Route exact path="/entrenador/perfil" render={() => (
-          <ProtectedRoute>
-            <EntrenadorPerfil />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/entrenador/equipo" render={() => (
-          <ProtectedRoute>
-            <EntrenadorEquipo />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/entrenador/estadisticas" render={() => (
-          <ProtectedRoute>
-            <EntrenadorEstadisticas />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/entrenador/entrenamientos" render={() => (
-          <ProtectedRoute>
-            <EntrenadorEntrenamientos />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/entrenador/tactica" render={() => (
-          <ProtectedRoute>
-            <EntrenadorTacticas />
-          </ProtectedRoute>
-        )} />
+          {/* Rutas de Jugador */}
+          <Route exact path="/jugador/perfil" render={() => (
+            <ProtectedRoute>
+              <JugadorPerfil />
+            </ProtectedRoute>
+          )} />
+          <Route exact path="/jugador/estadisticas" render={() => (
+            <ProtectedRoute>
+              <JugadorEstadisticas />
+            </ProtectedRoute>
+          )} />
+          <Route exact path="/jugador/entrenamientos" render={() => (
+            <ProtectedRoute>
+              <JugadorEntrenamientos />
+            </ProtectedRoute>
+          )} />
 
-        {/* Rutas de Administrador */}
-        <Route exact path="/admin/dashboard" render={() => (
-          <ProtectedRoute>
-            <AdminDashboard />
-          </ProtectedRoute>
-        )} />
-        {/* Añadido para el botón Panel Admin del navbar */}
-        <Route exact path="/admin/AdminDashboard" render={() => (
-          <ProtectedRoute>
-            <AdminDashboard />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/admin/adminpartidos" render={() => (
-          <ProtectedRoute>
-            <AdminPartidos />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/admin/jugadores" render={() => (
-          <ProtectedRoute>
-            <JugadoresPage />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/admin/entrenadores" render={() => (
-          <ProtectedRoute>
-            <EntrenadorPage />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/admin/campeonatos" render={() => (
-          <ProtectedRoute>
-            <CampeonatosPage />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/admin/crear-partido" render={() => (
-          <ProtectedRoute>
-            <CrearPartido />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/admin/EditarSolicitud" render={() => (
-          <ProtectedRoute>
-            <EditarSolicitud />
-          </ProtectedRoute>
-        )} />
+          {/* Rutas de Entrenador */}
+          <Route exact path="/entrenador/perfil" render={() => (
+            <ProtectedRoute>
+              <EntrenadorPerfil />
+            </ProtectedRoute>
+          )} />
+          <Route exact path="/entrenador/equipo" render={() => (
+            <ProtectedRoute>
+              <EntrenadorEquipo />
+            </ProtectedRoute>
+          )} />
+          <Route exact path="/entrenador/estadisticas" render={() => (
+            <ProtectedRoute>
+              <EntrenadorEstadisticas />
+            </ProtectedRoute>
+          )} />
+          <Route exact path="/entrenador/entrenamientos" render={() => (
+            <ProtectedRoute>
+              <EntrenadorEntrenamientos />
+            </ProtectedRoute>
+          )} />
+          <Route exact path="/entrenador/tactica" render={() => (
+            <ProtectedRoute>
+              <EntrenadorTacticas />
+            </ProtectedRoute>
+          )} />
 
-        {/* Rutas comunes protegidas */}
-        <Route exact path="/campeonatos" render={() => (
-          <ProtectedRoute>
-            <CampeonatosPage />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/equipos" render={() => (
-          <ProtectedRoute>
-            <EquiposPage />
-          </ProtectedRoute>
-        )} />
-        {/* Agrega esta ruta para ver el detalle de un equipo */}
-        <Route exact path="/equipos/:id" render={({ match }) => (
-          <ProtectedRoute>
-            <EquiposPage />
-          </ProtectedRoute>
-        )} />
-        {/* Agrega esta ruta para ver los partidos de un equipo (pendientes o jugados) */}
-        <Route exact path="/equipos/:id/partidos" render={({ match }) => (
-          <ProtectedRoute>
-            <EquipoPartidosPage />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/equipos/:id/resultados" render={() => (
-          <ProtectedRoute>
-            <EquiposResultadosPage />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/partidos" render={() => (
-          <ProtectedRoute>
-            <PartidosPage />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/comparativas" render={() => (
-          <ProtectedRoute>
-            <ComparativasPage />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/noticias" render={() => (
-          <ProtectedRoute>
-            <NoticiasPage />
-          </ProtectedRoute>
-        )} />
-        <Route exact path="/perfil" render={() => (
-          <ProtectedRoute>
-            <PerfilPage />
-          </ProtectedRoute>
-        )} />
+          {/* Rutas de Administrador */}
+          <Route exact path="/admin/dashboard" render={() => (
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          )} />
+          {/* Añadido para el botón Panel Admin del navbar */}
+          <Route exact path="/admin/AdminDashboard" render={() => (
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          )} />
+          <Route exact path="/admin/adminpartidos" render={() => (
+            <ProtectedRoute>
+              <AdminPartidos />
+            </ProtectedRoute>
+          )} />
+          <Route exact path="/admin/jugadores" render={() => (
+            <ProtectedRoute>
+              <JugadoresPage />
+            </ProtectedRoute>
+          )} />
+          <Route exact path="/admin/entrenadores" render={() => (
+            <ProtectedRoute>
+              <EntrenadorPage />
+            </ProtectedRoute>
+          )} />
+          <Route exact path="/admin/campeonatos" render={() => (
+            <ProtectedRoute>
+              <CampeonatosPage />
+            </ProtectedRoute>
+          )} />
+          <Route exact path="/admin/crear-partido" render={() => (
+            <ProtectedRoute>
+              <CrearPartido />
+            </ProtectedRoute>
+          )} />
+          <Route exact path="/admin/EditarSolicitud" render={() => (
+            <ProtectedRoute>
+              <EditarSolicitud />
+            </ProtectedRoute>
+          )} />
 
-        {/* Ruta para BuscarPage */}
-        <Route exact path="/home/buscar" render={() => (
-          <ProtectedRoute>
-            <BuscarPage />
-          </ProtectedRoute>
-        )} />
+          {/* Rutas comunes protegidas */}
+          <Route exact path="/campeonatos" render={() => (
+            <ProtectedRoute>
+              <CampeonatosPage />
+            </ProtectedRoute>
+          )} />
+          <Route exact path="/equipos" render={() => (
+            <ProtectedRoute>
+              <EquiposPage />
+            </ProtectedRoute>
+          )} />
+          {/* Agrega esta ruta para ver el detalle de un equipo */}
+          <Route exact path="/equipos/:id" render={({ match }) => (
+            <ProtectedRoute>
+              <EquiposPage />
+            </ProtectedRoute>
+          )} />
+          {/* Agrega esta ruta para ver los partidos de un equipo (pendientes o jugados) */}
+          <Route exact path="/equipos/:id/partidos" render={({ match }) => (
+            <ProtectedRoute>
+              <EquipoPartidosPage />
+            </ProtectedRoute>
+          )} />
+          <Route exact path="/equipos/:id/resultados" render={() => (
+            <ProtectedRoute>
+              <EquiposResultadosPage />
+            </ProtectedRoute>
+          )} />
+          <Route exact path="/partidos" render={() => (
+            <ProtectedRoute>
+              <PartidosPage />
+            </ProtectedRoute>
+          )} />
+          <Route exact path="/comparativas" render={() => (
+            <ProtectedRoute>
+              <ComparativasPage />
+            </ProtectedRoute>
+          )} />
+          <Route exact path="/noticias" render={() => (
+            <ProtectedRoute>
+              <NoticiasPage />
+            </ProtectedRoute>
+          )} />
+          <Route exact path="/perfil" render={() => (
+            <ProtectedRoute>
+              <PerfilPage />
+            </ProtectedRoute>
+          )} />
 
-        <Route exact path="/">
-          <Redirect to="/inicio" />
-        </Route>
-      </IonRouterOutlet>
-      <NavBar />
-    </IonReactRouter>
-  </IonApp>
-);
+          {/* Ruta para BuscarPage */}
+          <Route exact path="/home/buscar" render={() => (
+            <ProtectedRoute>
+              <BuscarPage />
+            </ProtectedRoute>
+          )} />
+
+          <Route exact path="/">
+            <Redirect to="/inicio" />
+          </Route>
+        </IonRouterOutlet>
+        <NavBar />
+      </IonReactRouter>
+    </IonApp>
+  );
+};
 
 export default App;

@@ -4,6 +4,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import { peopleOutline, footballOutline, chevronForward, calendarOutline } from 'ionicons/icons';
 import NavBar from '../../../components/NavBar';
 import Footer from '../../../components/Footer';
+import { startGlobalParticlesEffect } from '../../../effects/globalParticlesEffect';
 import './EquiposPage.css';
 
 const apiBaseUrl = 'https://fcnolimit-back.onrender.com';
@@ -36,6 +37,13 @@ const EquiposPage: React.FC = () => {
   const [equipo, setEquipo] = useState<Equipo | null>(null);
   const [ultimoPartido, setUltimoPartido] = useState<any>(null);
   const [proximoPartido, setProximoPartido] = useState<any>(null);
+
+  useEffect(() => {
+    const stopParticles = startGlobalParticlesEffect();
+    return () => {
+      if (typeof stopParticles === 'function') stopParticles();
+    };
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -91,7 +99,8 @@ const EquiposPage: React.FC = () => {
     <IonPage>
       <NavBar />
       <IonContent fullscreen>
-        <div className="equipos-content">
+        {/* Elimino cualquier wrapper que limite el ancho */}
+        <div className="equipos-content" style={{ maxWidth: 'none', margin: 0, width: '100%', minHeight: '100vh', padding: 0 }}>
           {loading ? (
             <div className="equipos-loading">
               <IonSpinner name="crescent" />
@@ -106,7 +115,11 @@ const EquiposPage: React.FC = () => {
                   <img
                     src={
                       equipo.imagen_url
-                        ? (equipo.imagen_url.startsWith('http') ? equipo.imagen_url : `${apiBaseUrl}${equipo.imagen_url}`)
+                        ? (equipo.imagen_url.startsWith('http')
+                            ? equipo.imagen_url
+                            : equipo.imagen_url.startsWith('/equipos/')
+                              ? `${apiBaseUrl}${equipo.imagen_url}`
+                              : `${apiBaseUrl}/equipos/${equipo.imagen_url.replace(/^\/+/, '')}`)
                         : '/assets/equipos/default.png'
                     }
                     alt={equipo.nombre}
@@ -151,7 +164,11 @@ const EquiposPage: React.FC = () => {
                           <div className="equipo-result-team">
                             <img src={
                               ultimoPartido.imagen_local
-                                ? (ultimoPartido.imagen_local.startsWith('http') ? ultimoPartido.imagen_local : `${apiBaseUrl}${ultimoPartido.imagen_local}`)
+                                ? (ultimoPartido.imagen_local.startsWith('http')
+                                    ? ultimoPartido.imagen_local
+                                    : ultimoPartido.imagen_local.startsWith('/equipos/')
+                                      ? `${apiBaseUrl}${ultimoPartido.imagen_local}`
+                                      : `${apiBaseUrl}/equipos/${ultimoPartido.imagen_local.replace(/^\/+/, '')}`)
                                 : '/assets/equipos/default.png'
                             } alt={ultimoPartido.nombre_local} />
                             <span>{ultimoPartido.nombre_local}</span>
@@ -166,7 +183,11 @@ const EquiposPage: React.FC = () => {
                           <div className="equipo-result-team">
                             <img src={
                               ultimoPartido.imagen_visitante
-                                ? (ultimoPartido.imagen_visitante.startsWith('http') ? ultimoPartido.imagen_visitante : `${apiBaseUrl}${ultimoPartido.imagen_visitante}`)
+                                ? (ultimoPartido.imagen_visitante.startsWith('http')
+                                    ? ultimoPartido.imagen_visitante
+                                    : ultimoPartido.imagen_visitante.startsWith('/equipos/')
+                                      ? `${apiBaseUrl}${ultimoPartido.imagen_visitante}`
+                                      : `${apiBaseUrl}/equipos/${ultimoPartido.imagen_visitante.replace(/^\/+/, '')}`)
                                 : '/assets/equipos/default.png'
                             } alt={ultimoPartido.nombre_visitante} />
                             <span>{ultimoPartido.nombre_visitante}</span>
@@ -193,7 +214,11 @@ const EquiposPage: React.FC = () => {
                           <div className="equipo-result-team">
                             <img src={
                               proximoPartido.imagen_local
-                                ? (proximoPartido.imagen_local.startsWith('http') ? proximoPartido.imagen_local : `${apiBaseUrl}${proximoPartido.imagen_local}`)
+                                ? (proximoPartido.imagen_local.startsWith('http')
+                                    ? proximoPartido.imagen_local
+                                    : proximoPartido.imagen_local.startsWith('/equipos/')
+                                      ? `${apiBaseUrl}${proximoPartido.imagen_local}`
+                                      : `${apiBaseUrl}/equipos/${proximoPartido.imagen_local.replace(/^\/+/, '')}`)
                                 : '/assets/equipos/default.png'
                             } alt={proximoPartido.nombre_local} />
                             <span>{proximoPartido.nombre_local}</span>
@@ -207,7 +232,11 @@ const EquiposPage: React.FC = () => {
                           <div className="equipo-result-team">
                             <img src={
                               proximoPartido.imagen_visitante
-                                ? (proximoPartido.imagen_visitante.startsWith('http') ? proximoPartido.imagen_visitante : `${apiBaseUrl}${proximoPartido.imagen_visitante}`)
+                                ? (proximoPartido.imagen_visitante.startsWith('http')
+                                    ? proximoPartido.imagen_visitante
+                                    : proximoPartido.imagen_visitante.startsWith('/equipos/')
+                                      ? `${apiBaseUrl}${proximoPartido.imagen_visitante}`
+                                      : `${apiBaseUrl}/equipos/${proximoPartido.imagen_visitante.replace(/^\/+/, '')}`)
                                 : '/assets/equipos/default.png'
                             } alt={proximoPartido.nombre_visitante} />
                             <span>{proximoPartido.nombre_visitante}</span>
@@ -278,7 +307,11 @@ const EquiposPage: React.FC = () => {
                           <img
                             src={
                               eq.imagen_url
-                                ? (eq.imagen_url.startsWith('http') ? eq.imagen_url : `${apiBaseUrl}${eq.imagen_url}`)
+                                ? (eq.imagen_url.startsWith('http')
+                                    ? eq.imagen_url
+                                    : eq.imagen_url.startsWith('/equipos/')
+                                      ? `${apiBaseUrl}${eq.imagen_url}`
+                                      : `${apiBaseUrl}/equipos/${eq.imagen_url.replace(/^\/+/, '')}`)
                                 : '/assets/equipos/default.png'
                             }
                             alt={eq.nombre}

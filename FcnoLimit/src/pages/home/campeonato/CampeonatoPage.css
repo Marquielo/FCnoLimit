@@ -181,16 +181,56 @@
 
 @media (max-width: 900px) {
   .tabla-clasificacion-container {
-    padding: 18px 4px 12px 4px;
+    overflow-x: auto;
+    padding: 12px 2px 8px 2px;
+  }
+  .tabla-clasificacion {
+    min-width: 700px;
+    width: max-content;
+    font-size: 0.98rem;
+  }
+  .tabla-clasificacion th,
+  .tabla-clasificacion td {
+    padding: 8px 4px;
+    font-size: 0.98rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .tabla-clasificacion-container {
+    overflow-x: auto;
+    padding: 6px 0 6px 0;
+    border-radius: 0;
+    box-shadow: none;
   }
   .tabla-title {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
-  .tabla-tabs {
-    gap: 4px;
+  .tabla-clasificacion {
+    min-width: 500px;
+    width: max-content;
+    font-size: 0.92rem;
   }
-  .tabla-tab {
-    padding: 8px 10px;
-    font-size: 0.98rem;
+  .tabla-clasificacion th,
+  .tabla-clasificacion td {
+    padding: 6px 2px;
+    font-size: 0.92rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .campeonato-container, .campeonato-main {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .campeonato-title, h1 {
+    font-size: 1.5rem;
+  }
+  .campeonato-container, .campeonato-main {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
   }
 }
