@@ -104,17 +104,22 @@ const EquiposResultadosPage: React.FC = () => {
             </div>
           ) : (
             <div className="matches-slider">
-              {partidos.map((p: any) => (
-                <RenderMatchCard
-                  key={p.partido_id || p.id}
-                  partido={{
-                    ...p,
-                    logo_local: p.logo_local || p.imagen_url_local,
-                    logo_visitante: p.logo_visitante || p.imagen_url_visitante
-                  }}
-                  isJugado={true}
-                />
-              ))}
+              {partidos
+                .filter((p: any) => {
+                  const estado = (p.estado || '').toLowerCase();
+                  return estado !== 'pendiente' && estado !== 's/r';
+                })
+                .map((p: any) => (
+                  <RenderMatchCard
+                    key={p.partido_id || p.id}
+                    partido={{
+                      ...p,
+                      logo_local: p.logo_local || p.imagen_url_local,
+                      logo_visitante: p.logo_visitante || p.imagen_url_visitante
+                    }}
+                    isJugado={true}
+                  />
+                ))}
             </div>
           )}
           <div className="footer-separator"></div>

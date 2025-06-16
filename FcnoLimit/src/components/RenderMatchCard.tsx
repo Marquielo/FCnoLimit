@@ -113,9 +113,7 @@ export const RenderMatchCard: React.FC<RenderMatchCardProps> = ({ partido: p, is
           {isJugado && (
             <div className="match-score-prominent">
               <strong>
-                {typeof p.goles_local === 'number' && typeof p.goles_visitante === 'number'
-                  ? `${p.goles_local} - ${p.goles_visitante}`
-                  : 'S/R'}
+                {p.goles_local} - {p.goles_visitante}
               </strong>
             </div>
           )}

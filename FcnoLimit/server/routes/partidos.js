@@ -335,5 +335,37 @@ module.exports = (pool) => {
     }
   });
 
+  // Obtener los últimos 5 partidos jugados de un equipo (público)
+  router.get('/historial/ultimos5/:equipo_id', async (req, res) => {
+    const equipoId = parseInt(req.params.equipo_id, 10);
+    if (isNaN(equipoId)) {
+      return res.status(400).json({ error: 'ID de equipo inválido' });
+    }
+    try {
+      const result = await pool.query(
+        `SELECT
+          p.id AS partido_id,
+          p.fecha,
+          p.equipo_local_id,
+          el.nombre AS equipo_local,
+          p.goles_local,
+          p.equipo_visitante_id,
+          ev.nombre AS equipo_visitante,
+          p.goles_visitante
+        FROM fcnolimit.partidos p
+        JOIN fcnolimit.equipos el ON p.equipo_local_id = el.id
+        JOIN fcnolimit.equipos ev ON p.equipo_visitante_id = ev.id
+        WHERE (p.equipo_local_id = $1 OR p.equipo_visitante_id = $1)
+          AND p.estado = 'jugado'
+        ORDER BY p.fecha DESC
+        LIMIT 5`,
+        [equipoId]
+      );
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   return router;
 };

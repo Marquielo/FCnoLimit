@@ -61,8 +61,21 @@ export function usePartidos(division_id?: number, division_equipo_id?: number) {
             : [];
         }
 
-        setJugados(Array.isArray(dataJugados) ? dataJugados : []);
-        setPendientes(Array.isArray(dataPendientes) ? dataPendientes : []);
+        // Filtrar partidos pendientes (estado === 'pendiente')
+        const pendientesFiltrados = Array.isArray(dataPendientes)
+          ? dataPendientes.filter((p: any) => (p.estado || '').toLowerCase() === 'pendiente')
+          : [];
+
+        // Filtrar partidos jugados (no estado 'pendiente' ni 'S/R')
+        const jugadosFiltrados = Array.isArray(dataJugados)
+          ? dataJugados.filter((p: any) => {
+              const estado = (p.estado || '').toLowerCase();
+              return estado !== 'pendiente' && estado !== 's/r';
+            })
+          : [];
+
+        setJugados(jugadosFiltrados);
+        setPendientes(pendientesFiltrados);
       } catch (err: any) {
         setError(err.message || 'No se pudieron cargar los partidos');
         setJugados([]);
