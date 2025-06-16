@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { IonPage, IonContent, IonButton, IonIcon, IonBadge, IonCard } from '@ionic/react';
 // Importar Swiper en lugar de IonSlides y IonSlide
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -25,7 +25,6 @@ import './InicioPage.css';
 import NavBar from '../../../components/NavBar';
 import Footer from '../../../components/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { startGlobalParticlesEffect } from '../../../effects/globalParticlesEffect';
 
 // Opciones de configuración para el slider (ajustado para Swiper)
 const swiperParams = {
@@ -59,38 +58,35 @@ const InicioPage: React.FC = () => {
 
     const hiddenElements = document.querySelectorAll('.animate-on-scroll');
     hiddenElements.forEach(el => observer.observe(el));
-
-    // Actualizar cuenta regresiva para el próximo gran torneo
-    const eventDate = new Date('2025-05-13T09:00:00');
-
-    const updateCountdown = () => {
-      const now = new Date();
-      const difference = eventDate.getTime() - now.getTime();
-
-      if (difference > 0) {
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-        setCountdown({ days, hours, minutes, seconds });
-      }
-    };
-
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
-
-    return () => {
-      hiddenElements.forEach(el => observer.unobserve(el));
-      clearInterval(interval);
-    };
+    return () => observer.disconnect();
   }, []);
 
-  // Importar y ejecutar el efecto de partículas global
+  // Efecto especial JS para match-card (igual que RenderMatchCard)
   useEffect(() => {
-    const stopParticles = startGlobalParticlesEffect();
+    const handleMove = (e: Event) => {
+      const card = e.currentTarget as HTMLElement;
+      if (!(e instanceof MouseEvent)) return;
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--glow-x', `${x}px`);
+      card.style.setProperty('--glow-y', `${y}px`);
+    };
+    const handleLeave = (e: Event) => {
+      const card = e.currentTarget as HTMLElement;
+      card.style.removeProperty('--glow-x');
+      card.style.removeProperty('--glow-y');
+    };
+    const cards = document.querySelectorAll('.match-card');
+    cards.forEach(card => {
+      card.addEventListener('mousemove', handleMove as EventListener);
+      card.addEventListener('mouseleave', handleLeave as EventListener);
+    });
     return () => {
-      if (typeof stopParticles === 'function') stopParticles();
+      cards.forEach(card => {
+        card.removeEventListener('mousemove', handleMove as EventListener);
+        card.removeEventListener('mouseleave', handleLeave as EventListener);
+      });
     };
   }, []);
 

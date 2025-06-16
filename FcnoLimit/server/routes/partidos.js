@@ -318,5 +318,22 @@ module.exports = (pool) => {
     }
   });
 
+  // Obtener historial de partidos por equipo (local o visitante)
+  router.get('/historial/equipo/:equipo_id', async (req, res) => {
+    const equipoId = parseInt(req.params.equipo_id, 10);
+    if (isNaN(equipoId)) {
+      return res.status(400).json({ error: 'ID de equipo inválido' });
+    }
+    try {
+      const result = await pool.query(
+        'SELECT * FROM "fcnolimit".v_historial_partidos WHERE equipo_local_id = $1 OR equipo_visitante_id = $1',
+        [equipoId]
+      );
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   return router;
 };

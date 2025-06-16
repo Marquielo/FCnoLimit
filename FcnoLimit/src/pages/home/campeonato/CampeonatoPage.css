@@ -234,3 +234,212 @@
     padding-right: 4px !important;
   }
 }
+
+/* --- Estilos acordeón tabla posiciones móvil (similar a InicioPage) --- */
+.tabla-accordion-container {
+  padding: 0.5rem;
+}
+
+.tabla-accordion {
+  margin-bottom: 0.75rem;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.tabla-accordion:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.tabla-accordion-header {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  background-color: #fff;
+  transition: all 0.25s ease;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+}
+
+.tabla-accordion-header.active {
+  background-color: rgba(255, 152, 0, 0.08);
+  border-left: 3px solid #ff9800;
+}
+
+.accordion-rank {
+  margin-right: 12px;
+}
+
+.accordion-position {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #eee;
+  color: #444;
+}
+
+.accordion-team-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.accordion-team-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: contain;
+  margin-right: 10px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+
+.accordion-team-name {
+  font-weight: 500;
+  font-size: 16px;
+  color: #333;
+}
+
+.accordion-summary {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.accordion-points {
+  font-weight: 700;
+  font-size: 18px;
+  color: #222;
+  background: linear-gradient(135deg, #ff9800, #ffb300);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+  position: relative;
+}
+
+.accordion-points::after {
+  content: 'pts';
+  position: absolute;
+  top: -5px;
+  right: -18px;
+  font-size: 10px;
+  font-weight: 400;
+  color: #777;
+  -webkit-text-fill-color: #777;
+}
+
+.accordion-toggle {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 152, 0, 0.1);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  font-size: 18px;
+  color: #ff9800;
+}
+
+.tabla-accordion-header.active .accordion-toggle {
+  transform: rotate(90deg);
+}
+
+.tabla-accordion-content {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease-in-out;
+  background-color: #fff;
+}
+
+.tabla-accordion-content.active {
+  max-height: 500px;
+}
+
+.accordion-content-inner {
+  padding: 0 16px 16px;
+}
+
+.accordion-main-stats {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+.main-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.main-stat-item .stat-value {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.main-stat-item .stat-label {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  margin: 0;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: linear-gradient(90deg, #fff 60%, #ffe066 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+  text-shadow: 1px 1px 6px #23232399, 0 2px 8px #18181855;
+}
+
+.section-icon {
+  color: #ffe066;
+  font-size: 2rem;
+}
+
+@media (max-width: 900px) {
+  .section-title {
+    font-size: 1.25rem;
+  }
+  .section-icon {
+    font-size: 1.1rem;
+    margin-right: 0.4rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .tabla-accordion-container {
+    padding: 0.2rem;
+  }
+  .accordion-team-logo {
+    width: 32px;
+    height: 32px;
+  }
+  .accordion-team-name {
+    font-size: 14px;
+  }
+  .accordion-points {
+    font-size: 15px;
+  }
+}
+/* --- Fin estilos acordeón tabla posiciones móvil --- */
