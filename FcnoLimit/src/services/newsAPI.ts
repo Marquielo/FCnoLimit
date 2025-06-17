@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// API Key de NewsAPI (tu clave personal)
-const NEWS_API_KEY = 'd371600c3e9e43afaab2a92d940c8074';
-const NEWS_BASE_URL = 'https://newsapi.org/v2';
+// API Key de NewsData.io (más permisivo para producción)
+const NEWSDATA_API_KEY = 'pub_9e484407c75243eda9e6ca5445842aa4';
+const NEWSDATA_BASE_URL = 'https://newsdata.io/api/1';
 
 interface NewsArticle {
   source: {
@@ -19,10 +19,29 @@ interface NewsArticle {
   category?: string;
 }
 
-interface NewsResponse {
+interface NewsDataResponse {
   status: string;
   totalResults: number;
-  articles: NewsArticle[];
+  results: NewsDataArticle[];
+  nextPage?: string;
+}
+
+interface NewsDataArticle {
+  article_id: string;
+  title: string;
+  link: string;
+  keywords?: string[];
+  creator?: string[];
+  video_url?: string;
+  description?: string;
+  content?: string;
+  pubDate: string;
+  image_url?: string;
+  source_id: string;
+  source_priority: number;
+  country?: string[];
+  category: string[];
+  language: string;
 }
 
 export class NewsAPIService {

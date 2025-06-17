@@ -8,7 +8,7 @@ import {
   footballOutline,
   arrowForward
 } from 'ionicons/icons';
-import { newsAPIService } from '../services/newsAPI';
+import { newsAPIService } from '../services/newsDataAPI';
 import { traductor } from '../services/traductor';
 import './NoticiasRealesAPI.css'; // Reutilizamos los mismos estilos
 
@@ -34,16 +34,27 @@ interface NewsArticle {
 const NoticiasInicioWidget: React.FC = () => {
   const [noticias, setNoticias] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(false);
+  const [ultimaActualizacion, setUltimaActualizacion] = useState<string | null>(null);
 
   useEffect(() => {
     cargarNoticiasInicio();
-  }, []);
-
-  const cargarNoticiasInicio = async () => {
+    
+    // Verificar actualización cada hora para mostrar tiempo restante
+    const intervalCheck = setInterval(() => {
+      if (newsAPIService.needsUpdate()) {
+        cargarNoticiasInicio();
+      }
+      setUltimaActualizacion(newsAPIService.getLastUpdateTime());
+    }, 60 * 60 * 1000); // Cada hora
+    
+    return () => clearInterval(intervalCheck);
+  }, []);  const cargarNoticiasInicio = async () => {
     setLoading(true);
     try {
-      // Obtener exactamente 3 noticias de soccer
-      const noticiasRaw = await newsAPIService.getSoccerNews(10);
+      console.log('🔄 Cargando noticias desde NewsData.io...');
+      
+      // Intentar obtener noticias reales desde NewsData.io (funciona en producción)
+      const noticiasRaw = await newsAPIService.getSoccerNews(6);
       
       if (noticiasRaw.length > 0) {
         // Filtrar y tomar exactamente 3
@@ -51,25 +62,27 @@ const NoticiasInicioWidget: React.FC = () => {
           .filter(noticia => noticia.title && noticia.description)
           .slice(0, 3);
         
-        if (noticiasValidas.length > 0) {
+        if (noticiasValidas.length >= 3) {
           // Traducir automáticamente
+          const noticiasTraducidas = await traductor.traducirNoticias(noticiasValidas);          setNoticias(noticiasTraducidas.slice(0, 3));
+          console.log('✅ Noticias reales cargadas y traducidas');
+          setUltimaActualizacion(newsAPIService.getLastUpdateTime());
+        } else {
+          // Si no hay suficientes, completar con fallbacks
           const noticiasTraducidas = await traductor.traducirNoticias(noticiasValidas);
-          
-          // Completar con fallbacks si faltan noticias
           const noticiasFinales = [...noticiasTraducidas];
           while (noticiasFinales.length < 3) {
             noticiasFinales.push(obtenerNoticiaFallback(noticiasFinales.length));
           }
-          
           setNoticias(noticiasFinales.slice(0, 3));
-        } else {
-          setNoticias(obtenerNoticiasFallback());
+          console.log('⚠️ Noticias reales + fallbacks cargadas');
         }
       } else {
+        console.log('📰 No se obtuvieron noticias, usando fallbacks');
         setNoticias(obtenerNoticiasFallback());
       }
     } catch (error) {
-      console.error('Error cargando noticias para inicio:', error);
+      console.warn('Error cargando noticias, usando fallbacks:', error);
       setNoticias(obtenerNoticiasFallback());
     } finally {
       setLoading(false);
@@ -83,43 +96,42 @@ const NoticiasInicioWidget: React.FC = () => {
       obtenerNoticiaFallback(2)
     ];
   };
-
   const obtenerNoticiaFallback = (index: number) => {
     const noticias = [
       {
-        title: "Champions League: Los mejores momentos de la jornada",
-        description: "Revive los goles más espectaculares y las jugadas que marcaron la diferencia en la última jornada de la Champions League.",
-        publishedAt: new Date().toISOString(),
+        title: "Copa América 2025: Los equipos favoritos para llevarse el título",
+        description: "Análisis completo de las selecciones con mayores posibilidades de conquistar la Copa América en territorio estadounidense.",
+        publishedAt: new Date(Date.now() - 3600000).toISOString(), // 1 hora ago
         urlToImage: null,
         url: "/noticias-en-vivo",
         source: { name: "FCnoLimit Sports", id: "fcnolimit" },
-        traducida: false,
+        traducida: true,
+        category: "Copa América",
+        author: "Redacción FCnoLimit",
+        content: null
+      },
+      {
+        title: "Champions League: Messi y Mbappé lideran la lucha por el Balón de Oro",
+        description: "Los astros del PSG destacan en la Champions League mientras buscan el reconocimiento individual más prestigioso del fútbol.",
+        publishedAt: new Date(Date.now() - 7200000).toISOString(), // 2 horas ago
+        urlToImage: null,
+        url: "/noticias-en-vivo",
+        source: { name: "FCnoLimit Sports", id: "fcnolimit" },
+        traducida: true,
         category: "Champions League",
-        author: null,
+        author: "Redacción FCnoLimit",
         content: null
       },
       {
-        title: "Premier League: Análisis de la tabla de posiciones",
-        description: "Los equipos ingleses luchan por los primeros puestos mientras se define el campeonato en las últimas jornadas.",
-        publishedAt: new Date(Date.now() - 86400000).toISOString(),
+        title: "Premier League: Manchester City rompe récord de puntos en la temporada",
+        description: "Los Citizens continúan su dominio en Inglaterra con una exhibición de fútbol que los acerca a un nuevo título consecutivo.",
+        publishedAt: new Date(Date.now() - 10800000).toISOString(), // 3 horas ago
         urlToImage: null,
         url: "/noticias-en-vivo",
         source: { name: "FCnoLimit Sports", id: "fcnolimit" },
-        traducida: false,
+        traducida: true,
         category: "Premier League",
-        author: null,
-        content: null
-      },
-      {
-        title: "La Liga: Real Madrid y Barcelona en la lucha por el título",
-        description: "El clásico español se intensifica con ambos equipos buscando la victoria en esta temporada decisiva.",
-        publishedAt: new Date(Date.now() - 172800000).toISOString(),
-        urlToImage: null,
-        url: "/noticias-en-vivo",
-        source: { name: "FCnoLimit Sports", id: "fcnolimit" },
-        traducida: false,
-        category: "La Liga",
-        author: null,
+        author: "Redacción FCnoLimit",
         content: null
       }
     ];
@@ -243,9 +255,28 @@ const NoticiasInicioWidget: React.FC = () => {
                 Leer más <IonIcon icon={arrowForward} />
               </a>
             </div>
+          </div>        </div>
+      ))}
+      
+      {/* Información de actualización automática */}
+      {ultimaActualizacion && (
+        <div style={{
+          textAlign: 'center',
+          marginTop: '1rem',
+          padding: '0.5rem',
+          fontSize: '0.75rem',
+          color: '#7f8c8d',
+          fontStyle: 'italic'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+            <IonIcon icon={calendarOutline} style={{ fontSize: '0.8rem' }} />
+            Última actualización: {ultimaActualizacion}
+          </div>
+          <div style={{ marginTop: '0.25rem', fontSize: '0.7rem' }}>
+            ⏰ Se actualiza automáticamente cada 24 horas
           </div>
         </div>
-      ))}
+      )}
     </div>
   );
 };
