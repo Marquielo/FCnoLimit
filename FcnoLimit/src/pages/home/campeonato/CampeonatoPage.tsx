@@ -37,6 +37,7 @@ const CampeonatoPage: React.FC = () => {
   const [equipos, setEquipos] = useState<any[]>([]);
   const isMobile = useIsMobile();
   const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
+  const [formasEquipos, setFormasEquipos] = useState<{ [equipoId: number]: string[] }>({});
 
   const divisiones = [
     { id: 1, nombre: 'Primera Adulto' },
@@ -103,11 +104,50 @@ const CampeonatoPage: React.FC = () => {
     fetchEquipos();
   }, []);
 
+  useEffect(() => {
+    if (!tablaPosiciones || tablaPosiciones.length === 0) {
+      setFormasEquipos({});
+      return;
+    }
+    const fetchFormas = async () => {
+      const formas: { [equipoId: number]: string[] } = {};
+      await Promise.all(
+        tablaPosiciones.map(async (row) => {
+          try {
+            const res = await fetch(`${apiBaseUrl}/api/partidos/historial/ultimos5/${row.equipo_id}/${selectedDivision}`);
+            if (!res.ok) return;
+            const partidos = await res.json();
+            formas[row.equipo_id] = calcularForma(partidos, row.equipo_id);
+          } catch {
+            formas[row.equipo_id] = [];
+          }
+        })
+      );
+      setFormasEquipos(formas);
+    };
+    fetchFormas();
+  }, [tablaPosiciones, selectedDivision]);
+
   const colorForma = (f: string) => {
     if (f === 'G') return { background: '#4caf50', color: '#fff' }; // verde
     if (f === 'E') return { background: '#ffc107', color: '#fff' }; // amarillo
     if (f === 'P') return { background: '#f44336', color: '#fff' }; // rojo
     return {};
+  };
+
+  const calcularForma = (partidos: any[], equipoId: number) => {
+    return partidos.map((p) => {
+      if (p.goles_local == null || p.goles_visitante == null) return 'E'; // Si no hay goles, empate por defecto
+      if (p.equipo_local_id === equipoId) {
+        if (p.goles_local > p.goles_visitante) return 'G';
+        if (p.goles_local < p.goles_visitante) return 'P';
+        return 'E';
+      } else {
+        if (p.goles_visitante > p.goles_local) return 'G';
+        if (p.goles_visitante < p.goles_local) return 'P';
+        return 'E';
+      }
+    });
   };
 
   return (
@@ -252,8 +292,11 @@ const CampeonatoPage: React.FC = () => {
                           <td>{row.diferencia_goles}</td>
                           <td className="points">{row.puntos}</td>
                           <td className="form">
-                            {/* Aquí puedes mapear la forma si tienes los datos */}
-                            -
+                            <div className="form-indicators">
+                              {(formasEquipos[row.equipo_id] || []).concat(Array(5).fill('-')).slice(0, 5).map((f, i) => (
+                                <span key={i} className={`form-result ${f === 'G' ? 'win' : f === 'P' ? 'loss' : f === 'E' ? 'draw' : ''}`} style={colorForma(f)}>{f !== '-' ? f : ''}</span>
+                              ))}
+                            </div>
                           </td>
                         </tr>
                       );
@@ -314,6 +357,14 @@ const CampeonatoPage: React.FC = () => {
                             <div className="main-stat-item"><div className="stat-value">{row.goles_favor}</div><div className="stat-label">GF</div></div>
                             <div className="main-stat-item"><div className="stat-value">{row.goles_contra}</div><div className="stat-label">GC</div></div>
                             <div className="main-stat-item"><div className="stat-value">{row.diferencia_goles}</div><div className="stat-label">DG</div></div>
+                          </div>
+                          <div className="accordion-form-section">
+                            <div className="form-title">Últimos partidos</div>
+                            <div className="form-indicators">
+                              {(formasEquipos[row.equipo_id] || []).concat(Array(5).fill('-')).slice(0, 5).map((f, i) => (
+                                <span key={i} className={`form-result ${f === 'G' ? 'win' : f === 'P' ? 'loss' : f === 'E' ? 'draw' : ''}`} style={colorForma(f)}>{f !== '-' ? f : ''}</span>
+                              ))}
+                            </div>
                           </div>
                         </div>
                       </div>

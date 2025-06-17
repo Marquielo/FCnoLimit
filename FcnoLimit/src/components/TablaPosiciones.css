@@ -1,0 +1,264 @@
+.standings-section {
+  margin-top: 2rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+  gap: 0.7rem;
+}
+
+.section-icon {
+  color: #ffe600;
+  font-size: 2rem;
+}
+
+.view-all-link {
+  color: #ffe600;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 1rem;
+}
+
+.standings-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.standings-tab {
+  background: #232526;
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: background 0.2s, opacity 0.2s;
+}
+.standings-tab.active {
+  background: #ffe600;
+  color: #232526;
+  opacity: 1;
+}
+
+.standings-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.standings-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #232526;
+  color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 1rem;
+}
+.standings-table th, .standings-table td {
+  padding: 0.7rem 0.5rem;
+  text-align: center;
+}
+.standings-table th {
+  background: #181818;
+  color: #ffe600;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+.standings-table tr {
+  border-bottom: 1px solid #333;
+}
+.standings-table tr:last-child {
+  border-bottom: none;
+}
+.standings-table .team-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-weight: 700;
+}
+.standings-table .team-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.standings-table .team-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.points {
+  font-weight: 900;
+  color: #ffe600;
+  font-size: 1.1rem;
+}
+.promotion-zone {
+  background: rgba(255, 230, 0, 0.08);
+}
+.form-indicators {
+  display: flex;
+  gap: 0.2rem;
+  justify-content: center;
+}
+.form-result {
+  display: inline-block;
+  width: 1.7em;
+  height: 1.7em;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 1.1em;
+  line-height: 1.7em;
+  text-align: center;
+  margin: 0 1px;
+  background: #444;
+  color: #fff;
+}
+.form-result.win {
+  background: #4caf50;
+}
+.form-result.draw {
+  background: #ffc107;
+}
+.form-result.loss {
+  background: #f44336;
+}
+
+/* Mobile accordion styles */
+.standings-accordion-container {
+  margin-top: 1.5rem;
+}
+.standings-accordion {
+  background: #232526;
+  border-radius: 12px;
+  margin-bottom: 1.2rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px #0002;
+}
+.standings-accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  cursor: pointer;
+  background: #181818;
+}
+.standings-accordion-header.active {
+  background: #ffe600;
+  color: #232526;
+}
+.accordion-rank {
+  margin-right: 1rem;
+}
+.accordion-position {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #ffe600;
+}
+.promotion-position {
+  color: #4caf50;
+}
+.accordion-team-info {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.team-logo-container {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.team-logo-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.accordion-team-name {
+  font-weight: 700;
+  color: #232526;
+}
+.accordion-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.accordion-points {
+  font-weight: 900;
+  color: #ffe600;
+  font-size: 1.1rem;
+}
+.accordion-toggle {
+  font-size: 1.3rem;
+  color: #ffe600;
+  cursor: pointer;
+}
+.accordion-content-inner {
+  padding: 1rem;
+}
+.accordion-main-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  justify-content: center;
+  margin-bottom: 0.7rem;
+}
+.main-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 48px;
+}
+.stat-value {
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #ffe600;
+}
+.stat-label {
+  font-size: 0.9rem;
+  color: #fff;
+}
+.accordion-form-section {
+  margin-top: 0.7rem;
+}
+.form-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffe600;
+  margin-bottom: 0.3rem;
+}
+@media (max-width: 900px) {
+  .desktop-only {
+    display: none !important;
+  }
+  .mobile-only {
+    display: block !important;
+  }
+}
+@media (min-width: 901px) {
+  .mobile-only {
+    display: none !important;
+  }
+}

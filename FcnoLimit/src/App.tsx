@@ -66,6 +66,7 @@ import EquipoPartidosPage from './pages/home/equipos/EquipoPartidosPage';
 import EquiposResultadosPage from './pages/home/equipos/EquiposResultadosPage';
 import { startGlobalParticlesEffect } from './effects/globalParticlesEffect';
 import React, { useEffect } from 'react';
+import PaginaNoticiasEnVivo from './pages/PaginaNoticiasEnVivo';
 
 setupIonicReact({
   mode: 'md',
@@ -228,6 +229,11 @@ const App: React.FC = () => {
           <Route exact path="/home/buscar" render={() => (
             <ProtectedRoute>
               <BuscarPage />
+            </ProtectedRoute>
+          )} />
+          <Route exact path="/noticias-en-vivo" render={() => (
+            <ProtectedRoute>
+              <PaginaNoticiasEnVivo />
             </ProtectedRoute>
           )} />
 

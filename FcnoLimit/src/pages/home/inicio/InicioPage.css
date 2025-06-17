@@ -2627,13 +2627,14 @@ h2 ion-icon {
 
 /* SECCIÓN DE NOTICIAS CON CLASES ESPECÍFICAS */
 .fcnl-news-wrapper {
-  background-color: #f8f9fa;
-  padding: 5rem 1.5rem;
-  border-radius: 12px;
-  margin: 4rem auto;
-  position: relative;
-  overflow: hidden;
-  max-width: 1200px;
+  background-color: #f8f9fa !important;
+  padding: 5rem 3rem !important;
+  border-radius: 12px !important;
+  margin: 4rem auto !important;
+  position: relative !important;
+  overflow: hidden !important;
+  max-width: 1600px !important;
+  width: 95% !important;
 }
 
 .fcnl-news-wrapper::before {
@@ -2708,10 +2709,17 @@ h2 ion-icon {
 }
 
 .fcnl-news-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 2.5rem;
-  margin-bottom: 4rem;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 1.5rem !important;
+  margin-bottom: 4rem !important;
+}
+
+/* Asegurar que las tarjetas del componente NoticiasInicioWidget se adapten */
+.fcnl-news-grid .noticia-real-card {
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
 }
 
 .fcnl-news-item {
@@ -3045,33 +3053,39 @@ h2 ion-icon {
 }
 
 /* Responsive para sección de noticias */
-@media (max-width: 991px) {
+@media (max-width: 1200px) {
+  .fcnl-news-grid {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 1000px) {
   .fcnl-news-wrapper {
-    padding: 4rem 1.5rem;
+    padding: 4rem 1.5rem !important;
   }
   
   .fcnl-news-grid {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
   }
   
   .fcnl-news-image-wrapper {
-    height: 200px;
+    height: 200px !important;
   }
   
   .fcnl-news-headline {
-    font-size: 1.3rem;
+    font-size: 1.3rem !important;
   }
 }
 
 @media (max-width: 767px) {
   .fcnl-news-wrapper {
-    padding: 3rem 1rem;
+    padding: 3rem 1rem !important;
   }
   
   .fcnl-news-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
   }
   
   .fcnl-news-header {

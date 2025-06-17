@@ -1,0 +1,488 @@
+/* Estilos para el componente NoticiasEnVivo con cards */
+.noticias-en-vivo-container {
+  background-color: #f8f9fa !important;
+  border-radius: 15px !important;
+  padding: 1.5rem !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255,255,255,0.2) !important;
+}
+
+.noticias-header {
+  text-align: center !important;
+  margin-bottom: 2rem !important;
+}
+
+.noticias-title {
+  color: #2c3e50 !important;
+  font-size: 2rem !important;
+  font-weight: bold !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.noticias-contador {
+  color: #7f8c8d !important;
+  font-size: 1rem !important;
+  background: rgba(255,255,255,0.8) !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 20px !important;
+  display: inline-block !important;
+}
+
+/* Grid de partidos con cards */
+.partidos-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)) !important;
+  gap: 1.5rem !important;
+  margin-bottom: 2rem !important;
+}
+
+.partido-card-ionic {
+  margin: 0 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+  transition: all 0.3s ease !important;
+  border: none !important;
+  overflow: hidden !important;
+}
+
+.partido-card-ionic:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.18) !important;
+}
+
+.card-header-content {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 1rem !important;
+}
+
+.liga-badge {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+}
+
+.estado-badge {
+  font-weight: bold !important;
+  font-size: 0.8rem !important;
+}
+
+.equipos-vs {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin: 1rem 0 !important;
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  color: #2c3e50 !important;
+}
+
+.equipo-info {
+  flex: 1 !important;
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+.equipo-logo {
+  width: 40px !important;
+  height: 40px !important;
+  object-fit: contain !important;
+  border-radius: 50% !important;
+  border: 2px solid #ecf0f1 !important;
+  padding: 2px !important;
+}
+
+.equipo-nombre {
+  color: #2c3e50 !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  text-align: center !important;
+}
+
+.vs-container {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  margin: 0 1rem !important;
+  min-width: 80px !important;
+}
+
+.resultado-container {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 0.25rem !important;
+}
+
+.resultado {
+  font-size: 1.5rem !important;
+  font-weight: bold !important;
+  color: #27ae60 !important;
+  background: #f8f9fa !important;
+  padding: 0.25rem 0.75rem !important;
+  border-radius: 8px !important;
+  border: 2px solid #27ae60 !important;
+}
+
+.vs-icon {
+  font-size: 1.5rem !important;
+  color: #3498db !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.vs-text {
+  font-size: 0.8rem !important;
+  color: #7f8c8d !important;
+  font-weight: 500 !important;
+}
+
+.partido-detalles {
+  display: flex !important;
+  gap: 1rem !important;
+  margin-bottom: 1.5rem !important;
+  padding: 1rem !important;
+  background: #f8f9fa !important;
+  border-radius: 12px !important;
+}
+
+.detalle-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  flex: 1 !important;
+}
+
+.detalle-icon {
+  color: #3498db !important;
+  font-size: 1.1rem !important;
+}
+
+.detalle-texto {
+  color: #5a6c7d !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+}
+
+.eventos-card-section {
+  margin-top: 1rem !important;
+}
+
+.eventos-header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  margin-bottom: 1rem !important;
+  color: #2c3e50 !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+}
+
+.eventos-preview {
+  background: #f8f9fa !important;
+  border-radius: 12px !important;
+  padding: 1rem !important;
+  max-height: 200px !important;
+  overflow-y: auto !important;
+}
+
+.evento-preview-item {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 1rem !important;
+  padding: 1rem !important;
+  margin-bottom: 0.5rem !important;
+  background: white !important;
+  border-radius: 8px !important;
+  border-left: 4px solid #e74c3c !important;
+  font-size: 0.9rem !important;
+}
+
+.evento-tiempo-small {
+  background: #e74c3c !important;
+  color: white !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 6px !important;
+  font-weight: bold !important;
+  font-size: 0.8rem !important;
+  min-width: 35px !important;
+  text-align: center !important;
+  align-self: flex-start !important;
+}
+
+.evento-info-small {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+}
+
+.evento-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.evento-tipo {
+  font-weight: 600 !important;
+  color: #2c3e50 !important;
+  font-size: 0.85rem !important;
+}
+
+.evento-equipo-small {
+  color: #3498db !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+}
+
+.jugador-info {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  margin-top: 0.5rem !important;
+}
+
+.jugador-foto {
+  width: 35px !important;
+  height: 35px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: 2px solid #3498db !important;
+  background: #f8f9fa !important;
+}
+
+.jugador-foto-placeholder {
+  width: 35px !important;
+  height: 35px !important;
+  border-radius: 50% !important;
+  background: #3498db !important;
+  color: white !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: bold !important;
+  font-size: 1rem !important;
+  border: 2px solid #3498db !important;
+}
+
+.jugador-detalles {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.25rem !important;
+}
+
+.evento-jugador {
+  color: #2c3e50 !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+}
+
+.evento-detalle {
+  color: #7f8c8d !important;
+  font-size: 0.75rem !important;
+  font-style: italic !important;
+}
+
+.asistencia-info {
+  display: flex !important;
+  gap: 0.5rem !important;
+  margin-top: 0.25rem !important;
+  font-size: 0.75rem !important;
+}
+
+.asistencia-label {
+  color: #95a5a6 !important;
+  font-weight: 500 !important;
+}
+
+.asistencia-jugador {
+  color: #3498db !important;
+  font-weight: 600 !important;
+}
+
+.mas-eventos {
+  text-align: center !important;
+  color: #7f8c8d !important;
+  font-size: 0.85rem !important;
+  font-style: italic !important;
+  padding: 0.5rem !important;
+}
+
+.sin-eventos-card {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  color: #95a5a6 !important;
+  font-style: italic !important;
+  padding: 1.5rem !important;
+  background: #f8f9fa !important;
+  border-radius: 12px !important;
+}
+
+.ver-detalles-btn {
+  margin-top: 1rem !important;
+  width: 100% !important;
+}
+
+.cargar-mas-container {
+  text-align: center !important;
+  padding: 2rem 1rem !important;
+}
+
+.cargar-mas-btn-ionic {
+  margin: 0 !important;
+  --border-radius: 25px !important;
+}
+
+.loading-container {
+  text-align: center !important;
+  padding: 3rem !important;
+  color: #7f8c8d !important;
+}
+
+.loading-spinner {
+  margin-bottom: 1rem !important;
+}
+
+.partido-info {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+  gap: 0.75rem !important;
+  margin: 1rem 0 !important;
+  padding: 1rem !important;
+  background: #f8f9fa !important;
+  border-radius: 8px !important;
+}
+
+.info-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  color: #5a6c7d !important;
+  font-size: 0.9rem !important;
+}
+
+.info-label {
+  font-weight: 600 !important;
+  color: #2c3e50 !important;
+}
+
+.eventos-section {
+  margin-top: 1.5rem !important;
+}
+
+.eventos-title {
+  color: #2c3e50 !important;
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 1rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+.eventos-lista {
+  max-height: 250px !important;
+  overflow-y: auto !important;
+  background: #f8f9fa !important;
+  border-radius: 8px !important;
+  padding: 1rem !important;
+}
+
+.evento-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  padding: 0.75rem !important;
+  margin-bottom: 0.5rem !important;
+  background: white !important;
+  border-radius: 6px !important;
+  border-left: 3px solid #e74c3c !important;
+  font-size: 0.9rem !important;
+}
+
+.evento-tiempo {
+  background: #e74c3c !important;
+  color: white !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 4px !important;
+  font-weight: bold !important;
+  min-width: 40px !important;
+  text-align: center !important;
+}
+
+.evento-detalles {
+  flex: 1 !important;
+  color: #2c3e50 !important;
+}
+
+.sin-eventos {
+  text-align: center !important;
+  color: #95a5a6 !important;
+  font-style: italic !important;
+  padding: 2rem !important;
+}
+
+.cargar-mas-container {
+  text-align: center !important;
+  padding: 2rem 1rem !important;
+}
+
+.cargar-mas-btn {
+  background: linear-gradient(135deg, #3498db, #2980b9) !important;
+  color: white !important;
+  border: none !important;
+  padding: 0.75rem 2rem !important;
+  border-radius: 25px !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 15px rgba(52,152,219,0.3) !important;
+}
+
+.cargar-mas-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(52,152,219,0.4) !important;
+}
+
+.loading-container {
+  text-align: center !important;
+  padding: 3rem !important;
+  color: #7f8c8d !important;
+}
+
+.loading-spinner {
+  margin-bottom: 1rem !important;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .noticias-en-vivo-container {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+  
+  .equipos-container {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .partido-info {
+    grid-template-columns: 1fr;
+  }
+  
+  .evento-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
