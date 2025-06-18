@@ -1,7 +1,7 @@
 /* Estilos para NoticiasGeneradasIA */
 .noticias-ia-container {
   padding: 1rem !important;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
+  background: transparent !important; /* Fondo transparente para mostrar el fondo de InicioPage */
   border-radius: 15px !important;
   margin: 1rem 0 !important;
 }
@@ -12,19 +12,20 @@
   align-items: center !important;
   margin-bottom: 2rem !important;
   padding: 1rem !important;
-  background: white !important;
+  background: transparent !important; /* Fondo completamente transparente */
   border-radius: 12px !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+  box-shadow: none !important; /* Quitar sombra para que sea completamente transparente */
 }
 
 .noticias-ia-header h2 {
   display: flex !important;
   align-items: center !important;
   gap: 0.75rem !important;
-  color: #2c3e50 !important;
+  color: #1a252f !important; /* Color más oscuro */
   font-size: 1.5rem !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important; /* Peso más fuerte */
   margin: 0 !important;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8) !important; /* Sombra para contraste */
 }
 
 .generando-container {
@@ -57,55 +58,151 @@
 
 .noticias-grid {
   display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)) !important;
-  gap: 1.5rem !important;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)) !important; /* Más anchas como la imagen */
+  gap: 2rem !important;
 }
 
 .noticia-card {
   margin: 0 !important;
-  border-radius: 16px !important;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
-  transition: all 0.3s ease !important;
+  border-radius: 20px !important; /* Más redondeadas como la imagen */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1), 0 4px 15px rgba(0,0,0,0.05) !important;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
   border: none !important;
   overflow: hidden !important;
-  background: white !important;
+  background: white !important; /* Fondo blanco sólido como la imagen */
+  position: relative !important;
+  cursor: auto !important; /* No clickeable toda la card */
+  height: auto !important;
+  min-height: 500px !important; /* Más altas como la imagen */
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 .noticia-card:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.18) !important;
+  transform: translateY(-5px) !important; /* Hover más sutil */
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15), 0 6px 20px rgba(0,0,0,0.08) !important;
 }
 
-/* Estilos para imagen de noticia */
+.noticia-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 3px !important;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%) !important;
+  z-index: 1 !important;
+}
+
+.noticia-card::after {
+  content: '▼' !important;
+  position: absolute !important;
+  bottom: 10px !important;
+  right: 15px !important;
+  color: #9ca3af !important;
+  font-size: 0.8rem !important;
+  transition: transform 0.3s ease !important;
+  z-index: 10 !important;
+}
+
+.noticia-card.expandida {
+  min-height: auto !important;
+  max-height: none !important;
+}
+
+.noticia-card.expandida::after {
+  content: '▲' !important;
+  color: #667eea !important;
+}
+
+.noticia-card:hover {
+  transform: translateY(-6px) scale(1.02) !important; /* Hover más sutil */
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1), 0 6px 20px rgba(0,0,0,0.06) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.noticia-card:hover::after {
+  color: #667eea !important;
+  transform: scale(1.2) !important;
+}
+
+/* Card compacta (por defecto) */
+.noticia-card.compacta {
+  max-height: 280px !important;
+  overflow: hidden !important;
+}
+
+/* Estilos para imagen de noticia - Como la imagen de referencia */
 .noticia-imagen-container {
   position: relative !important;
   width: 100% !important;
-  height: 250px !important;
+  height: 250px !important; /* Altura específica como la imagen */
   overflow: hidden !important;
+  z-index: 2 !important;
+  flex-shrink: 0 !important; /* No se encoge */
 }
 
 .noticia-imagen {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
-  transition: transform 0.3s ease !important;
+  transition: transform 0.4s ease !important;
 }
 
-.noticia-imagen:hover {
-  transform: scale(1.05) !important;
+.noticia-card:hover .noticia-imagen {
+  transform: scale(1.03) !important; /* Zoom sutil al hover */
 }
 
 .imagen-overlay {
   position: absolute !important;
-  top: 1rem !important;
-  left: 1rem !important;
-  z-index: 2 !important;
+  top: 15px !important;
+  left: 15px !important;
+  z-index: 3 !important;
 }
 
 .imagen-overlay ion-badge {
+  background: rgba(255, 165, 0, 0.95) !important; /* Color naranja como la imagen */
   backdrop-filter: blur(10px) !important;
-  background: rgba(255,255,255,0.9) !important;
-  color: #2c3e50 !important;
+  border: none !important;
+  border-radius: 15px !important; /* Muy redondeado como la imagen */
+  padding: 0.4rem 0.8rem !important;
+  font-weight: 600 !important;
+  font-size: 0.75rem !important;
+  color: white !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2) !important;
+}
+
+/* Estilos específicos para badges de categoría */
+.imagen-overlay ion-badge,
+.noticia-header ion-badge {
+  color: white !important; /* Forzar texto blanco */
+  font-weight: 600 !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3) !important; /* Sombra para mejor legibilidad */
+}
+
+/* Colores específicos para cada categoría */
+.imagen-overlay ion-badge[color="success"],
+.noticia-header ion-badge[color="success"] {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; /* Verde post-partido */
+  color: white !important;
+}
+
+.imagen-overlay ion-badge[color="primary"],
+.noticia-header ion-badge[color="primary"] {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important; /* Azul pre-partido */
+  color: white !important;
+}
+
+.imagen-overlay ion-badge[color="secondary"],
+.noticia-header ion-badge[color="secondary"] {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important; /* Púrpura análisis */
+  color: white !important;
+}
+
+.imagen-overlay ion-badge[color="medium"],
+.noticia-header ion-badge[color="medium"] {
+  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%) !important; /* Gris por defecto */
+  color: white !important;
 }
 
 .noticia-header {
@@ -124,53 +221,155 @@
 }
 
 .noticia-titulo {
-  color: #2c3e50 !important;
-  font-size: 1.25rem !important;
+  color: #1a1a1a !important; /* Negro fuerte como la imagen */
+  font-size: 1.2rem !important;
   font-weight: 700 !important;
   line-height: 1.3 !important;
-  margin: 1rem 0 !important;
+  margin: 1.5rem 1.5rem 0.8rem 1.5rem !important;
+  text-shadow: none !important; /* Sin sombra para fondo blanco */
+  letter-spacing: -0.3px !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
 }
 
 .noticia-resumen {
-  color: #5a6c7d !important;
-  font-size: 1rem !important;
-  font-style: italic !important;
-  margin: 0.5rem 0 !important;
+  color: #666 !important; /* Gris como la imagen */
+  font-size: 0.95rem !important;
+  font-style: normal !important;
+  margin: 0 1.5rem 1.5rem 1.5rem !important;
   line-height: 1.4 !important;
+  font-weight: 400 !important;
+  opacity: 1 !important; /* Sin opacidad */
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important; /* Más líneas como la imagen */
+  line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  flex-grow: 1 !important; /* Ocupa el espacio disponible */
+}
+
+/* Contenido expandido */
+.noticia-card.expandida .noticia-titulo {
+  -webkit-line-clamp: unset !important; /* Sin límite de líneas */
+  line-clamp: unset !important; /* Estándar para compatibilidad */
+  font-size: 1.3rem !important;
+}
+
+.noticia-card.expandida .noticia-resumen {
+  -webkit-line-clamp: unset !important; /* Sin límite de líneas */
+  line-clamp: unset !important; /* Estándar para compatibilidad */
+  font-size: 1rem !important;
 }
 
 .noticia-contenido {
-  color: #34495e !important;
-  line-height: 1.6 !important;
-  font-size: 0.95rem !important;
-  margin-bottom: 1.5rem !important;
+  display: none !important; /* Oculto por defecto */
 }
 
-.noticia-contenido p {
+/* Mostrar contenido completo solo en cards expandidas */
+.noticia-card.expandida .noticia-contenido {
+  display: block !important;
+  color: #2d3748 !important;
+  line-height: 1.6 !important;
+  font-size: 0.95rem !important;
+  margin: 1rem !important;
+  font-weight: 400 !important;
+}
+
+.noticia-card.expandida .noticia-contenido p {
   margin-bottom: 1rem !important;
 }
 
 .equipos-tags {
   display: flex !important;
   flex-wrap: wrap !important;
-  gap: 0.5rem !important;
-  margin-bottom: 1rem !important;
+  gap: 0.8rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.equipos-tags ion-chip {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; /* Gradiente moderno */
+  color: white !important;
+  border: none !important;
+  padding: 0.4rem 1rem !important;
+  border-radius: 20px !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+.equipos-tags ion-chip:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4) !important;
 }
 
 .noticia-footer {
   display: flex !important;
   justify-content: flex-end !important;
-  padding-top: 1rem !important;
-  border-top: 1px solid #ecf0f1 !important;
+  padding-top: 1.5rem !important;
+  border-top: 1px solid rgba(236, 240, 241, 0.6) !important; /* Borde más sutil */
 }
 
 .ia-badge {
   display: flex !important;
   align-items: center !important;
+  gap: 0.6rem !important;
+  color: #8b5cf6 !important; /* Color más moderno */
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  background: rgba(139, 92, 246, 0.1) !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(139, 92, 246, 0.2) !important;
+}
+
+/* Botón "Más información" amarillo como la imagen */
+.boton-mas-info {
+  background: linear-gradient(135deg, #ffa500 0%, #ff8c00 100%) !important; /* Gradiente naranja/amarillo */
+  color: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 0.8rem 1.5rem !important;
+  margin: 0 1.5rem 1.5rem 1.5rem !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  text-transform: none !important;
+  letter-spacing: 0.5px !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   gap: 0.5rem !important;
-  color: #9b59b6 !important;
+  box-shadow: 0 3px 12px rgba(255, 165, 0, 0.3) !important;
+  align-self: flex-start !important; /* Se alinea al inicio, no ocupa todo el ancho */
+}
+
+.boton-mas-info:hover {
+  background: linear-gradient(135deg, #ff8c00 0%, #ff7700 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 5px 18px rgba(255, 165, 0, 0.4) !important;
+}
+
+.boton-mas-info ion-icon {
+  font-size: 1rem !important;
+}
+
+/* Estilos para la sección de información adicional de equipos */
+.equipos-info {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  margin: 0 1.5rem 1rem 1.5rem !important;
+  color: #999 !important;
   font-size: 0.85rem !important;
-  font-weight: 500 !important;
+}
+
+.equipos-info ion-icon {
+  font-size: 1rem !important;
 }
 
 /* Responsive */

@@ -9,6 +9,11 @@ import 'swiper/css/autoplay';
 // Import Swiper modules
 import { Pagination, Autoplay } from 'swiper/modules';
 
+// Importar componentes
+import NoticiasGeneradasIA from '../../../components/NoticiasGeneradasIA';
+import { getLiveEvents } from '../../../services/apiFootball';
+import { noticiasIAService } from '../../../services/noticiasIAService';
+
 import {
   footballOutline, peopleOutline, trophyOutline, statsChartOutline,
   arrowForward, calendarOutline, timeOutline, locationOutline,
@@ -49,6 +54,9 @@ const InicioPage: React.FC = () => {
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
   const [proximosPartidos, setProximosPartidos] = useState<any[]>([]);
+  const [partidosData, setPartidosData] = useState<any[]>([]); // Para NoticiasGeneradasIA
+  const [noticiasIA, setNoticiasIA] = useState<any[]>([]);
+  const [loadingNoticias, setLoadingNoticias] = useState(false);
 
   // Efecto para animaciones al hacer scroll
   useEffect(() => {
@@ -125,6 +133,109 @@ const InicioPage: React.FC = () => {
       }, 100);
     }
   };
+
+  // Cargar noticias IA automáticamente cada 24h
+  useEffect(() => {
+    const cargarNoticiasIA = async () => {
+      setLoadingNoticias(true);
+      try {
+        const noticias = await noticiasIAService.getNoticiasIA();
+        setNoticiasIA(noticias);
+        console.log('✅ Noticias IA cargadas para Destacados del momento');
+      } catch (error) {
+        console.error('❌ Error cargando noticias IA:', error);
+      } finally {
+        setLoadingNoticias(false);
+      }
+    };
+
+    cargarNoticiasIA();
+
+    // Verificar cada hora si necesita actualización
+    const interval = setInterval(() => {
+      if (noticiasIAService.needsUpdate()) {
+        cargarNoticiasIA();
+      }
+    }, 60 * 60 * 1000); // Cada hora
+
+    return () => clearInterval(interval);
+  }, []);
+  // Cargar datos de partidos para NoticiasGeneradasIA usando apiFootball.ts
+  useEffect(() => {
+    const cargarPartidosData = async () => {
+      try {
+        console.log('🔄 Cargando partidos usando apiFootball.ts...');
+        const partidos = await getLiveEvents();
+        
+        // Convertir el formato del servicio apiFootball al formato que espera NoticiasGeneradasIA
+        const partidosFormateados = partidos.map(partido => ({
+          fixture: { id: partido.fixtureId },
+          teams: {
+            home: { name: partido.teams.home.name, logo: partido.teams.home.logo },
+            away: { name: partido.teams.away.name, logo: partido.teams.away.logo }
+          },
+          league: { name: partido.league },
+          goals: { home: partido.goals.home, away: partido.goals.away },
+          status: { short: partido.goals.home !== null ? 'FT' : 'NS' },
+          date: new Date().toISOString(),
+          events: [] // Agregar array vacío para eventos
+        }));
+
+        setPartidosData(partidosFormateados);
+        console.log(`✅ ${partidosFormateados.length} partidos cargados para NoticiasGeneradasIA`);
+        
+        // Si no hay partidos reales, usar datos simulados
+        if (partidosFormateados.length === 0) {
+          console.log('⚠️ No hay partidos reales, usando datos simulados');
+          setPartidosData([
+            {
+              fixture: { id: 1 },
+              teams: { 
+                home: { name: 'Manchester City', logo: '' }, 
+                away: { name: 'Liverpool', logo: '' } 
+              },
+              league: { name: 'Premier League - Inglaterra' },
+              goals: { home: 2, away: 1 },
+              status: { short: 'FT' },
+              date: new Date().toISOString(),
+              events: []
+            },
+            {
+              fixture: { id: 2 },
+              teams: { 
+                home: { name: 'Real Madrid', logo: '' }, 
+                away: { name: 'Barcelona', logo: '' } 
+              },
+              league: { name: 'La Liga - España' },
+              goals: { home: 3, away: 1 },
+              status: { short: 'FT' },
+              date: new Date().toISOString(),
+              events: []
+            }
+          ]);
+        }
+      } catch (error) {
+        console.error('❌ Error cargando datos de partidos con apiFootball:', error);
+        // Datos simulados como fallback seguro
+        setPartidosData([
+          {
+            fixture: { id: 1 },
+            teams: { 
+              home: { name: 'Manchester City', logo: '' }, 
+              away: { name: 'Liverpool', logo: '' } 
+            },
+            league: { name: 'Premier League - Inglaterra' },
+            goals: { home: 2, away: 1 },
+            status: { short: 'FT' },
+            date: new Date().toISOString(),
+            events: []
+          }
+        ]);
+      }
+    };
+
+    cargarPartidosData();
+  }, []);
 
   return (
     <IonPage>
@@ -341,116 +452,10 @@ const InicioPage: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Destacados del momento - Slider con nuevo diseño */}
+        </div>        {/* Destacados del momento - NoticiasGeneradasIA con datos reales */}
         <div className="fcnl-highlights-wrapper">
-          <div className="fcnl-highlights-container">
-            <div className="fcnl-highlights-header">
-              <h2 className="fcnl-highlights-title">
-                <IonIcon icon={flameOutline} className="fcnl-highlights-icon" />
-                <span>Destacados del momento</span>
-              </h2>
-              <a href="/destacados" className="fcnl-highlights-view-all">
-                Todos los destacados <IonIcon icon={arrowForward} />
-              </a>
-            </div>
-
-            <Swiper
-              spaceBetween={25}
-              slidesPerView={1}
-              breakpoints={{
-                640: { slidesPerView: 1 },
-                768: { slidesPerView: 2 },
-                1024: { slidesPerView: 3 }
-              }}
-              pagination={{
-                clickable: true,
-                dynamicBullets: true,
-              }}
-              className="fcnl-highlights-swiper"
-            >
-              <SwiperSlide>
-                <div className="fcnl-highlight-item fcnl-highlight-goal">
-                  <div className="fcnl-highlight-image">
-                    <img src="/assets/highlights/goal.jpg" alt="Gol destacado" />
-                    <div className="fcnl-highlight-badge goal-badge">Gol de la semana</div>
-                    <div className="fcnl-highlight-overlay">
-                      <div className="fcnl-highlight-play">
-                        <IonIcon icon={flameSharp} />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="fcnl-highlight-content">
-                    <h3 className="fcnl-highlight-title">Golazo de Carlos Méndez desde media cancha</h3>
-                    <p className="fcnl-highlight-desc">Un impresionante gol que dio la victoria a su equipo en el último minuto del partido en una jugada que será recordada por mucho tiempo.</p>
-                    <div className="fcnl-highlight-footer">
-                      <div className="fcnl-highlight-meta">
-                        <span className="fcnl-highlight-match"><IonIcon icon={footballOutline} /> Leones FC vs Águilas</span>
-                        <span className="fcnl-highlight-date"><IonIcon icon={calendarOutline} /> 10 de Mayo, 2025</span>
-                      </div>
-                      <a href="/highlights/1" className="fcnl-highlight-button">
-                        Ver video <IonIcon icon={arrowForward} />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-
-              <SwiperSlide>
-                <div className="fcnl-highlight-item fcnl-highlight-tournament">
-                  <div className="fcnl-highlight-image">
-                    <img src="/assets/highlights/tournament.jpg" alt="Torneo destacado" />
-                    <div className="fcnl-highlight-badge tournament-badge">Torneo destacado</div>
-                    <div className="fcnl-highlight-overlay">
-                      <div className="fcnl-highlight-play">
-                        <IonIcon icon={trophySharp} />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="fcnl-highlight-content">
-                    <h3 className="fcnl-highlight-title">Copa Primavera 2025</h3>
-                    <p className="fcnl-highlight-desc">El torneo más esperado de la temporada con la participación de 16 equipos de primer nivel. Compite por premios exclusivos y el prestigioso trofeo de campeón.</p>
-                    <div className="fcnl-highlight-footer">
-                      <div className="fcnl-highlight-meta">
-                        <span className="fcnl-highlight-match"><IonIcon icon={peopleOutline} /> 16 equipos</span>
-                        <span className="fcnl-highlight-date"><IonIcon icon={calendarOutline} /> Inicia: 5 de junio</span>
-                      </div>
-                      <a href="/highlights/2" className="fcnl-highlight-button">
-                        Más información <IonIcon icon={arrowForward} />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-
-              <SwiperSlide>
-                <div className="fcnl-highlight-item fcnl-highlight-player">
-                  <div className="fcnl-highlight-image">
-                    <img src="/assets/highlights/player.jpg" alt="Jugador destacado" />
-                    <div className="fcnl-highlight-badge player-badge">Jugador destacado</div>
-                    <div className="fcnl-highlight-overlay">
-                      <div className="fcnl-highlight-play">
-                        <IonIcon icon={personOutline} />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="fcnl-highlight-content">
-                    <h3 className="fcnl-highlight-title">Laura Gutiérrez: La revelación del mes</h3>
-                    <p className="fcnl-highlight-desc">Con 6 goles y 14 asistencias, se ha convertido en la jugadora más valiosa de la liga. Su visión de juego y capacidad de definición la destacan en cada partido.</p>
-                    <div className="fcnl-highlight-footer">
-                      <div className="fcnl-highlight-meta">
-                        <span className="fcnl-highlight-match"><IonIcon icon={shirtOutline} /> Mediocampista - Delfines</span>
-                        <span className="fcnl-highlight-date"><IonIcon icon={starOutline} /> MVP Mayo 2025</span>
-                      </div>
-                      <a href="/highlights/3" className="fcnl-highlight-button">
-                        Ver perfil <IonIcon icon={arrowForward} />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-            </Swiper>
+          <div className="">
+            <NoticiasGeneradasIA partidosData={partidosData} />
           </div>
         </div>
 
