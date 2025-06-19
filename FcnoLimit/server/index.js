@@ -2,10 +2,27 @@ const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
 const path = require('path');
+
+// Cargar variables de entorno
+// Primero intenta .env (desarrollo local)
 require('dotenv').config();
+
+// Si está en producción, también carga env.yaml (Render)
+if (process.env.NODE_ENV === 'production') {
+  try {
+    require('dotenv-yaml').config({ path: 'env.yaml' });
+    console.log('📄 Variables cargadas desde env.yaml');
+  } catch (error) {
+    console.log('⚠️  env.yaml no encontrado, usando variables de entorno del sistema');
+  }
+}
 
 const app = express();
 const port = process.env.PORT || 3001;
+
+console.log('🚀 Iniciando servidor FCnoLimit...');
+console.log('📍 Entorno:', process.env.NODE_ENV || 'development');
+console.log('🌐 Puerto:', port);
 
 const allowedOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(',')
@@ -21,38 +38,108 @@ app.use(cors({
   credentials: true,
 }));
 app.use(express.json());
-// Configuración de la conexión a PostgreSQL usando variable de entorno
+
+// Configuración optimizada para PostgreSQL en Render
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false
+  connectionString: process.env.DATABASE_URL || `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
+  ssl: process.env.NODE_ENV === 'production' ? { 
+    rejectUnauthorized: false,
+    sslmode: 'require'
+  } : false,
+  // Configuraciones específicas para Render
+  max: parseInt(process.env.DB_POOL_SIZE) || 20, // Número máximo de conexiones en el pool
+  idleTimeoutMillis: 30000, // Tiempo antes de cerrar conexiones inactivas
+  connectionTimeoutMillis: 5000, // Tiempo máximo para establecer conexión
+  keepAlive: true,
+  keepAliveInitialDelayMillis: 10000,
+  // Configuraciones adicionales para estabilidad
+  statement_timeout: false,
+  query_timeout: false,
+  application_name: 'FCnoLimit-Backend',
 });
 
-// Verificar la contraseña de la base de datos en el inicio
-console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
+console.log('🔧 Configurando pool de conexiones PostgreSQL...');
+console.log('📊 Pool máximo:', parseInt(process.env.DB_POOL_SIZE) || 20);
+console.log('🔒 SSL habilitado:', process.env.NODE_ENV === 'production');
 
-pool.connect()
-  .then(() => console.log('Conexión a PostgreSQL exitosa'))
-  .catch(err => {
-    console.error('Error al conectar a PostgreSQL:', err);
-    // NO hagas process.exit(1);
-  });
+// Manejo de errores de conexión
+pool.on('error', (err, client) => {
+  console.error('Error inesperado en el cliente de la base de datos', err);
+  process.exit(-1);
+});
+
+// Verificar conexión inicial con retry
+const connectWithRetry = async (retries = 3) => {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const client = await pool.connect();
+      console.log('✅ Conexión a PostgreSQL (Render) exitosa');
+      
+      // Verificar que las tablas principales existan
+      const tablesCheck = await client.query(`
+        SELECT table_name 
+        FROM information_schema.tables 
+        WHERE table_schema = 'public' 
+        AND table_name IN ('usuarios', 'equipos', 'jugadores', 'partidos')
+      `);
+      
+      console.log('📋 Tablas encontradas:', tablesCheck.rows.length);
+      client.release();
+      return true;
+    } catch (err) {
+      console.error(`❌ Intento ${i + 1}/${retries} falló:`, err.message);
+      if (i === retries - 1) {
+        console.error('💥 Error crítico al conectar a PostgreSQL');
+        console.error('📝 Verifica las variables de entorno de la base de datos');
+        throw err;
+      }
+      // Esperar antes del siguiente intento
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+  }
+};
+
+// Inicializar conexión
+connectWithRetry().catch(err => {
+  console.error('🚨 No se pudo establecer conexión con la base de datos');
+  process.exit(1);
+});
 
 // Endpoint de prueba
 app.get('/api/ping', (req, res) => {
   res.json({ message: 'pong' });
 });
 
-// Endpoint para probar conexión a la base de datos en la nube
+// Endpoint para probar conexión a la base de datos en Render
 app.get('/api/dbtest', async (req, res) => {
   try {
-    const result = await pool.query('SELECT NOW()');
-    res.json({ connected: true, time: result.rows[0].now });
+    const client = await pool.connect();
+    const result = await client.query('SELECT NOW(), version() as db_version');
+    const poolStats = await client.query('SELECT count(*) as total_connections FROM pg_stat_activity WHERE datname = current_database()');
+    
+    client.release();
+    
+    res.json({ 
+      connected: true, 
+      timestamp: result.rows[0].now,
+      database_version: result.rows[0].db_version,
+      total_connections: poolStats.rows[0].total_connections,
+      host: process.env.DB_HOST || 'Render PostgreSQL',
+      database: process.env.DB_NAME || 'fcnolimit_db',
+      pool_size: pool.totalCount,
+      idle_connections: pool.idleCount,
+      waiting_requests: pool.waitingCount,
+      status: '🚀 Render PostgreSQL connection successful',
+      environment: process.env.NODE_ENV || 'development'
+    });
   } catch (err) {
-    res.status(500).json({ connected: false, error: err.message });
+    console.error('Database test error:', err);
+    res.status(500).json({ 
+      connected: false, 
+      error: err.message,
+      status: '❌ Render PostgreSQL connection failed',
+      timestamp: new Date().toISOString()
+    });
   }
 });
 
@@ -75,9 +162,29 @@ app.use('/equipos', express.static(path.join(__dirname, 'public/equipos')));
 app.use('/api/vistas', require('./routes/vistas_tablas')(pool));
 
 const PORT = process.env.PORT || 3001;
-app.listen(port, () => {
-  console.log(`Servidor escuchando en el puerto ${port}`);
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('🛑 SIGTERM recibido. Cerrando servidor gracefully...');
+  pool.end().then(() => {
+    console.log('📊 Pool de conexiones cerrado');
+    process.exit(0);
+  });
 });
 
+process.on('SIGINT', () => {
+  console.log('🛑 SIGINT recibido. Cerrando servidor gracefully...');
+  pool.end().then(() => {
+    console.log('📊 Pool de conexiones cerrado');
+    process.exit(0);
+  });
+});
 
-module.exports = (pool) => router;
+app.listen(port, () => {
+  console.log(`🌟 Servidor FCnoLimit ejecutándose en puerto ${port}`);
+  console.log(`🔗 Health check: http://localhost:${port}/api/ping`);
+  console.log(`🔗 DB test: http://localhost:${port}/api/dbtest`);
+});
+
+// Exportar pool para uso en rutas
+module.exports = pool;
