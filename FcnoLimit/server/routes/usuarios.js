@@ -15,15 +15,40 @@ module.exports = (pool) => {
       res.status(500).json({ error: error.message });
     }
   });
-
-  // Login (público)
+  // Login con refresh tokens (público)
   router.post('/login', async (req, res) => {
     try {
-      const result = await loginUser(pool, req.body);
-      if (!result) return res.status(401).json({ error: 'Credenciales inválidas' });
-      res.json(result);
+      // Extraer información del dispositivo para el refresh token
+      const deviceInfo = {
+        userAgent: req.headers['user-agent'] || 'unknown',
+        ip: req.ip || req.connection.remoteAddress || 'unknown'
+      };
+
+      const result = await loginUser(pool, req.body, deviceInfo);
+      
+      if (!result) {
+        return res.status(401).json({ 
+          error: 'Credenciales inválidas',
+          code: 'INVALID_CREDENTIALS'
+        });
+      }
+
+      // Respuesta con tokens duales
+      res.json({
+        message: 'Login exitoso',
+        accessToken: result.accessToken,
+        refreshToken: result.refreshToken,
+        user: result.user,
+        expiresIn: result.expiresIn,
+        timestamp: new Date().toISOString()
+      });
+      
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      console.error('Error en login:', error);
+      res.status(500).json({ 
+        error: 'Error interno del servidor',
+        code: 'INTERNAL_ERROR'
+      });
     }
   });
 

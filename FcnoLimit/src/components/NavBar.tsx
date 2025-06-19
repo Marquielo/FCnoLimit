@@ -21,6 +21,7 @@ import {
   searchOutline
 } from "ionicons/icons";
 import { useHistory, useLocation } from "react-router-dom";
+import { authService } from '../services/authService';
 import "./NavBar.css";
 
 const apiBaseUrl = 'https://fcnolimit-back.onrender.com';
@@ -187,13 +188,19 @@ const NavBar: React.FC = () => {
     e.stopPropagation();
     setShowUserMenu(!showUserMenu);
   };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("usuario");
-    setShowUserMenu(false);
-    handleMenuClose();
-    history.push("/auth");
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      setShowUserMenu(false);
+      handleMenuClose();
+      history.push("/auth");
+    } catch (error) {
+      console.error('Error durante logout:', error);
+      // Forzar logout local incluso si falla el servidor
+      setShowUserMenu(false);
+      handleMenuClose();
+      history.push("/auth");
+    }
   };
 
   // Renderizar elementos de menú de usuario según rol

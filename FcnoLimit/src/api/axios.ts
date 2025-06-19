@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { authService } from '../services/authService';
 
 const apiUrl = import.meta.env.VITE_API_URL; // Debe ser: https://fcnolimit-back.onrender.com/api
 
@@ -10,14 +11,8 @@ const api = axios.create({
   },
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    if (!config.headers) config.headers = {};
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+// Configurar interceptors usando el servicio de autenticación
+authService.setupAxiosInterceptor(api);
 
 export default api;
 

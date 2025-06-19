@@ -25,9 +25,12 @@ import {
 import './AuthPage.css';
 import NavBar from '../../../components/NavBar';
 import { useHistory } from 'react-router-dom';
+import { authService } from '../../../services/authService';
+import { useAuth } from '../../../hooks/useAuth';
 
 const AuthPage: React.FC = () => {
   const history = useHistory();
+  const { login } = useAuth();
   
   console.log("Renderizando AuthPage");
   
@@ -142,8 +145,7 @@ const AuthPage: React.FC = () => {
       validateLoginPassword(value);
     }
   };
-
-  // Modificar la función de inicio de sesión para incluir validación
+  // Modificar la función de inicio de sesión para usar el servicio
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -159,40 +161,17 @@ const AuthPage: React.FC = () => {
     }
     
     try {
-      console.log("Iniciando proceso de login");
-      present({ message: 'Iniciando sesión...' });
-
-      const loginUrl = 'https://fcnolimit-back.onrender.com/api/usuarios/login';
-      console.log("URL completa para login:", loginUrl);
-      
-      const res = await fetch(loginUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ correo: email, contraseña: password }),
-      });
-
-      console.log("Respuesta recibida, status:", res.status);
-      
-      let data;
-      try {
-        data = await res.json();
-      } catch {
-        data = {};
-      }
+      console.log("Iniciando proceso de login con hook useAuth");
+      present({ message: 'Iniciando sesión...' });      // Usar el hook de autenticación
+      const loginData = await login(email, password);
 
       dismiss();
-      if (!res.ok) throw new Error(data.error || 'Error de autenticación');
-      
-      // Guardar datos de sesión
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('usuario', JSON.stringify(data.user));
       
       // Redireccionar según el rol del usuario
-      const userRole = data.user?.rol || 'persona_natural';
+      const userRole = loginData.user?.rol || 'persona_natural';
       console.log("🔐 INICIO DE SESIÓN: Usuario autenticado como:", userRole.toUpperCase());
-      console.log("👤 Datos del usuario:", data.user);
-      
-      // Modificación del switch en handleLogin
+      console.log("👤 Datos del usuario:", loginData.user);
+        // Redirección por rol
       switch (userRole) {
         case 'admin':
           history.push('/admin/dashboard');
@@ -422,10 +401,20 @@ const AuthPage: React.FC = () => {
         const loginData = await loginRes.json();
         
         if (!loginRes.ok) throw new Error('No se pudo iniciar sesión automáticamente');
-        
-        // Guardar datos de sesión
-        localStorage.setItem('token', loginData.token);
-        localStorage.setItem('usuario', JSON.stringify(loginData.user));
+          // Guardar datos de sesión con nuevos tokens
+        if (loginData.accessToken && loginData.refreshToken) {
+          // Sistema nuevo con refresh tokens
+          localStorage.setItem('accessToken', loginData.accessToken);
+          localStorage.setItem('refreshToken', loginData.refreshToken);
+          localStorage.setItem('usuario', JSON.stringify(loginData.user));
+          localStorage.setItem('tokenExpiresAt', (Date.now() + (loginData.expiresIn * 1000)).toString());
+          console.log('🔒 Registro exitoso con refresh tokens');
+        } else {
+          // Sistema legacy (fallback)
+          localStorage.setItem('token', loginData.token);
+          localStorage.setItem('usuario', JSON.stringify(loginData.user));
+          console.log('🔒 Registro exitoso con token legacy');
+        }
         
         console.log("🔐 REGISTRO EXITOSO: Usuario registrado y autenticado como:", selectedRole.toUpperCase());
         console.log("👤 Datos del usuario:", loginData.user);
@@ -477,16 +466,31 @@ const AuthPage: React.FC = () => {
       form.setAttribute('novalidate', 'true');
     });
   }, []);
-
   // Agregar este useEffect al inicio del componente, después de la definición de variables
   useEffect(() => {
     const userJSON = localStorage.getItem('usuario');
-    const token = localStorage.getItem('token');
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+    const legacyToken = localStorage.getItem('token');
     
-    if (userJSON && token) {
+    if (userJSON && (accessToken || legacyToken)) {
       try {
         const userData = JSON.parse(userJSON);
-        console.log("👤 Usuario ya autenticado:", userData.rol.toUpperCase());
+        
+        if (accessToken && refreshToken) {
+          console.log("👤 Usuario ya autenticado con refresh tokens:", userData.rol.toUpperCase());
+          // Verificar si el access token está cerca de expirar
+          const tokenExpiresAt = localStorage.getItem('tokenExpiresAt');
+          if (tokenExpiresAt) {
+            const expirationTime = parseInt(tokenExpiresAt);
+            const timeUntilExpiry = expirationTime - Date.now();
+            const minutesUntilExpiry = Math.floor(timeUntilExpiry / 60000);
+            console.log(`🕒 Access token expira en ${minutesUntilExpiry} minutos`);
+          }
+        } else if (legacyToken) {
+          console.log("👤 Usuario ya autenticado con token legacy:", userData.rol.toUpperCase());
+        }
+        
         console.log("👤 Datos del usuario:", userData);
       } catch (error) {
         console.error("Error al leer datos de usuario del localStorage:", error);

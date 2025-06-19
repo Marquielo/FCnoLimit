@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Redirect, RouteProps } from "react-router-dom";
+import { authService } from "../services/authService";
 
 interface ProtectedRouteProps extends RouteProps {
   allowedRoles?: string[];
@@ -9,19 +10,12 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   allowedRoles = [],
   ...rest
 }) => {
-  // Obtener información del usuario del localStorage
-  const token = localStorage.getItem("token");
-  const userJSON = localStorage.getItem("usuario");
-  let user = null;
-
-  try {
-    if (userJSON) user = JSON.parse(userJSON);
-  } catch (e) {
-    console.error("Error al parsear usuario del localStorage", e);
-  }
+  // Usar el servicio de autenticación
+  const isAuthenticated = authService.isAuthenticated();
+  const user = authService.getUser();
 
   // Si no hay token, redirigir a login
-  if (!token || !user) {
+  if (!isAuthenticated || !user) {
     return <Redirect to="/auth" />;
   }
 

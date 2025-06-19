@@ -139,6 +139,34 @@ app.get('/api/dbtest', async (req, res) => {
       error: err.message,
       status: '❌ Render PostgreSQL connection failed',
       timestamp: new Date().toISOString()
+    });  }
+});
+
+// Endpoint de health check para monitoreo
+app.get('/api/health', async (req, res) => {
+  try {
+    // Verificar conexión a la base de datos
+    const client = await pool.connect();
+    await client.query('SELECT 1');
+    client.release();
+    
+    res.json({
+      status: 'healthy',
+      timestamp: new Date().toISOString(),
+      database: 'connected',
+      environment: process.env.NODE_ENV || 'development',
+      version: '2.0.0-refresh-tokens',
+      uptime: process.uptime(),
+      memory: process.memoryUsage(),
+      features: ['refresh-tokens', 'jwt-auth', 'postgresql']
+    });
+  } catch (error) {
+    res.status(503).json({
+      status: 'unhealthy',
+      timestamp: new Date().toISOString(),
+      database: 'disconnected',
+      error: error.message,
+      environment: process.env.NODE_ENV || 'development'
     });
   }
 });
@@ -146,6 +174,7 @@ app.get('/api/dbtest', async (req, res) => {
 // Importar y usar rutas
 app.use('/api/campeonatos', require('./routes/campeonatos')(pool));
 app.use('/api/usuarios', require('./routes/usuarios')(pool));
+app.use('/api/auth', require('./routes/auth')(pool)); // Nueva ruta de autenticación avanzada
 app.use('/api/ligas', require('./routes/ligas')(pool));
 app.use('/api/equipos', require('./routes/equipos')(pool));
 app.use('/api/jugadores', require('./routes/jugadores')(pool));
@@ -175,15 +204,21 @@ process.on('SIGTERM', () => {
 process.on('SIGINT', () => {
   console.log('🛑 SIGINT recibido. Cerrando servidor gracefully...');
   pool.end().then(() => {
-    console.log('📊 Pool de conexiones cerrado');
-    process.exit(0);
+    console.log('📊 Pool de conexiones cerrado');    process.exit(0);
   });
 });
+
+// Configurar tareas programadas después de que todo esté listo
+const { setupScheduledTasks } = require('./utils/scheduledTasks');
 
 app.listen(port, () => {
   console.log(`🌟 Servidor FCnoLimit ejecutándose en puerto ${port}`);
   console.log(`🔗 Health check: http://localhost:${port}/api/ping`);
   console.log(`🔗 DB test: http://localhost:${port}/api/dbtest`);
+  
+  // Inicializar tareas programadas después de que el servidor esté corriendo
+  console.log('🚀 Inicializando sistema de refresh tokens...');
+  setupScheduledTasks(pool);
 });
 
 // Exportar pool para uso en rutas
