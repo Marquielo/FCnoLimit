@@ -17,7 +17,7 @@ import {
   refreshOutline,
   arrowForward
 } from 'ionicons/icons';
-import { generadorNoticias } from '../services/generadorNoticiasIA';
+import { GeneradorNoticiasIA } from '../services/generadorNoticiasIA';
 import { GeneradorImagenesIA } from '../services/generadorImagenesIA';
 import './NoticiasGeneradasIA.css';
 
@@ -66,7 +66,7 @@ const NoticiasGeneradasIA: React.FC<Props> = ({ partidosData }) => {
         
         // Generar noticia con IA según el tipo
         let noticia;
-        const generadorNoticiasInstancia = new (generadorNoticias as any).GeneradorNoticiasIA();
+        const generadorNoticiasInstancia = new GeneradorNoticiasIA();
         
         switch (tipo) {
           case 'Pre-partido':
@@ -76,14 +76,14 @@ const NoticiasGeneradasIA: React.FC<Props> = ({ partidosData }) => {
               partido.league?.name || 'Liga',
               new Date().toISOString()
             );
-            break;
-          case 'Post-partido':
+            break;          case 'Post-partido':
             noticia = await generadorNoticiasInstancia.generarNoticiaPostPartido(
               partido.teams.home.name,
               partido.teams.away.name,
               partido.goals?.home || 0,
               partido.goals?.away || 0,
-              partido.league?.name || 'Liga'
+              partido.league?.name || 'Liga',
+              partido.events || []
             );
             break;
           case 'Análisis':

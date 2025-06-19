@@ -233,6 +233,8 @@
   line-clamp: 2 !important;
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
+  visibility: visible !important; /* Asegurar que sea visible */
+  opacity: 1 !important; /* Asegurar opacidad completa */
 }
 
 .noticia-resumen {
@@ -249,6 +251,7 @@
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
   flex-grow: 1 !important; /* Ocupa el espacio disponible */
+  visibility: visible !important; /* Asegurar que sea visible */
 }
 
 /* Contenido expandido */
