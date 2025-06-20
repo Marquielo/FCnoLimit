@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 /**
- * POST /auth/google
+ * POST /auth/google 
  * Recibe un token de Google del frontend y lo valida
  * Si es válido, crea/encuentra el usuario y devuelve JWT + refresh tokens
  */
