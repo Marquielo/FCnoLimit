@@ -29,7 +29,9 @@ async function debugLogin() {
     console.log(`      ID: ${user.id}`);
     console.log(`      Nombre: ${user.nombre_completo}`);
     console.log(`      Rol: ${user.rol}`);
-    console.log(`      Email: ${user.correo}`);    // 2. Verificar tabla refresh_tokens
+    console.log(`      Email: ${user.correo}`);
+
+    // 2. Verificar tabla refresh_tokens
     console.log('\n2️⃣ Verificando tabla refresh_tokens...');
     const tableCheck = await pool.query(`
       SELECT COUNT(*) as total,
@@ -64,7 +66,9 @@ async function debugLogin() {
       console.log(`      Access Token: ${result.accessToken ? 'Presente' : 'Ausente'}`);
       console.log(`      Refresh Token: ${result.refreshToken ? 'Presente' : 'Ausente'}`);
       console.log(`      Expira en: ${result.expiresIn} segundos`);
-      console.log(`      Usuario: ${result.user.nombre_completo} (${result.user.rol})`);      // 4. Verificar que el refresh token se guardó
+      console.log(`      Usuario: ${result.user.nombre_completo} (${result.user.rol})`);
+
+      // 4. Verificar que el refresh token se guardó
       console.log('\n4️⃣ Verificando que el refresh token se guardó...');
       const tokenCheck = await pool.query(
         'SELECT id, user_id, device_info, created_at, is_revoked FROM "fcnolimit".refresh_tokens WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1',
@@ -102,11 +106,10 @@ async function debugLogin() {
       console.log('\n💡 Problema con funciones JWT:');
       console.log('   - Verificar que las funciones existen en jwt.js');
       console.log('   - Verificar que están correctamente exportadas');
-    }
-  } finally {
+    }  } finally {
     await pool.end();
   }
 }
 
 // Ejecutar debug
-debugLogin();
+debugLogin().catch(console.error);

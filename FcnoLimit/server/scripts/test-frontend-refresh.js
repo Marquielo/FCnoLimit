@@ -3,10 +3,10 @@ require('dotenv').config();
 
 const BASE_URL = 'https://fcnolimit-back.onrender.com/api';
 
-// Credenciales de usuario de prueba (usuario fresco sin conflictos)
+// Credenciales de usuario real (probemos con el original)
 const TEST_USER = {
-  correo: 'test.refresh.1750426854940@fcnolimit.test',
-  contraseña: 'TestRefresh123!'
+  correo: 'marcelo@gmail.com',
+  contraseña: 'Sasuke12'
 };
 
 let tokens = {

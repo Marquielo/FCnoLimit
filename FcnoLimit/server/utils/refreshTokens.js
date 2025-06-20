@@ -26,7 +26,7 @@ async function storeRefreshToken(pool, { userId, token, deviceInfo, ipAddress, u
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7);
     
-    // Hash del token para almacenamiento seguro    const tokenHash = hashToken(token);
+    // Hash del token para almacenamiento seguro    const tokenHash = hashToken(token);    const tokenHash = hashToken(token);
     
     // Estrategia simplificada: SIEMPRE revocar tokens existentes primero
     console.log(`🔄 Revocando tokens existentes para usuario ${userId}, dispositivo: ${deviceInfo}`);
@@ -34,7 +34,8 @@ async function storeRefreshToken(pool, { userId, token, deviceInfo, ipAddress, u
       'UPDATE "fcnolimit".refresh_tokens SET is_revoked = TRUE, revoked_at = NOW(), revoked_reason = $1 WHERE user_id = $2 AND device_info = $3 AND is_revoked = FALSE',
       ['new_login', userId, deviceInfo]
     );
-      // Insertar nuevo refresh token (ahora sin conflictos)
+    
+    // Insertar nuevo refresh token (ahora sin conflictos)
     const result = await pool.query(`
       INSERT INTO "fcnolimit".refresh_tokens 
       (user_id, token_hash, device_info, ip_address, user_agent, expires_at)
