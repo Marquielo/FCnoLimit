@@ -167,6 +167,8 @@ async function testLogout() {
     return false;
   }
 
+  console.log(`   🔑 Usando refresh token: ${tokens.refreshToken.substring(0, 20)}...`);
+
   const result = await makeRequest(`${BASE_URL}/auth/logout`, {
     method: 'POST',
     body: JSON.stringify({ refreshToken: tokens.refreshToken })
@@ -175,14 +177,19 @@ async function testLogout() {
   if (result.success) {
     console.log('   ✅ Logout exitoso');
     console.log(`   📝 Mensaje: ${result.data.message}`);
+    console.log(`   🗑️ Tokens revocados: ${result.data.tokensRevoked || 0}`);
+    
+    // Guardar el refresh token para la prueba posterior
+    const oldRefreshToken = tokens.refreshToken;
     
     // Limpiar tokens locales
     tokens.accessToken = null;
-    tokens.refreshToken = null;
+    tokens.refreshToken = oldRefreshToken; // Mantener para la prueba de invalidación
     
     return true;
   } else {
     console.log('   ❌ Logout fallido');
+    console.log(`   📝 Error: ${result.data?.error || 'Error desconocido'}`);
     return false;
   }
 }
@@ -190,17 +197,31 @@ async function testLogout() {
 async function testAfterLogout() {
   console.log('\n7️⃣ Verificando que los tokens ya no funcionan...');
   
+  const refreshTokenToTest = tokens.refreshToken; // El token que debería estar invalidado
+  
+  if (!refreshTokenToTest) {
+    console.log('   ⚠️ No hay refresh token para probar');
+    return true; // Técnicamente correcto si no hay token
+  }
+
+  console.log(`   🧪 Probando refresh token: ${refreshTokenToTest.substring(0, 20)}...`);
+  
   // Intentar usar el refresh token después del logout
   const refreshResult = await makeRequest(`${BASE_URL}/auth/refresh`, {
     method: 'POST',
-    body: JSON.stringify({ refreshToken: tokens.refreshToken || 'token_invalidado' })
+    body: JSON.stringify({ refreshToken: refreshTokenToTest })
   });
 
   if (!refreshResult.success) {
     console.log('   ✅ Refresh token correctamente invalidado');
+    console.log(`   📝 Error esperado: ${refreshResult.data?.error || 'Token inválido'}`);
+    
+    // Limpiar token local
+    tokens.refreshToken = null;
     return true;
   } else {
     console.log('   ❌ Refresh token aún funciona (problema de seguridad)');
+    console.log('   ⚠️ El logout no invalidó correctamente el token');
     return false;
   }
 }

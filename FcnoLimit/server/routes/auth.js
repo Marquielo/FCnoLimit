@@ -60,21 +60,54 @@ module.exports = (pool) => {
   // ==========================================
   // LOGOUT / CERRAR SESIÓN
   // ==========================================
-  
-  /**
+    /**
    * POST /api/auth/logout
    * Cerrar sesión (revocar refresh tokens)
+   * Puede funcionar con access token (logout del usuario) o solo con refresh token (logout específico)
    */
-  router.post('/logout', authenticateToken, async (req, res) => {
+  router.post('/logout', async (req, res) => {
     try {
       const { refreshToken, logoutAll = false } = req.body;
-      const userId = req.user.id;
+      
+      // Verificar si hay access token (opcional)
+      const authHeader = req.headers['authorization'];
+      const accessToken = authHeader && authHeader.split(' ')[1];
+      
+      let userId = null;
+      
+      // Si hay access token, obtener el userId del token
+      if (accessToken) {
+        try {
+          const { verifyAccessToken } = require('../utils/jwt');
+          const user = await verifyAccessToken(accessToken);
+          userId = user.id;
+          console.log(`🔓 Logout con access token para usuario: ${userId}`);
+        } catch (error) {
+          console.log('⚠️ Access token inválido, usando solo refresh token');
+        }
+      }
 
+      // Si no hay refresh token y no es logout all, error
       if (!refreshToken && !logoutAll) {
         return res.status(400).json({
           error: 'Refresh token requerido para logout específico',
           code: 'REFRESH_TOKEN_REQUIRED'
         });
+      }
+
+      // Si hay refresh token pero no userId, obtener userId del refresh token
+      if (refreshToken && !userId) {
+        try {
+          const { verifyRefreshToken } = require('../utils/jwt');
+          const payload = await verifyRefreshToken(refreshToken);
+          userId = payload.id;
+          console.log(`🔓 Logout con refresh token para usuario: ${userId}`);
+        } catch (error) {
+          return res.status(401).json({
+            error: 'Refresh token inválido',
+            code: 'INVALID_REFRESH_TOKEN'
+          });
+        }
       }
 
       const result = await logoutUser(pool, userId, refreshToken, logoutAll);
