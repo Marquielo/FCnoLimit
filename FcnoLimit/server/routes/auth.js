@@ -56,11 +56,11 @@ module.exports = (pool) => {
       });
     }
   });
-
   // ==========================================
   // LOGOUT / CERRAR SESIÓN
   // ==========================================
-    /**
+  
+  /**
    * POST /api/auth/logout
    * Cerrar sesión (revocar refresh tokens)
    * Puede funcionar con access token (logout del usuario) o solo con refresh token (logout específico)
