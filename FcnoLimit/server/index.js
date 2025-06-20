@@ -74,12 +74,11 @@ const connectWithRetry = async (retries = 3) => {
     try {
       const client = await pool.connect();
       console.log('✅ Conexión a PostgreSQL (Render) exitosa');
-      
-      // Verificar que las tablas principales existan
+        // Verificar que las tablas principales existan
       const tablesCheck = await client.query(`
         SELECT table_name 
         FROM information_schema.tables 
-        WHERE table_schema = 'public' 
+        WHERE table_schema = 'fcnolimit' 
         AND table_name IN ('usuarios', 'equipos', 'jugadores', 'partidos')
       `);
       
