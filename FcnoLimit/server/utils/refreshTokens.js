@@ -26,54 +26,21 @@ async function storeRefreshToken(pool, { userId, token, deviceInfo, ipAddress, u
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7);
     
-    // Hash del token para almacenamiento seguro
-    const tokenHash = hashToken(token);
-      // Verificar si ya existe un token para este usuario y dispositivo
-    const existingToken = await pool.query(
-      'SELECT id FROM "fcnolimit".refresh_tokens WHERE user_id = $1 AND device_info = $2 AND is_revoked = FALSE',
-      [userId, deviceInfo]
+    // Hash del token para almacenamiento seguro    const tokenHash = hashToken(token);
+    
+    // Estrategia simplificada: SIEMPRE revocar tokens existentes primero
+    console.log(`🔄 Revocando tokens existentes para usuario ${userId}, dispositivo: ${deviceInfo}`);
+    await pool.query(
+      'UPDATE "fcnolimit".refresh_tokens SET is_revoked = TRUE, revoked_at = NOW(), revoked_reason = $1 WHERE user_id = $2 AND device_info = $3 AND is_revoked = FALSE',
+      ['new_login', userId, deviceInfo]
     );
-    
-    // Si existe, lo revocamos (solo un token activo por dispositivo)
-    if (existingToken.rows.length > 0) {
-      console.log(`🔄 Revocando token existente para usuario ${userId}, dispositivo: ${deviceInfo}`);
-      await pool.query(
-        'UPDATE "fcnolimit".refresh_tokens SET is_revoked = TRUE, revoked_at = NOW(), revoked_reason = $1 WHERE id = $2',
-        ['new_login', existingToken.rows[0].id]
-      );
-    }
-    
-    // Insertar nuevo refresh token con manejo de conflictos
-    let result;
-    try {
-      result = await pool.query(`
-        INSERT INTO "fcnolimit".refresh_tokens 
-        (user_id, token_hash, device_info, ip_address, user_agent, expires_at)
-        VALUES ($1, $2, $3, $4, $5, $6)
-        RETURNING id, created_at
-      `, [userId, tokenHash, deviceInfo, ipAddress, userAgent, expiresAt]);
-    } catch (duplicateError) {
-      // Si aún hay conflicto, usar UPSERT
-      if (duplicateError.code === '23505') {
-        console.log(`⚠️ Conflicto detectado, usando UPSERT para usuario ${userId}, dispositivo: ${deviceInfo}`);
-        
-        // Primero revocar cualquier token existente
-        await pool.query(
-          'UPDATE "fcnolimit".refresh_tokens SET is_revoked = TRUE, revoked_at = NOW(), revoked_reason = $1 WHERE user_id = $2 AND device_info = $3',
-          ['upsert_replace', userId, deviceInfo]
-        );
-        
-        // Luego insertar el nuevo
-        result = await pool.query(`
-          INSERT INTO "fcnolimit".refresh_tokens 
-          (user_id, token_hash, device_info, ip_address, user_agent, expires_at)
-          VALUES ($1, $2, $3, $4, $5, $6)
-          RETURNING id, created_at
-        `, [userId, tokenHash, deviceInfo, ipAddress, userAgent, expiresAt]);
-      } else {
-        throw duplicateError;
-      }
-    }
+      // Insertar nuevo refresh token (ahora sin conflictos)
+    const result = await pool.query(`
+      INSERT INTO "fcnolimit".refresh_tokens 
+      (user_id, token_hash, device_info, ip_address, user_agent, expires_at)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING id, created_at
+    `, [userId, tokenHash, deviceInfo, ipAddress, userAgent, expiresAt]);
     
     console.log(`✅ Refresh token almacenado para usuario ${userId}`);
     return result.rows[0];
