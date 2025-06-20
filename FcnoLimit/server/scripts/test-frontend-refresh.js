@@ -19,6 +19,7 @@ async function makeRequest(url, options = {}) {
     const response = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
+        'User-Agent': 'FCnoLimit-Test-Script/1.0',
         ...options.headers
       },
       ...options
