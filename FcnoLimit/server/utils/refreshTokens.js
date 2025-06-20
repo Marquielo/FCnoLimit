@@ -25,27 +25,41 @@ async function storeRefreshToken(pool, { userId, token, deviceInfo, ipAddress, u
     // Calcular fecha de expiración (7 días)
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7);
-    
-    // Hash del token para almacenamiento seguro
+      // Hash del token para almacenamiento seguro
     const tokenHash = hashToken(token);
     
-    // Estrategia simplificada: SIEMPRE revocar tokens existentes primero
-    console.log(`🔄 Revocando tokens existentes para usuario ${userId}, dispositivo: ${deviceInfo}`);
-    await pool.query(
-      'UPDATE "fcnolimit".refresh_tokens SET is_revoked = TRUE, revoked_at = NOW(), revoked_reason = $1 WHERE user_id = $2 AND device_info = $3 AND is_revoked = FALSE',
-      ['new_login', userId, deviceInfo]
-    );
+    // Usar transacción para garantizar atomicidad
+    const client = await pool.connect();
     
-    // Insertar nuevo refresh token (ahora sin conflictos)
-    const result = await pool.query(`
-      INSERT INTO "fcnolimit".refresh_tokens 
-      (user_id, token_hash, device_info, ip_address, user_agent, expires_at)
-      VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING id, created_at
-    `, [userId, tokenHash, deviceInfo, ipAddress, userAgent, expiresAt]);
-    
-    console.log(`✅ Refresh token almacenado para usuario ${userId}`);
-    return result.rows[0];
+    try {
+      await client.query('BEGIN');
+      
+      // Estrategia simplificada: SIEMPRE revocar tokens existentes primero
+      console.log(`🔄 Revocando tokens existentes para usuario ${userId}, dispositivo: ${deviceInfo}`);
+      await client.query(
+        'UPDATE "fcnolimit".refresh_tokens SET is_revoked = TRUE, revoked_at = NOW(), revoked_reason = $1 WHERE user_id = $2 AND device_info = $3 AND is_revoked = FALSE',
+        ['new_login', userId, deviceInfo]
+      );
+      
+      // Insertar nuevo refresh token (ahora sin conflictos)
+      const result = await client.query(`
+        INSERT INTO "fcnolimit".refresh_tokens 
+        (user_id, token_hash, device_info, ip_address, user_agent, expires_at)
+        VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING id, created_at
+      `, [userId, tokenHash, deviceInfo, ipAddress, userAgent, expiresAt]);
+      
+      await client.query('COMMIT');
+      
+      console.log(`✅ Refresh token almacenado para usuario ${userId}`);
+      return result.rows[0];
+      
+    } catch (error) {
+      await client.query('ROLLBACK');
+      throw error;
+    } finally {
+      client.release();
+    }
     
   } catch (error) {
     console.error('❌ Error al almacenar refresh token:', error);

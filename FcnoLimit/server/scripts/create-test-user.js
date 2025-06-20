@@ -28,13 +28,12 @@ async function makeRequest(url, options = {}) {
 
 async function createTestUser() {
   console.log('👤 === CREAR USUARIO DE PRUEBA PARA REFRESH TOKENS ===\n');
-
   // Generar datos únicos para el usuario de prueba
   const timestamp = Date.now();
   const testUser = {
-    nombre_completo: `Usuario Test Refresh actualizado${timestamp}`,
-    correo: `test.refreshhhhh.${timestamp}@fcnolimit.test`,
-    contraseña: 'TestRefresh123!1313',
+    nombre_completo: `Usuario Test Final ${timestamp}`,
+    correo: `test.final.${timestamp}@fcnolimit.test`,
+    contraseña: 'TestFinal123!',
     rol: 'persona_natural'
   };
 

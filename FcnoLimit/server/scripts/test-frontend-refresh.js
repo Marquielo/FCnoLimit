@@ -5,8 +5,8 @@ const BASE_URL = 'https://fcnolimit-back.onrender.com/api';
 
 // Credenciales de usuario de prueba (usuario fresco sin conflictos)
 const TEST_USER = {
-  correo: 'test.refresh.1750426854940@fcnolimit.test',
-  contraseña: 'TestRefresh123!'
+  correo: 'test.final.1750432467435@fcnolimit.test',
+  contraseña: 'TestFinal123!'
 };
 
 let tokens = {
