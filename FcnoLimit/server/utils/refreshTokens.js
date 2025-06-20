@@ -39,7 +39,7 @@ async function storeRefreshToken(pool, { userId, token, deviceInfo, ipAddress, u
         'DELETE FROM "fcnolimit".refresh_tokens WHERE user_id = $1 AND device_info = $2',
         [userId, deviceInfo]
       );
-      
+      //
       // Insertar nuevo refresh token (ahora sin conflictos)
       const result = await client.query(`
         INSERT INTO "fcnolimit".refresh_tokens 
