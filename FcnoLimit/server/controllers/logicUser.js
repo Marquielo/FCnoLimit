@@ -20,10 +20,9 @@ async function createUser(pool, { nombre_completo, correo, contraseña, rol }) {
 
     // Hash de contraseña
     const hashedPassword = await bcrypt.hash(contraseña, 10);
-    
-    // Insertar usuario
+      // Insertar usuario
     const result = await pool.query(
-      'INSERT INTO "fcnolimit".usuarios (nombre_completo, correo, contraseña, rol) VALUES ($1, $2, $3, $4) RETURNING id, nombre_completo, correo, rol, created_at',
+      'INSERT INTO "fcnolimit".usuarios (nombre_completo, correo, contraseña, rol) VALUES ($1, $2, $3, $4) RETURNING id, nombre_completo, correo, rol, creado_en',
       [nombre_completo, correo, hashedPassword, rol]
     );
     
@@ -35,7 +34,7 @@ async function createUser(pool, { nombre_completo, correo, contraseña, rol }) {
       nombre_completo: newUser.nombre_completo,
       correo: newUser.correo,
       rol: newUser.rol,
-      created_at: newUser.created_at
+      creado_en: newUser.creado_en
     };
     
   } catch (error) {
