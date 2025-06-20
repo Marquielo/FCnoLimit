@@ -174,7 +174,7 @@ app.get('/api/health', async (req, res) => {
 app.use('/api/campeonatos', require('./routes/campeonatos')(pool));
 app.use('/api/usuarios', require('./routes/usuarios')(pool));
 app.use('/api/auth', require('./routes/auth')(pool)); // Nueva ruta de autenticación avanzada
-app.use('/api/auth', require('./routes/googleAuth')); // Google OAuth - DESPUÉS de la otra ruta
+app.use('/api/oauth', require('./routes/googleAuth')); // Google OAuth - ruta separada
 app.use('/api/ligas', require('./routes/ligas')(pool));
 app.use('/api/equipos', require('./routes/equipos')(pool));
 app.use('/api/jugadores', require('./routes/jugadores')(pool));
