@@ -33,12 +33,11 @@ async function storeRefreshToken(pool, { userId, token, deviceInfo, ipAddress, u
     
     try {
       await client.query('BEGIN');
-      
-      // Estrategia simplificada: SIEMPRE revocar tokens existentes primero
-      console.log(`🔄 Revocando tokens existentes para usuario ${userId}, dispositivo: ${deviceInfo}`);
+        // Estrategia más directa: DELETE existentes + INSERT nuevo
+      console.log(`🔄 Eliminando tokens existentes para usuario ${userId}, dispositivo: ${deviceInfo}`);
       await client.query(
-        'UPDATE "fcnolimit".refresh_tokens SET is_revoked = TRUE, revoked_at = NOW(), revoked_reason = $1 WHERE user_id = $2 AND device_info = $3 AND is_revoked = FALSE',
-        ['new_login', userId, deviceInfo]
+        'DELETE FROM "fcnolimit".refresh_tokens WHERE user_id = $1 AND device_info = $2',
+        [userId, deviceInfo]
       );
       
       // Insertar nuevo refresh token (ahora sin conflictos)
