@@ -26,7 +26,8 @@ async function storeRefreshToken(pool, { userId, token, deviceInfo, ipAddress, u
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7);
     
-    // Hash del token para almacenamiento seguro    const tokenHash = hashToken(token);    const tokenHash = hashToken(token);
+    // Hash del token para almacenamiento seguro
+    const tokenHash = hashToken(token);
     
     // Estrategia simplificada: SIEMPRE revocar tokens existentes primero
     console.log(`🔄 Revocando tokens existentes para usuario ${userId}, dispositivo: ${deviceInfo}`);

@@ -32,9 +32,9 @@ async function createTestUser() {
   // Generar datos únicos para el usuario de prueba
   const timestamp = Date.now();
   const testUser = {
-    nombre_completo: `Usuario Test Refresh ${timestamp}`,
-    correo: `test.refresh.${timestamp}@fcnolimit.test`,
-    contraseña: 'TestRefresh123!',
+    nombre_completo: `Usuario Test Refresh actualizado${timestamp}`,
+    correo: `test.refreshhhhh.${timestamp}@fcnolimit.test`,
+    contraseña: 'TestRefresh123!1313',
     rol: 'persona_natural'
   };
 
