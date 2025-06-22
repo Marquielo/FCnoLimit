@@ -83,11 +83,14 @@ module.exports = (pool) => {
         googleUser.email,
         dummyPassword, // Contraseña dummy - nunca se usará
         'persona_natural', // rol por defecto
-        googleUser.googleId
-      ]);
+        googleUser.googleId      ]);
       
+      const createdUser = result.rows[0];
       console.log('✅ Usuario creado desde Google:', googleUser.email);
-      return result.rows[0];
+      console.log('📋 Usuario creado completo:', createdUser);
+      console.log('🆔 ID del usuario creado:', createdUser?.id);
+      
+      return createdUser;
     } catch (error) {
       console.error('❌ Error creando usuario desde Google:', error);
       throw error;
@@ -142,8 +145,15 @@ module.exports = (pool) => {
         }
       } else {
         console.log('👤 Creando nuevo usuario desde Google...');
-        user = await createUserFromGoogle(googleUser);
-      }
+        user = await createUserFromGoogle(googleUser);      }
+
+      // Debug: verificar datos del usuario antes de generar tokens
+      console.log('👤 Usuario final para tokens:', {
+        id: user?.id,
+        correo: user?.correo,
+        rol: user?.rol,
+        google_id: user?.google_id
+      });
 
       // Generar JWT + refresh tokens
       console.log('🔐 Generando tokens para usuario:', user.id);
