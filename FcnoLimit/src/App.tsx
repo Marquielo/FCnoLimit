@@ -67,6 +67,7 @@ import EquiposResultadosPage from './pages/home/equipos/EquiposResultadosPage';
 import { startGlobalParticlesEffect } from './effects/globalParticlesEffect';
 import React, { useEffect } from 'react';
 import PaginaNoticiasEnVivo from './pages/PaginaNoticiasEnVivo';
+import SimpleGoogleAuth from './components/SimpleGoogleAuth';
 
 setupIonicReact({
   mode: 'md',
@@ -88,6 +89,7 @@ const App: React.FC = () => {
           {/* Rutas públicas */}
           <Route exact path="/inicio" component={InicioPage} />
           <Route exact path="/auth" component={AuthPage} />
+          <Route exact path="/google-test" component={SimpleGoogleAuth} />
 
           {/* Rutas de Jugador */}
           <Route exact path="/jugador/perfil" render={() => (

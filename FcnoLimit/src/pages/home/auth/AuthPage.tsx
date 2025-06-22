@@ -27,6 +27,8 @@ import NavBar from '../../../components/NavBar';
 import { useHistory } from 'react-router-dom';
 import { authService } from '../../../services/authService';
 import { useAuth } from '../../../hooks/useAuth';
+import { googleAuthService } from '../../../services/googleAuthService';
+
 
 const AuthPage: React.FC = () => {
   const history = useHistory();
@@ -94,11 +96,44 @@ const AuthPage: React.FC = () => {
   useEffect(() => {
     testDbConnection();
   }, []);
+  // Función para Google Sign In
+  const handleGoogleSignIn = async () => {
+    try {
+      setError('');
+      setRegisterError('');
+      
+      present({ message: 'Iniciando sesión con Google...' });
 
-  // Elimina Google SignIn simulado y su botón funcional
-  // Si quieres dejar el botón, puedes deshabilitarlo así:
-  const handleGoogleSignIn = () => {
-    setError('Inicio de sesión con Google no disponible.');
+      console.log('🚀 Iniciando Google OAuth...');
+      const result = await googleAuthService.loginComplete();
+      
+      // Guardar tokens
+      if (result.accessToken) localStorage.setItem('accessToken', result.accessToken);
+      if (result.refreshToken) localStorage.setItem('refreshToken', result.refreshToken);
+      if (result.user) localStorage.setItem('usuario', JSON.stringify(result.user));
+      if (result.expiresIn) {
+        localStorage.setItem('tokenExpiresAt', (Date.now() + result.expiresIn * 1000).toString());
+      }
+
+      dismiss();
+
+      // Redireccionar según rol
+      const userRole = result.user?.rol;
+      if (userRole === 'admin') history.push('/admin/dashboard');
+      else if (userRole === 'entrenador') history.push('/entrenador/perfil');
+      else if (userRole === 'jugador') history.push('/jugador/perfil');
+      else history.push('/inicio');
+
+    } catch (error: any) {
+      console.error('❌ Error Google Sign In:', error);
+      dismiss();
+      
+      let errorMessage = 'Error al iniciar sesión con Google.';
+      if (error.message.includes('popup-closed-by-user')) errorMessage = 'Login cancelado.';
+      else if (error.message.includes('popup-blocked')) errorMessage = 'Popup bloqueado. Permite popups.';
+      
+      setError(errorMessage);
+    }
   };
 
   // Función para validar email de inicio de sesión
@@ -538,15 +573,13 @@ const AuthPage: React.FC = () => {
                 {showLogin ? (
                   <>
                     <h2 className="form-title">Iniciar Sesión</h2>
-                    <form onSubmit={handleLogin} className="auth-form" noValidate>
-                      {/* Botones de login social */}
+                    <form onSubmit={handleLogin} className="auth-form" noValidate>                      {/* Botones de login social */}
                       <div className="social-buttons">
                         <IonButton 
                           fill="clear" 
                           className="social-button google"
                           onClick={handleGoogleSignIn}
                           type="button"
-                          disabled
                         >
                           <IonIcon icon={logoGoogle}></IonIcon>
                         </IonButton>
@@ -640,14 +673,12 @@ const AuthPage: React.FC = () => {
                     </h2>
                     <form onSubmit={handleRegister} className="auth-form" noValidate>
                       {/* Botones de registro social */}
-                      <div className="social-buttons">
-                        <div className="social-button-container">
+                      <div className="social-buttons">                        <div className="social-button-container">
                           <IonButton 
                             fill="clear" 
                             className="social-button google"
                             onClick={handleGoogleSignIn}
                             type="button"
-                            disabled
                           >
                             <IonIcon icon={logoGoogle}></IonIcon>
                           </IonButton>

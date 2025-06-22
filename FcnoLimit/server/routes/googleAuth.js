@@ -65,20 +65,23 @@ module.exports = (pool) => {
       throw error;
     }
   }
-
   /**
    * Crea un nuevo usuario desde datos de Google
    */
   async function createUserFromGoogle(googleUser) {
     try {
+      // Generar contraseña dummy para usuarios de Google (no se usará nunca)
+      const dummyPassword = 'GOOGLE_OAUTH_USER_' + Math.random().toString(36).substring(2, 15);
+      
       const result = await pool.query(`
         INSERT INTO "fcnolimit".usuarios 
-        (nombre_completo, correo, rol, creado_en, google_id)
-        VALUES ($1, $2, $3, NOW(), $4)
+        (nombre_completo, correo, contraseña, rol, creado_en, google_id)
+        VALUES ($1, $2, $3, $4, NOW(), $5)
         RETURNING id, nombre_completo, correo, rol, creado_en, google_id
       `, [
         googleUser.name,
         googleUser.email,
+        dummyPassword, // Contraseña dummy - nunca se usará
         'persona_natural', // rol por defecto
         googleUser.googleId
       ]);
