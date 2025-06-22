@@ -153,19 +153,17 @@ module.exports = (pool) => {
         correo: user?.correo,
         rol: user?.rol,
         google_id: user?.google_id
-      });
-
-      // Generar JWT + refresh tokens
+      });      // Generar JWT + refresh tokens
       console.log('🔐 Generando tokens para usuario:', user.id);
       
       const accessToken = signAccessToken({ 
-        userId: user.id, 
+        id: user.id,           // Cambiar userId por id
         email: user.correo, 
         rol: user.rol 
       });
       
       const refreshToken = signRefreshToken({ 
-        userId: user.id 
+        id: user.id            // Cambiar userId por id
       });
 
       // Almacenar refresh token en la base de datos
