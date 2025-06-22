@@ -22,6 +22,7 @@
     "dotenv-yaml": "^0.1.4",
     "express": "^5.1.0",
     "express-validator": "^7.2.1",
+    "firebase-admin": "^13.4.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.0",
     "pg": "^8.16.0"

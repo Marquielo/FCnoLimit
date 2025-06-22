@@ -1,60 +1,54 @@
 // Endpoint para autenticación con Google OAuth
 const express = require('express');
-const https = require('https');
+const admin = require('firebase-admin');
 const { signAccessToken, signRefreshToken } = require('../utils/jwt');
 const { storeRefreshToken } = require('../utils/refreshTokens');
 const router = express.Router();
 
+// Inicializar Firebase Admin SDK si no está inicializado
+if (!admin.apps.length) {
+  try {
+    admin.initializeApp({
+      projectId: 'fcnolimit' // Tu project ID de Firebase
+    });
+    console.log('✅ Firebase Admin SDK inicializado correctamente');
+  } catch (error) {
+    console.error('❌ Error inicializando Firebase Admin SDK:', error);
+  }
+}
+
 module.exports = (pool) => {
   // Las funciones y rutas van aquí, con acceso al pool
-  
-  /**
-   * Valida un token de Google ID con la API de Google
-   */
-  async function validateGoogleToken(googleToken) {
-    return new Promise((resolve, reject) => {
-      const url = `https://oauth2.googleapis.com/tokeninfo?id_token=${googleToken}`;
+    /**
+   * Valida un Firebase ID token usando Firebase Admin SDK
+   */  async function validateGoogleToken(idToken) {
+    try {
+      console.log('🔍 Validando Firebase ID token...');
+      console.log('📝 Project ID configurado:', admin.app().options.projectId);
+      console.log('🔑 Token length:', idToken.length);
       
-      https.get(url, (res) => {
-        let data = '';
-        
-        res.on('data', (chunk) => {
-          data += chunk;
-        });
-        
-        res.on('end', () => {
-          try {
-            const googleUser = JSON.parse(data);
-            
-            // Verificar que el token sea válido
-            if (googleUser.error) {
-              reject(new Error(`Token inválido: ${googleUser.error_description}`));
-              return;
-            }
-            
-            // Verificar que tenga los campos necesarios
-            if (!googleUser.email || !googleUser.name) {
-              reject(new Error('Token no contiene información necesaria'));
-              return;
-            }
-            
-            console.log('✅ Token de Google validado para:', googleUser.email);
-            resolve({
-              email: googleUser.email,
-              name: googleUser.name,
-              picture: googleUser.picture,
-              googleId: googleUser.sub
-            });
-            
-          } catch (error) {
-            reject(new Error('Error parsing Google response'));
-          }
-        });
-        
-      }).on('error', (error) => {
-        reject(new Error(`Error validando con Google: ${error.message}`));
-      });
-    });
+      // Verificar el token con Firebase Admin
+      const decodedToken = await admin.auth().verifyIdToken(idToken);
+      
+      console.log('✅ Token Firebase validado para:', decodedToken.email);
+      console.log('🆔 Firebase UID:', decodedToken.uid);
+      console.log('🏢 Issuer:', decodedToken.iss);
+      console.log('👥 Audience:', decodedToken.aud);
+      
+      return {
+        email: decodedToken.email,
+        name: decodedToken.name,
+        picture: decodedToken.picture,
+        googleId: decodedToken.uid, // Firebase UID
+        provider: decodedToken.firebase.sign_in_provider
+      };
+      
+    } catch (error) {
+      console.error('❌ Error validando Firebase token:', error);
+      console.error('❌ Error code:', error.code);
+      console.error('❌ Error message:', error.message);
+      throw new Error(`Token inválido: ${error.message}`);
+    }
   }
   /**
    * Busca un usuario por email O google_id en la base de datos
