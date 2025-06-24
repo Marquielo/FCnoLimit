@@ -11,6 +11,9 @@ const crypto = require('crypto');
  * @returns {String} Hash SHA-256
  */
 function hashToken(token) {
+  if (!token || typeof token !== 'string') {
+    throw new Error(`Token inválido para hash: ${typeof token}, valor: ${token}`);
+  }
   return crypto.createHash('sha256').update(token).digest('hex');
 }
 
@@ -22,6 +25,19 @@ function hashToken(token) {
  */
 async function storeRefreshToken(pool, { userId, token, deviceInfo, ipAddress, userAgent }) {
   try {
+    // Validar parámetros requeridos
+    console.log('🔍 Validando parámetros de storeRefreshToken:');
+    console.log('👤 userId:', userId, typeof userId);
+    console.log('🎟️ token:', token ? `${token.substring(0, 20)}...` : 'UNDEFINED', typeof token);
+    console.log('📱 deviceInfo:', deviceInfo, typeof deviceInfo);
+    console.log('🌐 ipAddress:', ipAddress, typeof ipAddress);
+    console.log('🔧 userAgent:', userAgent, typeof userAgent);
+    
+    if (!userId) throw new Error('userId es requerido');
+    if (!token) throw new Error('token es requerido');
+    if (!deviceInfo) throw new Error('deviceInfo es requerido');
+    if (!ipAddress) throw new Error('ipAddress es requerido');
+    
     // Calcular fecha de expiración (7 días)
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7);
