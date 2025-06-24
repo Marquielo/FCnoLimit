@@ -96,11 +96,19 @@ const AdminPartidos: React.FC = () => {
       Array.from({ length: golesVisitante }, (_, i) => prev[i] || "")
     );
   }, [golesVisitante]);
-
   // Cambiar el endpoint y agregar el token de autenticación
   const handleGuardarResultado = async () => {
     if (!partido?.id) return;
-    const token = localStorage.getItem('token');
+    // Intentar obtener el token del sistema moderno primero, luego legacy
+    const accessToken = localStorage.getItem('accessToken');
+    const legacyToken = localStorage.getItem('token');
+    const token = accessToken || legacyToken;
+    
+    if (!token) {
+      alert('No se encontró token de autenticación. Por favor, inicia sesión nuevamente.');
+      return;
+    }
+    
     try {
       const res = await fetch(`https://fcnolimit-back.onrender.com/api/partidos/${partido.id}/resultado`, {
         method: "PATCH",
@@ -136,21 +144,46 @@ const AdminPartidos: React.FC = () => {
             },
             body: JSON.stringify({ golesPorJugador })
           });
-        }
-        setIsJugado(false);
+        }        setIsJugado(false);
         history.push("/admin/AdminDashboard");
         window.location.reload(); // recarga la página actual
       } else {
-        // Aquí puedes mostrar un toast de error si lo deseas
+        // Manejar errores específicos de la respuesta
+        const errorData = await res.json().catch(() => ({}));
+        console.error('Error al guardar resultado:', {
+          status: res.status,
+          statusText: res.statusText,
+          error: errorData
+        });
+        
+        let errorMessage = 'Error al guardar el resultado del partido.';
+        if (res.status === 401) {
+          errorMessage = 'No tienes autorización. Por favor, inicia sesión nuevamente.';
+        } else if (res.status === 403) {
+          errorMessage = 'No tienes permisos de administrador para esta acción.';
+        } else if (errorData.error) {
+          errorMessage = errorData.error;
+        }
+        
+        alert(errorMessage);
       }
     } catch (err) {
-      // Aquí puedes mostrar un toast de error si lo deseas
+      console.error('Error de red al guardar resultado:', err);
+      alert('Error de conexión. Por favor, revisa tu conexión a internet y intenta nuevamente.');
     }
   };
-
   const handleReagendar = async () => {
     if (!partido?.id || !nuevaFecha) return;
-    const token = localStorage.getItem('token');
+    // Intentar obtener el token del sistema moderno primero, luego legacy
+    const accessToken = localStorage.getItem('accessToken');
+    const legacyToken = localStorage.getItem('token');
+    const token = accessToken || legacyToken;
+    
+    if (!token) {
+      alert('No se encontró token de autenticación. Por favor, inicia sesión nuevamente.');
+      return;
+    }
+    
     try {
       const res = await fetch(`https://fcnolimit-back.onrender.com/api/partidos/${partido.id}/fecha`, {
         method: "PATCH",
