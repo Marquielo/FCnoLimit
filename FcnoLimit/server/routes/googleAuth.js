@@ -167,20 +167,18 @@ module.exports = (pool) => {
       });      // Almacenar refresh token en la base de datos
       const deviceInfo = req.headers['user-agent'] || 'Unknown Device';
       const ipAddress = req.ip || req.connection?.remoteAddress || req.socket?.remoteAddress || '127.0.0.1';
-      
-      console.log('💾 Almacenando refresh token...');
+        console.log('💾 Almacenando refresh token...');
       console.log('📱 Device Info:', deviceInfo);
       console.log('🌐 IP Address:', ipAddress);
       console.log('🔄 Refresh Token length:', refreshToken?.length);
       
-      await storeRefreshToken(
-        pool, 
-        refreshToken, 
-        user.id, 
-        deviceInfo, 
-        ipAddress, 
-        'Google-OAuth-Login'
-      );
+      await storeRefreshToken(pool, {
+        userId: user.id,
+        token: refreshToken,
+        deviceInfo: deviceInfo,
+        ipAddress: ipAddress,
+        userAgent: 'Google-OAuth-Login'
+      });
 
       console.log('✅ Login con Google completado para:', user.correo);
 
