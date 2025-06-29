@@ -8,20 +8,43 @@ const router = express.Router();
 // Inicializar Firebase Admin SDK si no está inicializado
 if (!admin.apps.length) {
   try {
-    const serviceAccount = {
+    // Verificar que todas las variables de entorno estén presentes
+    const requiredEnvVars = {
       projectId: process.env.FIREBASE_PROJECT_ID,
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n')
+      privateKey: process.env.FIREBASE_PRIVATE_KEY
+    };
+
+    console.log('🔍 Verificando variables de entorno Firebase...');
+    console.log('📝 Project ID presente:', !!requiredEnvVars.projectId);
+    console.log('📧 Client Email presente:', !!requiredEnvVars.clientEmail);
+    console.log('🔑 Private Key presente:', !!requiredEnvVars.privateKey);
+
+    if (!requiredEnvVars.projectId || !requiredEnvVars.clientEmail || !requiredEnvVars.privateKey) {
+      throw new Error('Faltan variables de entorno de Firebase Admin SDK');
+    }
+
+    const serviceAccount = {
+      projectId: requiredEnvVars.projectId,
+      clientEmail: requiredEnvVars.clientEmail,
+      privateKey: requiredEnvVars.privateKey.replace(/\\n/g, '\n')
     };
 
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
-      projectId: process.env.FIREBASE_PROJECT_ID
+      projectId: requiredEnvVars.projectId
     });
+    
     console.log('✅ Firebase Admin SDK inicializado correctamente');
-    console.log('📝 Project ID:', process.env.FIREBASE_PROJECT_ID);
+    console.log('📝 Project ID:', requiredEnvVars.projectId);
+    console.log('📧 Client Email:', requiredEnvVars.clientEmail.substring(0, 20) + '...');
   } catch (error) {
     console.error('❌ Error inicializando Firebase Admin SDK:', error);
+    console.error('❌ Variables de entorno disponibles:', {
+      FIREBASE_PROJECT_ID: !!process.env.FIREBASE_PROJECT_ID,
+      FIREBASE_CLIENT_EMAIL: !!process.env.FIREBASE_CLIENT_EMAIL,
+      FIREBASE_PRIVATE_KEY: !!process.env.FIREBASE_PRIVATE_KEY
+    });
   }
 }
 
