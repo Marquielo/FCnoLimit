@@ -8,10 +8,18 @@ const router = express.Router();
 // Inicializar Firebase Admin SDK si no está inicializado
 if (!admin.apps.length) {
   try {
+    const serviceAccount = {
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n')
+    };
+
     admin.initializeApp({
-      projectId: 'fcnolimit' // Tu project ID de Firebase
+      credential: admin.credential.cert(serviceAccount),
+      projectId: process.env.FIREBASE_PROJECT_ID
     });
     console.log('✅ Firebase Admin SDK inicializado correctamente');
+    console.log('📝 Project ID:', process.env.FIREBASE_PROJECT_ID);
   } catch (error) {
     console.error('❌ Error inicializando Firebase Admin SDK:', error);
   }
