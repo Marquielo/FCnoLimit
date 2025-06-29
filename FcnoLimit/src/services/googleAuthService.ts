@@ -1,5 +1,5 @@
 // Servicio para Google OAuth integrado con tu backend
-import { GoogleAuthProvider, signInWithPopup, getAuth } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, getAuth, OAuthProvider } from 'firebase/auth';
 import app from '../config/firebase';
 
 export interface GoogleAuthResult {
@@ -120,5 +120,87 @@ class GoogleAuthService {
   }
 }
 
+class AppleAuthService {
+  private auth = getAuth(app);
+  private provider = new OAuthProvider('apple.com');
+
+  constructor() {
+    // Configurar scopes para Apple
+    this.provider.addScope('email');
+    this.provider.addScope('name');
+  }
+
+  /**
+   * Login con Apple ID
+   */
+  async signInWithApple(): Promise<GoogleAuthResult> {
+    try {
+      console.log('🍎 Iniciando login con Apple...');
+      
+      const result = await signInWithPopup(this.auth, this.provider);
+      const user = result.user;
+      
+      console.log('✅ Login con Apple exitoso:', user.email);
+      
+      const idToken = await user.getIdToken();
+      console.log('🔑 Apple ID Token obtenido:', idToken);
+      
+      return {
+        idToken,
+        user: {
+          uid: user.uid,
+          email: user.email || '',
+          displayName: user.displayName || '',
+          photoURL: user.photoURL || ''
+        }
+      };
+      
+    } catch (error: any) {
+      console.error('❌ Error en login con Apple:', error);
+      
+      if (error.code === 'auth/popup-closed-by-user') {
+        throw new Error('Login cancelado por el usuario');
+      } else if (error.code === 'auth/popup-blocked') {
+        throw new Error('Popup bloqueado por el navegador');
+      } else {
+        throw new Error(`Error de autenticación: ${error.message}`);
+      }
+    }
+  }
+
+  /**
+   * Flujo completo Apple
+   */
+  async loginComplete() {
+    try {
+      const appleResult = await this.signInWithApple();
+      
+      const response = await fetch('https://fcnolimit-back.onrender.com/api/oauth/apple', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': 'FCnoLimit-Frontend/1.0'
+        },
+        body: JSON.stringify({
+          appleToken: appleResult.idToken
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.details || 'Error en el servidor');
+      }
+
+      const data = await response.json();
+      return { ...data, appleUser: appleResult.user };
+      
+    } catch (error) {
+      console.error('❌ Error en login completo con Apple:', error);
+      throw error;
+    }
+  }
+}
+
 export const googleAuthService = new GoogleAuthService();
+export const appleAuthService = new AppleAuthService();
 export default googleAuthService;

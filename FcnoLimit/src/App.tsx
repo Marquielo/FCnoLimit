@@ -68,6 +68,7 @@ import { startGlobalParticlesEffect } from './effects/globalParticlesEffect';
 import React, { useEffect } from 'react';
 import PaginaNoticiasEnVivo from './pages/PaginaNoticiasEnVivo';
 import SimpleGoogleAuth from './components/SimpleGoogleAuth';
+import PlayerCardsDemo from './pages/PlayerCardsDemo';
 
 setupIonicReact({
   mode: 'md',
@@ -81,7 +82,6 @@ const App: React.FC = () => {
       if (typeof stopParticles === 'function') stopParticles();
     };
   }, []);
-
   return (
     <IonApp className="light-theme">
       <IonReactRouter>
@@ -90,6 +90,7 @@ const App: React.FC = () => {
           <Route exact path="/inicio" component={InicioPage} />
           <Route exact path="/auth" component={AuthPage} />
           <Route exact path="/google-test" component={SimpleGoogleAuth} />
+          <Route exact path="/player-cards" component={PlayerCardsDemo} />
 
           {/* Rutas de Jugador */}
           <Route exact path="/jugador/perfil" render={() => (

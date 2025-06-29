@@ -18,7 +18,8 @@ import {
   calendarOutline,
   documentTextOutline,
   fitnessOutline,
-  searchOutline
+  searchOutline,
+  cardOutline
 } from "ionicons/icons";
 import { useHistory, useLocation } from "react-router-dom";
 import { authService } from '../services/authService';
@@ -125,6 +126,7 @@ const NavBar: React.FC = () => {
       { path: "/equipos", icon: peopleSharp, text: "Equipos" },
       { path: "/partidos", icon: footballSharp, text: "Partidos" },
       { path: "/campeonatos", icon: trophySharp, text: "Competicion" },
+      { path: "/player-cards", icon: cardOutline, text: "Cartas Jugadores" },
     ];
     
     // Items específicos según rol
