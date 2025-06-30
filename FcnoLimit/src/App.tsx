@@ -69,6 +69,7 @@ import React, { useEffect } from 'react';
 import PaginaNoticiasEnVivo from './pages/PaginaNoticiasEnVivo';
 import SimpleGoogleAuth from './components/SimpleGoogleAuth';
 import PlayerCardsDemo from './pages/PlayerCardsDemo';
+import FloatingChatbot from './components/FloatingChatbot/FloatingChatbotSimple';
 
 setupIonicReact({
   mode: 'md',
@@ -87,10 +88,10 @@ const App: React.FC = () => {
       <IonReactRouter>
         <IonRouterOutlet>
           {/* Rutas públicas */}
-          <Route exact path="/inicio" component={InicioPage} />
-          <Route exact path="/auth" component={AuthPage} />
-          <Route exact path="/google-test" component={SimpleGoogleAuth} />
-          <Route exact path="/player-cards" component={PlayerCardsDemo} />
+            <Route exact path="/inicio" component={InicioPage} />
+            <Route exact path="/auth" component={AuthPage} />
+            <Route exact path="/google-test" component={SimpleGoogleAuth} />
+            <Route exact path="/player-cards" component={PlayerCardsDemo} />
 
           {/* Rutas de Jugador */}
           <Route exact path="/jugador/perfil" render={() => (
@@ -246,6 +247,7 @@ const App: React.FC = () => {
         </IonRouterOutlet>
         <NavBar />
       </IonReactRouter>
+      <FloatingChatbot />
     </IonApp>
   );
 };
