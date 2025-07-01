@@ -31,9 +31,13 @@ const allowedOrigins = process.env.CORS_ORIGIN
       'http://localhost:8100',
       'https://localhost',
       'https://localhost:8100',
+      'https://localhost:8080',
       'capacitor://localhost',
       'ionic://localhost',
-      'http://localhost:8080',
+      'file://',
+      'http://capacitor',
+      'https://capacitor',
+      'app://',
       'https://fcnolimit.firebaseapp.com',
       'https://fcnolimit.web.app'
     ];
@@ -62,8 +66,33 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    // Permitir requests sin origin (apps móviles nativas)
+    if (!origin) {
+      console.log('✅ CORS: Request sin origin permitido (app móvil nativa)');
+      return callback(null, true);
+    }
+    
+    // Verificar orígenes permitidos
+    if (allowedOrigins.includes(origin)) {
+      console.log('✅ CORS: Origin permitido:', origin);
+      return callback(null, true);
+    }
+    
+    // Permitir cualquier origen que contenga "localhost" o "capacitor"
+    if (origin.includes('localhost') || origin.includes('capacitor') || origin.includes('ionic')) {
+      console.log('✅ CORS: Origin móvil permitido:', origin);
+      return callback(null, true);
+    }
+    
+    console.log('❌ CORS: Origin no permitido:', origin);
+    const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+    return callback(new Error(msg), false);
+  },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+  exposedHeaders: ['Authorization']
 }));
 app.use(express.json());
 
