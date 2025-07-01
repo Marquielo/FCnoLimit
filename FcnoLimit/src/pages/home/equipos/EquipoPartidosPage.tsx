@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { IonPage, IonContent, IonSpinner } from '@ionic/react';
 import NavBar from '../../../components/NavBar';
 import Footer from '../../../components/Footer';
 import { RenderMatchCard } from '../../../components/RenderMatchCard';
 import { startGlobalParticlesEffect } from '../../../effects/globalParticlesEffect';
 import './EquipoPartidosPage.css';
+import './EquiposPage.css';
 
 const apiBaseUrl = 'https://fcnolimit-back.onrender.com';
 
 const EquipoPartidosPage: React.FC = () => {
   const { id: idParam } = useParams<{ id: string }>();
+  const history = useHistory();
   const [partidos, setPartidos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -69,7 +71,7 @@ const EquipoPartidosPage: React.FC = () => {
     <IonPage>
       <NavBar />
       <IonContent fullscreen>
-        <div className="equipos-content">
+        <div className="equipos-content" style={{ maxWidth: 'none', margin: 0, width: '100%', minHeight: '100vh', padding: 0 }}>
           {/* Banner superior igual que EquiposPage */}
           {equipo && (
             <div className="equipo-banner-dark">
@@ -88,12 +90,38 @@ const EquipoPartidosPage: React.FC = () => {
                   className="equipo-banner-logo"
                 />
                 <div className="equipo-banner-title">{equipo.nombre}</div>
+                <button className="equipo-banner-follow">★ Seguir</button>
               </div>
             </div>
           )}
-          <h2 className="equipo-section-title fcnolimit-title" style={{ marginTop: 32, marginBottom: 24, textAlign: 'center', letterSpacing: 1 }}>
-            Próximos partidos del equipo
-          </h2>
+          {/* Tabs navegación */}
+          <div className="equipo-tabs">
+            <button
+              className="equipo-tab"
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#fff', fontWeight: 600 }}
+              onClick={() => {
+                if (equipoId) localStorage.setItem('equipoId', equipoId.toString());
+                history.push(`/equipos/${equipoId}`);
+              }}
+            >
+              Resumen
+            </button>
+            <div className="equipo-tab active">Partidos</div>
+            <button
+              className="equipo-tab"
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#fff', fontWeight: 600 }}
+              onClick={() => {
+                if (equipoId) localStorage.setItem('equipoId', equipoId.toString());
+                history.push(`/equipos/${equipoId}/resultados`);
+              }}
+            >
+              Resultados
+            </button>
+          </div>
+          <div style={{ padding: '24px 12px 48px 12px', maxWidth: '900px', margin: '0 auto' }}>
+            <h2 className="equipo-section-title fcnolimit-title" style={{ marginTop: 32, marginBottom: 24, textAlign: 'center', letterSpacing: 1 }}>
+              Próximos partidos del equipo
+            </h2>
           {loading ? (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 500 }}>
               <IonSpinner name="crescent" />
@@ -117,9 +145,9 @@ const EquipoPartidosPage: React.FC = () => {
                   isJugado={false}
                 />
               ))}
-            </div>
-          )}
-          <div className="footer-separator"></div>
+            </div>            )}
+            <div className="footer-separator"></div>
+          </div>
         </div>
         <Footer />
       </IonContent>

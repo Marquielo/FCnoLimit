@@ -1,0 +1,185 @@
+/* Estilos específicos para la aplicación móvil */
+
+/* Variables de colores para FCnoLimit Mobile */
+:root {
+  --ion-color-fcno-primary: #1976d2;
+  --ion-color-fcno-primary-rgb: 25, 118, 210;
+  --ion-color-fcno-primary-contrast: #ffffff;
+  --ion-color-fcno-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-fcno-primary-shade: #1565c0;
+  --ion-color-fcno-primary-tint: #42a5f5;
+
+  --ion-color-fcno-secondary: #388e3c;
+  --ion-color-fcno-secondary-rgb: 56, 142, 60;
+  --ion-color-fcno-secondary-contrast: #ffffff;
+  --ion-color-fcno-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-fcno-secondary-shade: #2e7d32;
+  --ion-color-fcno-secondary-tint: #4caf50;
+}
+
+/* Estilos específicos para cards de partidos */
+.partido-card {
+  margin-bottom: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.partido-card:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
+}
+
+/* Estilos para avatares de equipos */
+.equipo-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 2px solid var(--ion-color-light);
+}
+
+/* Marcador de partidos */
+.marcador {
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--ion-color-primary);
+  line-height: 1;
+}
+
+.marcador-pendiente {
+  font-size: 18px;
+  color: var(--ion-color-medium);
+  font-weight: bold;
+}
+
+/* Badges de estado */
+.estado-badge {
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Información de equipos */
+.equipo-info {
+  text-align: center;
+  flex: 1;
+}
+
+.equipo-nombre {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.equipo-tipo {
+  font-size: 12px;
+  color: var(--ion-color-medium);
+}
+
+/* Estilos para estadísticas */
+.stat-card {
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-secondary) 100%);
+  color: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.stat-number {
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-top: 4px;
+}
+
+/* Estilos para tabs móviles */
+.mobile-tabs {
+  --background: var(--ion-color-light);
+  --color-selected: var(--ion-color-primary);
+}
+
+/* Estilos para refresh */
+.ion-refresher-content {
+  --background: var(--ion-color-light);
+}
+
+/* Personalización de searchbar */
+.mobile-searchbar {
+  --background: var(--ion-color-light);
+  --border-radius: 12px;
+  margin: 16px;
+}
+
+/* Animaciones suaves */
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive para diferentes tamaños de pantalla */
+@media (max-width: 768px) {
+  .equipo-nombre {
+    font-size: 14px;
+  }
+  
+  .marcador {
+    font-size: 24px;
+  }
+}
+
+/* Estilos para el perfil móvil */
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid var(--ion-color-primary);
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Loading spinner personalizado */
+.custom-spinner {
+  --color: var(--ion-color-primary);
+}
+
+/* Botones personalizados */
+.fcno-button {
+  --border-radius: 8px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  font-weight: 600;
+}
+
+/* Cards con gradiente */
+.gradient-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.gradient-card h1,
+.gradient-card h2,
+.gradient-card h3,
+.gradient-card p {
+  color: white;
+}

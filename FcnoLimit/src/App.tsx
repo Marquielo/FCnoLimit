@@ -48,6 +48,7 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './styles/variables.css';
+import './styles/mobile/mobile-theme.css';
 
 import JugadorPerfil from './pages/admin/jugador/perfil/JugadorPerfil';
 import JugadorEstadisticas from './pages/admin/jugador/estadisticas/Estadisticas';
@@ -70,6 +71,7 @@ import PaginaNoticiasEnVivo from './pages/PaginaNoticiasEnVivo';
 import SimpleGoogleAuth from './components/SimpleGoogleAuth';
 import PlayerCardsDemo from './pages/PlayerCardsDemo';
 import FloatingChatbot from './components/FloatingChatbot/FloatingChatbotSimple';
+import { MobileApp } from './pages/mobile';
 
 setupIonicReact({
   mode: 'md',
@@ -240,6 +242,11 @@ const App: React.FC = () => {
               <PaginaNoticiasEnVivo />
             </ProtectedRoute>
           )} />
+
+          {/* Rutas para aplicación móvil */}
+          <Route path="/mobile">
+            <MobileApp />
+          </Route>
 
           <Route exact path="/">
             <Redirect to="/inicio" />

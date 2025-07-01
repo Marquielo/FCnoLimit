@@ -630,6 +630,86 @@ ion-button[class*="login"] ion-icon,
 }
 
 /* ==================== */
+/* Estilos para Dropdown de Equipos */
+/* ==================== */
+
+.equipos-dropdown {
+  position: relative;
+}
+
+.equipos-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--fcnolimit-bg-dark);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  min-width: 260px;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 9999;
+  padding: 14px 12px;
+  border: 2px solid #ff9800;
+  animation: dropdownFadeIn 0.2s ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.dropdown-title {
+  font-weight: 700;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #fff;
+}
+
+.dropdown-loading {
+  padding: 12px;
+  text-align: center;
+  color: #fff;
+}
+
+.dropdown-equipo-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.18s;
+  gap: 10px;
+  font-size: 15px;
+  color: #fff;
+  font-weight: 500;
+  text-align: left;
+}
+
+.dropdown-equipo-btn:hover {
+  background: rgba(255, 152, 0, 0.1);
+}
+
+.dropdown-equipo-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+  border: 1.5px solid #ff9800;
+  background: #fafafa;
+}
+
+.dropdown-equipo-nombre {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
+}
+
+/* ==================== */
 /* 8. Media Queries */
 /* ==================== */
 
@@ -669,6 +749,7 @@ ion-button[class*="login"] ion-icon,
   /* Base adjustments */
   .navbar {
     padding: 0.6rem 1rem;
+    z-index: 1000 !important; /* Asegurar que el navbar esté por debajo del dropdown */
   }
   
   .navbar-header {
@@ -966,6 +1047,61 @@ ion-button[class*="login"] ion-icon,
 
   .nav-link.active ion-icon {
     color: var(--fcnolimit-primary);
+  }
+  
+  /* Estilos específicos para dropdown de equipos en móvil */
+  .equipos-dropdown {
+    position: relative !important;
+    z-index: 9998 !important;
+  }
+  
+  .equipos-dropdown-menu {
+    position: fixed !important;
+    z-index: 99999 !important; /* Aumentado para máxima prioridad */
+    left: 1rem !important;
+    right: 1rem !important;
+    top: 70px !important; /* Posición fija desde la parte superior */
+    width: calc(100% - 2rem) !important;
+    max-width: none !important;
+    background: linear-gradient(135deg, #2a3441, #1e2c3a) !important;
+    border: 2px solid #ff9800 !important; /* Borde naranja más visible */
+    color: white !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4) !important; /* Sombra más pronunciada */
+    border-radius: 12px !important;
+    margin-top: 0 !important;
+    transform: translateY(0) !important;
+    /* Asegurar que esté por encima de todo */
+    isolation: isolate !important;
+  }
+  
+  /* Overlay para asegurar que capture clics y esté completamente encima */
+  .equipos-dropdown-menu::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+  
+  .equipos-dropdown-menu .dropdown-item {
+    color: white !important;
+    padding: 12px 16px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: transparent !important;
+    transition: all 0.2s ease !important;
+  }
+  
+  .equipos-dropdown-menu .dropdown-item:hover {
+    background: rgba(255, 167, 38, 0.1) !important;
+    color: var(--fcnolimit-primary) !important;
+    transform: translateX(3px) !important;
+  }
+  
+  .equipos-dropdown-menu .dropdown-item:last-child {
+    border-bottom: none !important;
   }
   
   /* Título de sección */

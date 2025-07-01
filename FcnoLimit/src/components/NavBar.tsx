@@ -399,30 +399,12 @@ const NavBar: React.FC = () => {
                     <span className="nav-text-visible">Equipos</span>
                   </button>
                   {showEquiposDropdown && (
-                    <div
-                      className="equipos-dropdown-menu"
-                      style={{
-                        position: "absolute",
-                        top: "100%",
-                        left: 0,
-                        zIndex: 9999,
-                        minWidth: 260,
-                        background: "var(--fcnolimit-bg-dark)", // usa el mismo azul del navbar
-                        boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
-                        borderRadius: 14,
-                        marginTop: 8,
-                        padding: "14px 12px",
-                        border: "2px solid #ff9800", // naranja
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 6,
-                      }}
-                    >
+                    <div className="equipos-dropdown-menu">
                       <div className="dropdown-title" style={{ fontWeight: 700, marginBottom: 10, fontSize: 16, color: "#fff" }}>
                         Equipos más buscados
                       </div>
                       {equiposPopulares.length === 0 ? (
-                        <div className="dropdown-loading" style={{ padding: 12, textAlign: "center", color: "#fff" }}>Cargando...</div>
+                        <div className="dropdown-loading">Cargando...</div>
                       ) : (
                         equiposPopulares.map(eq => (
                           <button
@@ -436,43 +418,13 @@ const NavBar: React.FC = () => {
                               history.push(`/equipos/${eq.id}`);
                               handleMenuClose();
                             }}
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              width: "100%",
-                              padding: "8px 10px",
-                              border: "none",
-                              background: "none",
-                              cursor: "pointer",
-                              borderRadius: 8,
-                              transition: "background 0.18s",
-                              gap: 10,
-                              fontSize: 15,
-                              color: "#fff",
-                              fontWeight: 500,
-                              textAlign: "left",
-                            }}
-                            onMouseOver={e => (e.currentTarget.style.background = "#ff9800")}
-                            onMouseOut={e => (e.currentTarget.style.background = "none")}
                           >
                             <img
-                              src={
-                                eq.imagen_url
-                                  ? (eq.imagen_url.startsWith("http") ? eq.imagen_url : `${apiBaseUrl}${eq.imagen_url}`)
-                                  : '/assets/equipos/default.png'
-                              }
-                              alt={eq.nombre}
-                              style={{
-                                width: 32,
-                                height: 32,
-                                marginRight: 10,
-                                borderRadius: '50%',
-                                objectFit: 'cover',
-                                border: "1.5px solid #ff9800",
-                                background: "#fafafa"
-                              }}
+                              src={`${apiBaseUrl}/equipos/${eq.id}/escudo`}
+                              alt={`${eq.nombre} escudo`}
+                              className="dropdown-equipo-logo"
                             />
-                            <span style={{ flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", color: "#fff" }}>
+                            <span className="dropdown-equipo-nombre">
                               {eq.nombre}
                             </span>
                           </button>
