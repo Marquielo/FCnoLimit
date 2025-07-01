@@ -2,6 +2,10 @@
 	"appId": "com.fcnolimit.mobile",
 	"appName": "FCnoLimit",
 	"webDir": "dist",
+	"android": {
+		"allowMixedContent": true,
+		"captureInput": true
+	},
 	"plugins": {
 		"StatusBar": {
 			"style": "DARK"
