@@ -19,7 +19,18 @@ export interface RefreshResponse {
 }
 
 class AuthService {
-  private readonly API_BASE = 'https://fcnolimit-back.onrender.com/api';
+  private readonly API_BASE = import.meta.env.VITE_API_URL || 'https://fcnolimit-back.onrender.com/api';
+  
+  constructor() {
+    // Debug de configuración al inicializar
+    console.log('🔧 AuthService Config:');
+    console.log('- VITE_API_URL:', import.meta.env.VITE_API_URL);
+    console.log('- API_BASE final:', this.API_BASE);
+    console.log('- Environment mode:', import.meta.env.MODE);
+    console.log('- Is Dev:', import.meta.env.DEV);
+    console.log('- Is Prod:', import.meta.env.PROD);
+    console.log('- All env vars:', import.meta.env);
+  }
   
   /**
    * Verifica si el usuario está autenticado
@@ -135,7 +146,11 @@ class AuthService {
    * Realiza login del usuario
    */
   async login(correo: string, contraseña: string): Promise<LoginResponse> {
-    const response = await fetch(`${this.API_BASE}/usuarios/login`, {
+    const loginUrl = `${this.API_BASE}/usuarios/login`;
+    console.log('🔗 URL de login:', loginUrl);
+    console.log('📧 Datos:', { correo, contraseña: contraseña ? '***' : 'NO' });
+    
+    const response = await fetch(loginUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -143,8 +158,11 @@ class AuthService {
       body: JSON.stringify({ correo, contraseña })
     });
 
+    console.log('📡 Response status:', response.status);
+    
     if (!response.ok) {
       const error = await response.json();
+      console.error('❌ Error response:', error);
       throw new Error(error.error || 'Error de autenticación');
     }
 

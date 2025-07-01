@@ -18,7 +18,7 @@ import {
   IonRefresherContent,
   RefresherEventDetail
 } from '@ionic/react';
-import { football, trophy, calendar, time, statsChart } from 'ionicons/icons';
+import { football, trophy, calendar, time, statsChart, bug } from 'ionicons/icons';
 
 const MobileHome: React.FC = () => {
   const handleRefresh = (event: CustomEvent<RefresherEventDetail>) => {
@@ -122,6 +122,12 @@ const MobileHome: React.FC = () => {
             <IonButton expand="block" routerLink="/mobile/partidos" fill="solid" color="primary">
               <IonIcon icon={football} slot="start" />
               Ver Todos los Partidos
+            </IonButton>
+            
+            {/* Botón de debug */}
+            <IonButton expand="block" routerLink="/mobile/debug" fill="outline" color="medium" className="ion-margin-top">
+              <IonIcon icon={bug} slot="start" />
+              Debug Info (Dev)
             </IonButton>
           </div>
         </div>

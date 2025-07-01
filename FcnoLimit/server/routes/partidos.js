@@ -304,7 +304,7 @@ module.exports = (pool) => {
          LEFT JOIN fcnolimit.divisiones d ON p.division_id = d.id
          WHERE (p.equipo_local_id = $1 OR p.equipo_visitante_id = $1)
            AND p.estado = 'pendiente'
-           AND p.fecha <= NOW()
+           AND p.fecha >= NOW()
          ORDER BY p.fecha ASC
          LIMIT 1`,
         [equipo_id]

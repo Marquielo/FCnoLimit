@@ -5,3 +5,4 @@ export { default as MobilePartidos } from './MobilePartidos';
 export { default as MobileEquipos } from './MobileEquipos';
 export { default as MobileEstadisticas } from './MobileEstadisticas';
 export { default as MobilePerfil } from './MobilePerfil';
+export { default as DebugPage } from './DebugPage';

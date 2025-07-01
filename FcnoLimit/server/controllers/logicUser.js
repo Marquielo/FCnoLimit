@@ -62,6 +62,22 @@ async function loginUser(pool, { correo, contraseña }, deviceInfo = {}) {
     }
 
     // 2. Verificar contraseña
+    console.log('🔍 Debug login:');
+    console.log('📧 correo:', correo);
+    console.log('🔑 contraseña recibida:', contraseña ? 'SÍ' : 'NO');
+    console.log('👤 usuario encontrado:', user ? 'SÍ' : 'NO');
+    console.log('🔒 hash en BD:', user.contraseña ? 'SÍ' : 'NO');
+    
+    if (!contraseña) {
+      console.log('❌ Contraseña no proporcionada');
+      return null;
+    }
+    
+    if (!user.contraseña) {
+      console.log('❌ Usuario sin hash de contraseña en BD');
+      return null;
+    }
+    
     const valid = await bcrypt.compare(contraseña, user.contraseña);
     if (!valid) {
       console.log(`⚠️ Contraseña incorrecta para usuario: ${correo}`);

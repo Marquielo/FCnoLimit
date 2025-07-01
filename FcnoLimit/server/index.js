@@ -29,9 +29,37 @@ const allowedOrigins = process.env.CORS_ORIGIN
   : [
       'http://localhost:5000',
       'http://localhost:8100',
+      'https://localhost',
+      'https://localhost:8100',
+      'capacitor://localhost',
+      'ionic://localhost',
+      'http://localhost:8080',
       'https://fcnolimit.firebaseapp.com',
       'https://fcnolimit.web.app'
     ];
+
+// Middleware para loggear requests CORS
+app.use((req, res, next) => {
+  if (req.headers.origin) {
+    console.log('🌐 Request Origin:', req.headers.origin);
+    console.log('📱 User-Agent:', req.headers['user-agent']);
+    console.log('🔒 Referer:', req.headers.referer || 'N/A');
+    console.log('✅ Allowed Origins:', allowedOrigins);
+    
+    // Detectar si es una app móvil
+    const userAgent = req.headers['user-agent'] || '';
+    const isMobile = userAgent.includes('Mobile') || 
+                    userAgent.includes('Android') || 
+                    userAgent.includes('iPhone') ||
+                    req.headers.origin?.includes('capacitor://') ||
+                    req.headers.origin?.includes('ionic://');
+    
+    if (isMobile) {
+      console.log('📱 MOBILE REQUEST DETECTED');
+    }
+  }
+  next();
+});
 
 app.use(cors({
   origin: allowedOrigins,
@@ -107,6 +135,34 @@ connectWithRetry().catch(err => {
 // Endpoint de prueba
 app.get('/api/ping', (req, res) => {
   res.json({ message: 'pong' });
+});
+
+// Endpoint específico para debug de aplicaciones móviles
+app.get('/api/mobile-debug', (req, res) => {
+  const userAgent = req.headers['user-agent'] || '';
+  const origin = req.headers.origin || '';
+  
+  res.json({
+    message: 'Mobile Debug Info',
+    timestamp: new Date().toISOString(),
+    server: 'FCnoLimit Backend - Render',
+    client_info: {
+      origin: origin,
+      user_agent: userAgent,
+      is_mobile: userAgent.includes('Mobile') || 
+                userAgent.includes('Android') || 
+                userAgent.includes('iPhone'),
+      is_capacitor: origin.includes('capacitor://') || origin.includes('ionic://'),
+      ip: req.ip || req.connection.remoteAddress,
+      headers: req.headers
+    },
+    backend_info: {
+      environment: process.env.NODE_ENV || 'development',
+      port: port,
+      database_connected: true,
+      cors_origins: allowedOrigins
+    }
+  });
 });
 
 // Endpoint para probar conexión a la base de datos en Render

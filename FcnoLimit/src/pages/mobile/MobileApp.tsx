@@ -23,6 +23,7 @@ import MobilePartidos from './MobilePartidos';
 import MobileEquipos from './MobileEquipos';
 import MobileEstadisticas from './MobileEstadisticas';
 import MobilePerfil from './MobilePerfil';
+import DebugPage from './DebugPage';
 
 const MobileApp: React.FC = () => {
   return (
@@ -45,6 +46,9 @@ const MobileApp: React.FC = () => {
         </Route>
         <Route exact path="/mobile/perfil">
           <MobilePerfil />
+        </Route>
+        <Route exact path="/mobile/debug">
+          <DebugPage />
         </Route>
         {/* Rutas adicionales para detalles */}
         <Route path="/mobile/equipo/:id">

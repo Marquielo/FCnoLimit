@@ -4,11 +4,15 @@ const config: CapacitorConfig = {
   appId: 'com.fcnolimit.mobile',
   appName: 'FCnoLimit',
   webDir: 'dist',
-  server: {
-    androidScheme: 'https',
-    // Para live reload - tu IP de Wi-Fi
-    url: 'http://192.168.1.204:8100',
-    cleartext: true
+  // Comentamos el servidor local para usar la app estática
+  // server: {
+  //   androidScheme: 'https',
+  //   url: 'http://192.168.1.204:8100',
+  //   cleartext: true
+  // },
+  android: {
+    allowMixedContent: true,
+    captureInput: true
   },
   plugins: {
     StatusBar: {
