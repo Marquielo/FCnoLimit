@@ -852,3 +852,453 @@
     margin-bottom: 2rem;
   }
 }
+
+/* ========================================= */
+/* ESTILOS ESPECÍFICOS PARA AUTHPAGEMOBILE */
+/* ========================================= */
+
+/* Vista móvil 100% sin navbar, tabbar ni menú hamburguesa */
+.mobile-auth-page {
+  --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: 'Montserrat', sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.mobile-auth-page * {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.mobile-auth-page *::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile-auth-content {
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden !important;
+  --overflow: hidden !important;
+}
+
+.mobile-auth-grid {
+  height: 100vh;
+  max-width: 100%;
+  margin: 0;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: hidden;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 15px;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+  max-height: 100vh;
+  min-height: 100vh;
+}
+
+/* Header móvil con logo - NO USADO */
+/*
+.mobile-header {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.mobile-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 0;
+}
+
+.mobile-logo .logo-icon {
+  font-size: 2.5rem;
+  color: #ffffff;
+}
+
+.mobile-logo .logo-text {
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: 'Teko', sans-serif;
+  letter-spacing: 1px;
+  color: #ffffff;
+}
+
+.mobile-logo .logo-text-highlight {
+  color: var(--fcnolimit-primary-dark);
+}
+*/
+
+/* Formulario móvil */
+.mobile-form {
+  width: 100%;
+  max-width: 400px;
+  max-height: calc(100vh - 60px);
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 5;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Ajustar el título del formulario en móvil */
+.mobile-form .form-title {
+  color: #333333;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+/* Patrón decorativo de fondo para móvil */
+.mobile-auth-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Efecto de partículas flotantes */
+.mobile-auth-page::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.2), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.2), transparent),
+    radial-gradient(2px 2px at 160px 30px, rgba(255, 255, 255, 0.3), transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: sparkle 20s linear infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes sparkle {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100px);
+  }
+}
+
+/* Botones sociales en móvil */
+.mobile-form .social-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 1.5rem;
+}
+
+.mobile-form .social-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Separador en móvil */
+.mobile-form .separator {
+  text-align: center;
+  margin: 1.5rem 0;
+  position: relative;
+  color: #666;
+  font-weight: 500;
+}
+
+.mobile-form .separator::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #ddd, transparent);
+  z-index: 0;
+}
+
+.mobile-form .separator span,
+.mobile-form .separator {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 0 15px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Campos de formulario en móvil */
+.mobile-form .field-container {
+  margin-bottom: 1.2rem;
+}
+
+.mobile-form .field-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.mobile-form .custom-input {
+  --background: rgba(248, 250, 252, 0.8);
+  --border-color: #e2e8f0;
+  --border-radius: 12px;
+  --border-width: 1px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --min-height: 48px;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+}
+
+.mobile-form .custom-input:focus-within {
+  --border-color: var(--fcnolimit-primary-dark);
+  box-shadow: 0 0 0 3px rgba(240, 124, 124, 0.1);
+}
+
+/* Botón principal en móvil */
+.mobile-form .submit-button {
+  --background: linear-gradient(135deg, var(--fcnolimit-primary-dark) 0%, #e85a5a 100%);
+  --color: white;
+  --border-radius: 12px;
+  --padding-top: 14px;
+  --padding-bottom: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-top: 1.5rem;
+  box-shadow: 0 8px 25px rgba(240, 124, 124, 0.3);
+  transition: all 0.3s ease;
+}
+
+.mobile-form .submit-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(240, 124, 124, 0.4);
+}
+
+/* Footer en móvil */
+.mobile-form .auth-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.mobile-form .auth-footer p {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.mobile-form .auth-footer a {
+  color: var(--fcnolimit-primary-dark);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.mobile-form .auth-footer a:hover {
+  color: #e85a5a;
+}
+
+/* Selector de roles en móvil */
+.mobile-form .role-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 0.5rem;
+}
+
+.mobile-form .role-option {
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(248, 250, 252, 0.5);
+  backdrop-filter: blur(5px);
+}
+
+.mobile-form .role-option.selected {
+  border-color: var(--fcnolimit-primary-dark);
+  background: rgba(240, 124, 124, 0.1);
+}
+
+.mobile-form .role-option input[type="radio"] {
+  display: none;
+}
+
+.mobile-form .role-option label {
+  cursor: pointer;
+  width: 100%;
+}
+
+.mobile-form .role-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.mobile-form .role-description {
+  font-size: 0.8rem;
+  color: #666;
+  line-height: 1.3;
+}
+
+/* Términos y condiciones en móvil */
+.mobile-form .terms-container {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mobile-form .custom-checkbox {
+  --background: transparent;
+  --border-color: transparent;
+  --padding-start: 0;
+  --padding-end: 0;
+  --min-height: auto;
+}
+
+.mobile-form .terms-checkbox {
+  margin-right: 10px;
+  accent-color: var(--fcnolimit-primary-dark);
+}
+
+.mobile-form .terms-label {
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.mobile-form .terms-link {
+  color: var(--fcnolimit-primary-dark);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Mensajes de validación en móvil */
+.mobile-form .validation-message {
+  color: #dc3545;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+  display: block;
+}
+
+.mobile-form .error-message {
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin: 1rem 0;
+  border-left: 4px solid #dc3545;
+}
+
+.mobile-form .success-message {
+  background: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin: 1rem 0;
+  border-left: 4px solid #28a745;
+}
+
+/* Toggle de contraseña en móvil */
+.mobile-form .password-toggle {
+  --color: #666;
+  --padding-start: 8px;
+  --padding-end: 8px;
+  min-width: auto;
+}
+
+/* Responsive para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .mobile-form {
+    padding: 1.5rem;
+    margin: 20px;
+    margin-top: 80px;
+  }
+  
+  .mobile-header {
+    top: 30px;
+  }
+  
+  .mobile-logo .logo-icon {
+    font-size: 2rem;
+  }
+  
+  .mobile-logo .logo-text {
+    font-size: 1.6rem;
+  }
+  
+  .mobile-form .form-title {
+    font-size: 1.6rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .mobile-form .social-button {
+    width: 45px;
+    height: 45px;
+  }
+}
+
+/* Evitar conflictos con estilos del diseño web */
+.mobile-auth-page .left-column,
+.mobile-auth-page .right-column {
+  display: none;
+}
+
+.mobile-auth-page .mobile-column {
+  display: flex !important;
+}

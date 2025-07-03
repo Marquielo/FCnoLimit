@@ -1,4 +1,4 @@
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, useLocation } from 'react-router-dom';
 import {
   IonApp,
   IonRouterOutlet,
@@ -13,6 +13,7 @@ import ComparativasPage from './pages/home/estadisticas/ComparativasPage';
 import PartidosPage from './pages/home/partidos/PartidosPage';      
 import InicioPage from './pages/home/inicio/InicioPage';
 import AuthPage from './pages/home/auth/AuthPage';
+import AuthPageMobile from './pages/home/auth/AuthPageMobile';
 import CampeonatosPage from './pages/home/campeonato/CampeonatoPage';
 import NoticiasPage  from './pages/home/noticias/NoticiasPage';
 import AdminDashboard from './pages/home/admin/AdminDashboard';
@@ -98,6 +99,15 @@ const App: React.FC = () => {
 
   // Renderizar componente de navegación basado en el tipo de dispositivo
   const renderNavigation = () => {
+    // Rutas donde NO debe aparecer la navegación
+    const noNavigationRoutes = ['/auth'];
+    const currentPath = window.location.pathname;
+    const shouldHideNavigation = noNavigationRoutes.includes(currentPath);
+
+    if (shouldHideNavigation) {
+      return null; // No mostrar navegación en rutas específicas
+    }
+    
     if (shouldShowMobileTabBar) {
       return <MobileTabBar />;
     } else if (shouldShowDesktopNavBar) {
@@ -116,7 +126,9 @@ const App: React.FC = () => {
         <IonRouterOutlet>
           {/* Rutas públicas */}
             <Route exact path="/inicio" component={InicioPage} />
-            <Route exact path="/auth" component={AuthPage} />
+            <Route exact path="/auth" render={() => 
+              isMobile ? <AuthPageMobile /> : <AuthPage />
+            } />
             <Route exact path="/google-test" component={SimpleGoogleAuth} />
             <Route exact path="/player-cards" component={PlayerCardsDemo} />
 
