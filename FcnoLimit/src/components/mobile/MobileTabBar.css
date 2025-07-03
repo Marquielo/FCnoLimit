@@ -1,0 +1,503 @@
+/* Estilos para MobileTabBar - Replicando el diseño del navbar */
+.mobile-tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  border-top: 1px solid rgba(255, 152, 0, 0.3);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.tab-bar-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 4px 12px 4px;
+  max-width: 100%;
+}
+
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 6px 8px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-width: 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.tab-item:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 152, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.tab-item.active {
+  color: #ffffff;
+  background: rgba(255, 152, 0, 0.2);
+  border: 1px solid rgba(255, 152, 0, 0.4);
+}
+
+.tab-item.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #ff9800, #ff6f00);
+  border-radius: 0 0 2px 2px;
+}
+
+.tab-icon {
+  font-size: 20px;
+  margin-bottom: 2px;
+  transition: all 0.3s ease;
+}
+
+.tab-item.active .tab-icon {
+  transform: scale(1.1);
+  color: #ff9800;
+}
+
+.tab-text {
+  font-size: 10px;
+  font-weight: 500;
+  margin-top: 2px;
+  letter-spacing: 0.3px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60px;
+}
+
+.tab-item.active .tab-text {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* Estilos para el botón de login */
+.login-tab {
+  background: linear-gradient(135deg, #ff6f00, #ff9800);
+  color: #ffffff;
+  border: 1px solid rgba(255, 152, 0, 0.6);
+}
+
+.login-tab:hover {
+  background: linear-gradient(135deg, #ff9800, #ffb74d);
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* Estilos para el tab de usuario */
+.user-tab {
+  position: relative;
+}
+
+.user-tab-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-avatar-tab {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.user-tab.active .user-avatar-tab {
+  border-color: #ff9800;
+  transform: scale(1.1);
+}
+
+/* Overlay para acciones adicionales */
+.user-actions-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.user-actions-menu {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  border-radius: 20px 20px 0 0;
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  margin-bottom: 80px; /* Espacio para el tab bar */
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+.user-actions-header {
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 16px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar-small {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #ff9800;
+}
+
+.user-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.user-role {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.user-actions-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.user-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 12px 16px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left;
+  width: 100%;
+}
+
+.user-menu-item:hover {
+  background: rgba(255, 152, 0, 0.1);
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+.user-menu-item ion-icon {
+  font-size: 18px;
+  color: #ff9800;
+}
+
+.user-menu-item.logout {
+  color: #ff5252;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 8px;
+  padding-top: 16px;
+}
+
+.user-menu-item.logout ion-icon {
+  color: #ff5252;
+}
+
+.user-menu-item.logout:hover {
+  background: rgba(255, 82, 82, 0.1);
+  color: #ff7979;
+}
+
+/* Estilos para el dropdown de equipos */
+.equipos-dropdown-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.equipos-dropdown-menu {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  border-radius: 20px 20px 0 0;
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  margin-bottom: 80px; /* Espacio para el tab bar */
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.equipos-dropdown-header {
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 16px;
+}
+
+.equipos-dropdown-header h3 {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+}
+
+.equipos-dropdown-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.equipo-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 12px 16px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+
+.equipo-dropdown-item:hover {
+  background: rgba(255, 152, 0, 0.1);
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+.equipo-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 152, 0, 0.3);
+}
+
+.equipo-nombre {
+  font-size: 14px;
+  font-weight: 500;
+  flex: 1;
+}
+
+.equipos-loading {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 20px;
+  font-style: italic;
+}
+
+.ver-todos-equipos {
+  background: linear-gradient(135deg, #ff6f00, #ff9800);
+  color: #ffffff;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  margin-top: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  width: 100%;
+}
+
+.ver-todos-equipos:hover {
+  background: linear-gradient(135deg, #ff9800, #ffb74d);
+  transform: translateY(-2px);
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive para diferentes tamaños de pantalla */
+@media (max-width: 360px) {
+  .tab-text {
+    font-size: 9px;
+  }
+  
+  .tab-icon {
+    font-size: 18px;
+  }
+  
+  .tab-item {
+    min-width: 50px;
+    padding: 4px 6px;
+  }
+}
+
+@media (min-width: 768px) {
+  /* Ocultar el tab bar en tablets y desktop */
+  .mobile-tab-bar {
+    display: none;
+  }
+  
+  .user-actions-overlay {
+    display: none;
+  }
+}
+
+/* Badge de notificaciones */
+.tab-badge {
+  position: absolute;
+  top: 4px;
+  right: 12px;
+  font-size: 9px;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Responsive para diferentes tamaños de pantalla móvil */
+@media (max-height: 600px) {
+  .mobile-tab-bar {
+    --padding-top: 4px;
+    --padding-bottom: 4px;
+  }
+  
+  .mobile-tab-bar ion-icon {
+    font-size: 20px;
+  }
+  
+  .mobile-tab-bar ion-label {
+    font-size: 10px;
+  }
+}
+
+/* Adaptación para pantallas con notch */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .mobile-tab-bar {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Efecto cuando el tab está activo */
+.mobile-tab-bar ion-tab-button[aria-selected="true"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 3px;
+  background: #ffffff;
+  border-radius: 0 0 3px 3px;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateX(-50%) translateY(-3px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Tema oscuro */
+@media (prefers-color-scheme: dark) {
+  .mobile-tab-bar {
+    --background: var(--ion-color-dark);
+    --border: 1px solid var(--ion-color-dark-shade);
+  }
+}
+
+/* Ocultar en pantallas grandes (web) */
+@media (min-width: 768px) {
+  .mobile-tab-bar {
+    display: none !important;
+  }
+}
+
+/* Estilos específicos para ocultar elementos en móvil */
+@media (max-width: 768px) {
+  /* Ocultar footer en dispositivos móviles */
+  .footer,
+  .footer-separator,
+  footer,
+  .mobile-hidden {
+    display: none !important;
+  }
+  
+  /* Ajustar contenido sin footer */
+  .mobile-content {
+    padding-bottom: 80px !important; /* Solo espacio para TabBar */
+  }
+  
+  /* Asegurar que el contenido llegue hasta abajo */
+  .ion-page,
+  .ion-content {
+    min-height: 100vh !important;
+  }
+}
