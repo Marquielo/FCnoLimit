@@ -19,7 +19,10 @@ export interface RefreshResponse {
 }
 
 class AuthService {
-  private readonly API_BASE = import.meta.env.VITE_API_URL || 'https://fcnolimit-back.onrender.com/api';
+  private readonly API_BASE = (() => {
+    const baseUrl = import.meta.env.VITE_API_URL || 'https://fcnolimit-back.onrender.com';
+    return baseUrl.endsWith('/api') ? baseUrl : `${baseUrl}/api`;
+  })();
   
   constructor() {
     // Debug de configuración al inicializar
