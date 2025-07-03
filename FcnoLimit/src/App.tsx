@@ -6,6 +6,7 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import NavBar from './components/NavBar';
+import MobileTabBar from './components/mobile/MobileTabBar';
 import EquiposPage from './pages/home/equipos/EquiposPage';
 import JugadoresPage from './pages/admin/jugador/JugadoresPage';
 import ComparativasPage from './pages/home/estadisticas/ComparativasPage';
@@ -17,6 +18,8 @@ import NoticiasPage  from './pages/home/noticias/NoticiasPage';
 import AdminDashboard from './pages/home/admin/AdminDashboard';
 import PerfilPage from './pages/home/perfil/PerfilPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import React, { useEffect, useState } from 'react';
+import { useDeviceDetection, generateResponsiveCSS } from './utils/deviceDetection';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 /* Core CSS required for Ionic components to work properly */
@@ -66,7 +69,6 @@ import EditarSolicitud from './pages/admin/EditarSolicitud';
 import EquipoPartidosPage from './pages/home/equipos/EquipoPartidosPage';
 import EquiposResultadosPage from './pages/home/equipos/EquiposResultadosPage';
 import { startGlobalParticlesEffect } from './effects/globalParticlesEffect';
-import React, { useEffect } from 'react';
 import PaginaNoticiasEnVivo from './pages/PaginaNoticiasEnVivo';
 import SimpleGoogleAuth from './components/SimpleGoogleAuth';
 import PlayerCardsDemo from './pages/PlayerCardsDemo';
@@ -79,14 +81,37 @@ setupIonicReact({
 });
 
 const App: React.FC = () => {
+  // Usar el hook de detección de dispositivos
+  const { 
+    isMobile, 
+    deviceType, 
+    shouldShowMobileTabBar, 
+    shouldShowDesktopNavBar 
+  } = useDeviceDetection();
+
   useEffect(() => {
     const stopParticles = startGlobalParticlesEffect();
     return () => {
       if (typeof stopParticles === 'function') stopParticles();
     };
   }, []);
+
+  // Renderizar componente de navegación basado en el tipo de dispositivo
+  const renderNavigation = () => {
+    if (shouldShowMobileTabBar) {
+      return <MobileTabBar />;
+    } else if (shouldShowDesktopNavBar) {
+      return <NavBar />;
+    }
+    return null;
+  };
   return (
-    <IonApp className="light-theme">
+    <IonApp className={`light-theme ${deviceType}-app`}>
+      {/* Estilos CSS dinámicos generados automáticamente */}
+      <style>
+        {generateResponsiveCSS(isMobile)}
+      </style>
+
       <IonReactRouter>
         <IonRouterOutlet>
           {/* Rutas públicas */}
@@ -252,7 +277,9 @@ const App: React.FC = () => {
             <Redirect to="/inicio" />
           </Route>
         </IonRouterOutlet>
-        <NavBar />
+        
+        {/* Renderizar navegación condicional */}
+        {renderNavigation()}
       </IonReactRouter>
       <FloatingChatbot />
     </IonApp>

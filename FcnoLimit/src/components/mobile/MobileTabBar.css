@@ -482,6 +482,15 @@
 
 /* Estilos específicos para ocultar elementos en móvil */
 @media (max-width: 768px) {
+  /* Ocultar menú hamburguesa del navbar principal en móviles */
+  .navbar-toggler,
+  .hamburger-menu,
+  .navbar-collapse,
+  .mobile-nav-toggle,
+  .nav-hamburger {
+    display: none !important;
+  }
+  
   /* Ocultar footer en dispositivos móviles */
   .footer,
   .footer-separator,

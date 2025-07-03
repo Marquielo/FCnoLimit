@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { IonContent, IonPage } from '@ionic/react';
 import { isMobileApp } from '../../utils/platformDetection';
 import MobileTabBar from '../mobile/MobileTabBar';
@@ -8,61 +8,104 @@ interface ResponsiveLayoutProps {
   children: React.ReactNode;
   showTabBar?: boolean;
   className?: string;
+  fullHeight?: boolean;
 }
 
 const ResponsiveLayout: React.FC<ResponsiveLayoutProps> = ({ 
   children, 
   showTabBar = true,
-  className 
+  className,
+  fullHeight = false
 }) => {
   const isNativeMobile = isMobileApp();
-  
-  // Detectar si es un smartphone (ancho de pantalla pequeño) independientemente de si es nativo o web
-  const isSmartphone = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const [isSmartphone, setIsSmartphone] = useState(false);
+
+  // Detectar tamaño de pantalla de forma reactiva
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmartphone(window.innerWidth <= 768);
+    };
+
+    // Verificar al montar
+    checkScreenSize();
+
+    // Escuchar cambios de tamaño de ventana
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   // Si es móvil nativo O smartphone web, usar layout móvil SIN NAVBAR
   if (isNativeMobile || isSmartphone) {
     return (
       <>
-        {/* Ocultar el navbar/hamburguesa y footer en smartphones usando CSS */}
-        {isSmartphone && !isNativeMobile && (
-          <style>
-            {`
+        {/* Estilos CSS integrados para móvil */}
+        <style>
+          {`
+            /* OCULTAR NAVBAR COMPLETO EN MÓVIL */
+            @media (max-width: 768px) {
               .navbar,
               .navbar-toggler,
               .navbar-header,
               .navbar-collapse,
-              .navbar-brand {
+              .navbar-brand,
+              .hamburger-menu,
+              .mobile-nav-toggle,
+              .nav-hamburger,
+              .navbar-nav {
                 display: none !important;
               }
               
               /* OCULTAR FOOTER EN MÓVIL */
               .footer,
               .footer-separator,
-              footer {
+              footer,
+              .mobile-hidden {
                 display: none !important;
               }
               
+              /* AJUSTAR BODY Y CONTENIDO */
               body {
                 padding-top: 0 !important;
+                margin-top: 0 !important;
               }
               
+              /* CONTENIDO MÓVIL */
               .mobile-content {
-                padding-bottom: 80px !important; /* Espacio para el tab bar */
-                min-height: 100vh;
+                padding-bottom: ${showTabBar ? '80px' : '20px'} !important;
+                min-height: ${fullHeight ? '100vh' : 'auto'};
+                overflow-x: hidden;
               }
-            `}
-          </style>
-        )}
+              
+              /* AJUSTES PARA IONIC */
+              ion-content {
+                --padding-bottom: ${showTabBar ? '80px' : '20px'} !important;
+                --overflow: hidden;
+              }
+              
+              /* PREVENIR SCROLL HORIZONTAL */
+              .ion-page {
+                overflow-x: hidden;
+                max-width: 100vw;
+              }
+              
+              /* COMPATIBILIDAD CON NOTCH */
+              .mobile-tab-bar {
+                padding-bottom: env(safe-area-inset-bottom);
+              }
+            }
+          `}
+        </style>
         
-        <IonPage className={className}>
+        <IonPage className={`mobile-layout ${className || ''}`}>
           <IonContent 
             className="mobile-content"
-            style={{ 
-              paddingBottom: showTabBar ? '80px' : '0' // Espacio para el TabBar
-            }}
+            scrollY={true}
+            scrollX={false}
           >
-            {children}
+            <div className="mobile-content-wrapper">
+              {children}
+            </div>
           </IonContent>
           
           {showTabBar && <MobileTabBar />}
@@ -75,7 +118,14 @@ const ResponsiveLayout: React.FC<ResponsiveLayoutProps> = ({
   return (
     <div className={`web-layout ${className || ''}`}>
       <NavBar />
-      {children}
+      <div className="web-content-wrapper">
+        {children}
+      </div>
+      
+      {/* Footer solo en desktop */}
+      <div className="desktop-only">
+        {/* Aquí puedes agregar footer si tienes */}
+      </div>
     </div>
   );
 };

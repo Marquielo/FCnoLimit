@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-  IonContent,
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonCard,
   IonCardHeader,
   IonCardContent,
@@ -18,6 +13,8 @@ import {
   IonCol
 } from '@ionic/react';
 import { pencil, camera, mailOutline, callOutline, calendarOutline } from 'ionicons/icons';
+import ResponsiveLayout from '../../components/layout/ResponsiveLayout';
+import './PerfilGeneral.css';
 
 const PerfilGeneral: React.FC = () => {
   const [usuario, setUsuario] = useState({
@@ -47,13 +44,13 @@ const PerfilGeneral: React.FC = () => {
   };
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Mi Perfil</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding">
+    <ResponsiveLayout showTabBar={true} className="perfil-general-page">
+      {/* Header solo visible en desktop */}
+      <div className="page-header mobile-hidden">
+        <h1>Mi Perfil</h1>
+      </div>
+
+      <div className="perfil-content">
         <IonCard>
           <IonCardContent>
             <IonRow className="ion-align-items-center">
@@ -94,7 +91,7 @@ const PerfilGeneral: React.FC = () => {
 
         <IonCard>
           <IonCardHeader>
-            <IonTitle size="small">Información personal</IonTitle>
+            <h3>Información personal</h3>
           </IonCardHeader>
           <IonCardContent>
             <IonList>
@@ -127,7 +124,7 @@ const PerfilGeneral: React.FC = () => {
         {usuario.rol === 'jugador' && (
           <IonCard>
             <IonCardHeader>
-              <IonTitle size="large">Resumen de jugador</IonTitle>
+              <h3>Resumen de jugador</h3>
             </IonCardHeader>
             <IonCardContent>
               <IonList>
@@ -153,8 +150,8 @@ const PerfilGeneral: React.FC = () => {
             </IonCardContent>
           </IonCard>
         )}
-      </IonContent>
-    </IonPage>
+      </div>
+    </ResponsiveLayout>
   );
 };
 

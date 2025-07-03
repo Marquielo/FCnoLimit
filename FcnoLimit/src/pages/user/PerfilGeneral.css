@@ -1,0 +1,162 @@
+/* Estilos para la página de Perfil General */
+
+.perfil-general-page {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.perfil-content {
+  padding: 16px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Header solo visible en desktop */
+.page-header {
+  padding: 20px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  margin-bottom: 20px;
+  border-radius: 12px;
+}
+
+.page-header h1 {
+  margin: 0;
+  color: #333;
+  font-weight: 600;
+}
+
+/* Estilos para las tarjetas */
+.perfil-general-page ion-card {
+  margin-bottom: 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.perfil-general-page ion-card-header h3 {
+  color: #2c5282;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Avatar y botón de cámara */
+.perfil-general-page ion-avatar {
+  border: 3px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Botones */
+.perfil-general-page ion-button {
+  --border-radius: 12px;
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Items de la lista */
+.perfil-general-page ion-item {
+  --border-color: rgba(0, 0, 0, 0.1);
+  --background: transparent;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+}
+
+.perfil-general-page ion-item:hover {
+  --background: rgba(59, 130, 246, 0.05);
+}
+
+.perfil-general-page ion-icon {
+  color: #3b82f6;
+  margin-right: 12px;
+}
+
+/* Responsive específico para móviles */
+@media (max-width: 768px) {
+  .perfil-content {
+    padding: 12px;
+  }
+
+  .perfil-general-page ion-card {
+    margin-bottom: 12px;
+    border-radius: 12px;
+  }
+
+  .perfil-general-page ion-avatar {
+    width: 80px !important;
+    height: 80px !important;
+  }
+
+  .perfil-general-page ion-col[size="4"] {
+    flex: 0 0 100%;
+    max-width: 100%;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .perfil-general-page ion-col[size="8"] {
+    flex: 0 0 100%;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .perfil-general-page ion-row {
+    flex-direction: column;
+  }
+
+  /* Ajustar espaciado en móvil */
+  .perfil-general-page {
+    padding-bottom: 100px; /* Espacio extra para el tab-bar */
+  }
+}
+
+/* Estados de carga y animaciones */
+.perfil-general-page ion-card {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hover effects para desktop */
+@media (min-width: 769px) {
+  .perfil-general-page ion-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+  }
+}
+
+/* Estilos para el modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .perfil-general-page {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  }
+
+  .page-header {
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+  }
+
+  .page-header h1 {
+    color: white;
+  }
+
+  .perfil-general-page ion-card {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+
+  .perfil-general-page ion-card-header h3 {
+    color: #90cdf4;
+  }
+}
