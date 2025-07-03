@@ -507,7 +507,7 @@ const NavBar: React.FC = () => {
 
             {/* Avatar y nombre como botón con menú (solo en desktop) */}
             {usuario && (
-              <div className="d-none d-lg-flex align-items-center gap-2">
+              <div className="d-none d-lg-flex align-items-center gap-2 user-section-container">
                 {/* Botón de search a la izquierda del perfil */}
                 {usuario.rol === 'persona_natural' && (
                   <button

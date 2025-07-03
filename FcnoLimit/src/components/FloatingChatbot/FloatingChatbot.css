@@ -7,6 +7,23 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
+/* Ventana del chatbot posicionable */
+.chatbot-window {
+  position: fixed;
+  z-index: 1001;
+  /* Asegurar que siempre sea visible */
+  max-width: 380px;
+  width: calc(100vw - 140px); /* Espacio para la burbuja + márgenes */
+}
+
+/* Estilos para el estado de arrastre */
+.chatbot-toggle-btn.dragging {
+  opacity: 0.8 !important;
+  transform: scale(1.1) !important;
+  z-index: 1002 !important;
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5) !important;
+}
+
 /* Sugerencia Flotante */
 .floating-suggestion {
   position: absolute;
@@ -162,6 +179,8 @@
   animation: slideUp 0.3s ease-out;
   border: 1px solid rgba(102, 126, 234, 0.1);
   transition: all 0.3s ease;
+  position: relative;
+  z-index: 1001;
 }
 
 /* Chatbot Expandido */
@@ -514,5 +533,129 @@
   
   .input-container input::placeholder {
     color: #999;
+  }
+}
+
+/* Ventana del chatbot posicionable */
+.chatbot-window {
+  position: fixed;
+  z-index: 1001;
+  /* Asegurar que siempre sea visible */
+  max-width: 380px;
+  width: calc(100vw - 140px); /* Espacio para la burbuja + márgenes */
+}
+
+/* Estilos para el estado de arrastre */
+.chatbot-toggle-btn.dragging {
+  opacity: 0.8 !important;
+  transform: scale(1.1) !important;
+  z-index: 1002 !important;
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5) !important;
+}
+
+/* Mejoras para dispositivos móviles */
+@media (max-width: 768px) {
+  .floating-chatbot {
+    position: fixed;
+    z-index: 1000;
+    /* Asegurar que esté sobre el tab-bar pero debajo de modales */
+  }
+
+  .chatbot-toggle-btn {
+    min-width: 60px !important;
+    min-height: 60px !important;
+    touch-action: none !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    /* Mejora visual cuando está sobre el tab-bar */
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
+  }
+
+  .chatbot-window {
+    width: calc(100vw - 90px); /* Espacio para la burbuja + márgenes */
+    max-width: 380px;
+    /* Asegurar que no se superponga con el tab-bar */
+    max-height: calc(100vh - 180px); /* Espacio para tab-bar + márgenes */
+  }
+
+  .chatbot-container {
+    width: 100% !important;
+    max-width: none !important;
+    height: 450px !important;
+    max-height: calc(60vh - 80px) !important; /* Considerar tab-bar */
+  }
+
+  .chatbot-container.chatbot-expanded {
+    height: calc(100vh - 200px) !important; /* Más espacio para tab-bar y márgenes */
+    max-height: none !important;
+  }
+
+  /* Ajustes para la sugerencia flotante */
+  .floating-suggestion {
+    position: absolute !important;
+    bottom: 70px !important;
+    width: 280px !important;
+    max-width: 90vw !important;
+    /* Mejorar visibilidad sobre el tab-bar */
+    z-index: 1001 !important;
+    backdrop-filter: blur(10px) !important;
+  }
+
+  .floating-suggestion-content {
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    backdrop-filter: blur(15px) !important;
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5) !important;
+  }
+
+  .floating-suggestion-content::before {
+    bottom: -8px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    right: auto !important;
+  }
+}
+
+/* Animaciones suaves para transiciones de posición */
+.floating-chatbot:not(.dragging) {
+  transition: all 0.3s ease !important;
+}
+
+.floating-suggestion:not(.dragging) {
+  transition: all 0.3s ease !important;
+}
+
+.chatbot-window:not(.dragging) {
+  transition: all 0.3s ease !important;
+}
+
+/* Ajustes adicionales para mejor UX en móvil */
+@media (max-width: 480px) {
+  .chatbot-window {
+    width: calc(100vw - 80px) !important; /* Menos espacio en pantallas pequeñas */
+    max-width: 320px !important;
+  }
+
+  .chatbot-container {
+    height: 400px !important;
+    max-height: 55vh !important;
+  }
+
+  .floating-suggestion {
+    width: calc(100vw - 100px) !important;
+  }
+}
+
+/* Estado visual para indicar que es arrastrable */
+@media (max-width: 768px) {
+  .chatbot-toggle-btn:not(.dragging) {
+    cursor: grab !important;
+  }
+
+  .chatbot-toggle-btn.dragging {
+    cursor: grabbing !important;
   }
 }

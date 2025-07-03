@@ -1504,17 +1504,18 @@ ion-button[class*="login"] ion-icon,
 }
 
 .user-name {
-  color: #121921;
+  color: #1a202c !important; /* Color más oscuro y visible */
   font-weight: 600;
   font-size: 14px;
   max-width: 130px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.8); /* Sombra sutil para mejor legibilidad */
 }
 
 .user-dropdown-icon {
-  color: #121921;
+  color: #1a202c !important; /* Color más oscuro y visible */
   margin-left: 4px;
   font-size: 16px;
   transition: transform 0.3s ease;
@@ -1563,11 +1564,15 @@ ion-button[class*="login"] ion-icon,
 .user-name-dropdown {
   font-size: 17px;
   font-weight: 600;
+  color: #ffffff !important; /* Texto blanco para contraste */
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
 .user-role-dropdown {
   font-size: 14px;
-  opacity: 0.9;
+  opacity: 0.95;
+  color: #ffffff !important; /* Texto blanco para contraste */
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
 .user-menu-items {
@@ -1578,24 +1583,32 @@ ion-button[class*="login"] ion-icon,
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 18px;
-  color: #121921;
+  padding: 12px 18px;
+  color: #2d3748 !important; /* Color oscuro más visible */
   font-size: 1rem;
+  font-weight: 500;
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
   border: none;
   background: none;
   width: 100%;
 }
 
 .user-menu-item.logout {
-  color: #de1111;
-  font-weight: 500;
+  color: #e53e3e !important; /* Rojo más visible */
+  font-weight: 600;
 }
 
 .user-menu-item:hover {
-  background: #f3f4f6;
+  background: #f7fafc;
+  color: #1a202c !important; /* Color aún más oscuro en hover */
+  transform: translateX(2px);
+}
+
+.user-menu-item.logout:hover {
+  background: #fed7d7;
+  color: #c53030 !important;
 }
 
 /* --- Animación dropdown --- */
@@ -1608,4 +1621,111 @@ ion-button[class*="login"] ion-icon,
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+
+/* FORZAR AVATAR DEL USUARIO A LA ESQUINA DERECHA */
+@media (min-width: 992px) {
+  .navbar-actions {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    position: relative;
+  }
+  
+  .user-button {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+  }
+  
+  /* Asegurar que el contenedor padre tenga flex space-between */
+  .d-none.d-lg-flex {
+    margin-left: auto !important;
+    position: relative;
+  }
+  
+  /* Forzar posición del navbar-actions al extremo derecho */
+  .navbar-collapse {
+    display: flex !important;
+    justify-content: space-between !important;
+  }
+  
+  /* Posicionar el usuario en el extremo derecho */
+  .navbar-nav ~ .d-none.d-lg-flex {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+/* Estilos específicos para desktop grande */
+@media (min-width: 1200px) {
+  .navbar-actions {
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  .user-button {
+    margin-right: 0 !important;
+  }
+  
+  /* Asegurar posición fija en la esquina derecha */
+  .d-none.d-lg-flex {
+    position: absolute !important;
+    right: 15px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+  }
+}
+
+/* Ajustar el contenedor principal del navbar */
+@media (min-width: 992px) {
+  .navbar .container-fluid {
+    position: relative;
+  }
+  
+  .navbar-collapse {
+    position: static;
+  }
+  
+  /* Dar espacio a la derecha para el avatar */
+  .navbar-nav {
+    margin-right: 200px !important; /* Espacio reservado para el avatar */
+  }
+}
+
+/* ESTILOS ESPECÍFICOS PARA EL CONTENEDOR DEL USUARIO */
+.user-section-container {
+  position: absolute !important;
+  right: 20px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 1000;
+  background: transparent;
+}
+
+@media (min-width: 1200px) {
+  .user-section-container {
+    right: 30px !important;
+  }
+}
+
+@media (min-width: 1400px) {
+  .user-section-container {
+    right: 40px !important;
+  }
+}
+
+/* Asegurar que el user-button mantenga su estilo */
+.user-section-container .user-button {
+  position: relative;
+  z-index: 1001;
+}
+
+/* Ajustar el dropdown del usuario para que aparezca correctamente */
+.user-section-container .custom-user-dropdown {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 8px;
+  z-index: 1002;
 }
