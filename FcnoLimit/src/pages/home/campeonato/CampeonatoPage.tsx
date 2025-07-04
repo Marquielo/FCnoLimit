@@ -4,6 +4,7 @@ import { trophyOutline } from 'ionicons/icons';
 import NavBar from '../../../components/NavBar';
 import Footer from '../../../components/Footer';
 import bannerBg from '../../../assets/banner-fc-bg.png'; // Ajusta la ruta si es necesario
+import copaDorada from '../../../assets/images/copa-dorada.png';
 import './CampeonatoPage.css';
 // Importar Swiper en lugar de IonSlides y IonSlide
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -152,9 +153,12 @@ const CampeonatoPage: React.FC = () => {
         >
           <div className="equipo-banner-inner">
             <img
-              src="/assets/equipos/default.png"
+              src={copaDorada}
               alt="Competición"
               className="equipo-banner-logo"
+              style={{
+                filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))'
+              }}
             />
             <div className="equipo-banner-title">Competición</div>
           </div>
@@ -163,11 +167,30 @@ const CampeonatoPage: React.FC = () => {
         <div className="content-section standings-section animate-on-scroll show">
           <div className="section-header">
             <h2 className="section-title">
-              <IonIcon icon={trophyOutline} className="section-icon" />
+              <img 
+                src={copaDorada} 
+                alt="Copa" 
+                className="section-icon"
+                style={{
+                  width: '24px',
+                  height: '24px',
+                  objectFit: 'contain',
+                  marginRight: '8px'
+                }}
+              />
               <span>Tabla de posiciones</span>
             </h2>
             <a href="/clasificacion" className="view-all-link">
-              Ver completa <IonIcon icon={trophyOutline} />
+              Ver completa <img 
+                src={copaDorada} 
+                alt="Copa" 
+                style={{
+                  width: '16px',
+                  height: '16px',
+                  objectFit: 'contain',
+                  marginLeft: '4px'
+                }}
+              />
             </a>
           </div>
           {/* Selector de divisiones */}
