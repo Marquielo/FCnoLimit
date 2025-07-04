@@ -101,10 +101,13 @@ const NavBar: React.FC = () => {
         const res = await fetch(`${apiBaseUrl}/api/equipos`);
         if (!res.ok) throw new Error();
         const equipos = await res.json();
+        console.log('Equipos recibidos:', equipos);
         if (Array.isArray(equipos) && equipos.length > 0) {
           // Selecciona 8 equipos aleatorios del array
           const shuffled = equipos.sort(() => 0.5 - Math.random());
-          setEquiposPopulares(shuffled.slice(0, 8));
+          const selected = shuffled.slice(0, 8);
+          console.log('Equipos seleccionados para dropdown:', selected);
+          setEquiposPopulares(selected);
         } else {
           setEquiposPopulares([]);
         }
@@ -406,7 +409,15 @@ const NavBar: React.FC = () => {
                       {equiposPopulares.length === 0 ? (
                         <div className="dropdown-loading">Cargando...</div>
                       ) : (
-                        equiposPopulares.map(eq => (
+                        equiposPopulares.map(eq => {
+                          const imageUrl = eq.imagen_url 
+                            ? (eq.imagen_url.startsWith('http') 
+                                ? eq.imagen_url 
+                                : `${apiBaseUrl}${eq.imagen_url.startsWith('/') ? eq.imagen_url : '/' + eq.imagen_url}`)
+                            : `https://ui-avatars.com/api/?name=${encodeURIComponent(eq.nombre.charAt(0))}&background=ff9800&color=fff&size=40`;
+                          console.log(`Equipo: ${eq.nombre}, imagen_url: ${eq.imagen_url}, URL final: ${imageUrl}`);
+                          
+                          return (
                           <button
                             key={eq.id}
                             className="dropdown-equipo-btn"
@@ -420,15 +431,24 @@ const NavBar: React.FC = () => {
                             }}
                           >
                             <img
-                              src={`${apiBaseUrl}/equipos/${eq.id}/escudo`}
+                              src={imageUrl}
                               alt={`${eq.nombre} escudo`}
                               className="dropdown-equipo-logo"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                const fallbackUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(eq.nombre.charAt(0))}&background=ff9800&color=fff&size=40`;
+                                console.log(`Error cargando imagen para ${eq.nombre}. URL original: ${imageUrl}, cambiando a: ${fallbackUrl}`);
+                                target.src = fallbackUrl;
+                              }}
+                              onLoad={() => {
+                                console.log(`Imagen cargada exitosamente para ${eq.nombre}: ${imageUrl}`);
+                              }}
                             />
                             <span className="dropdown-equipo-nombre">
                               {eq.nombre}
                             </span>
                           </button>
-                        ))
+                        )})
                       )}
                     </div>
                   )}

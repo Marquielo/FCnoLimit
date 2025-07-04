@@ -309,9 +309,19 @@ const MobileTabBar: React.FC = () => {
                     onClick={() => handleEquipoSelect(equipo)}
                   >
                     <img
-                      src={`${apiBaseUrl}/equipos/${equipo.id}/escudo`}
+                      src={
+                        equipo.imagen_url 
+                          ? (equipo.imagen_url.startsWith('http') 
+                              ? equipo.imagen_url 
+                              : `${apiBaseUrl}${equipo.imagen_url.startsWith('/') ? equipo.imagen_url : '/' + equipo.imagen_url}`)
+                          : `https://ui-avatars.com/api/?name=${encodeURIComponent(equipo.nombre.charAt(0))}&background=ff9800&color=fff&size=40`
+                      }
                       alt={`${equipo.nombre} escudo`}
                       className="equipo-logo"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(equipo.nombre.charAt(0))}&background=ff9800&color=fff&size=40`;
+                      }}
                     />
                     <span className="equipo-nombre">{equipo.nombre}</span>
                   </button>
