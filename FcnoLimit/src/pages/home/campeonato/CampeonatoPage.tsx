@@ -28,9 +28,6 @@ function useIsMobile(breakpoint = 900) {
 }
 
 const CampeonatoPage: React.FC = () => {
-  const [campeonatos, setCampeonatos] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [tablaPosiciones, setTablaPosiciones] = useState<any[]>([]);
   const [loadingTabla, setLoadingTabla] = useState(true);
   const [errorTabla, setErrorTabla] = useState<string | null>(null);
@@ -55,24 +52,6 @@ const CampeonatoPage: React.FC = () => {
   ];
   const [selectedDivision, setSelectedDivision] = useState(6); // default: Primera Infantil
   const [selectedDivisionEquipo, setSelectedDivisionEquipo] = useState(1); // default: 1A
-
-  useEffect(() => {
-    const fetchCampeonatos = async () => {
-      try {
-        const res = await fetch(`${apiBaseUrl}/api/campeonatos/vista`, {
-          cache: 'no-store'
-        });
-        if (!res.ok) throw new Error('Error al cargar campeonatos');
-        const data = await res.json();
-        setCampeonatos(Array.isArray(data) ? data : []);
-        setLoading(false);
-      } catch (err: any) {
-        setError('No se pudieron cargar los campeonatos');
-        setLoading(false);
-      }
-    };
-    fetchCampeonatos();
-  }, []);
 
   useEffect(() => {
     const fetchTabla = async () => {
@@ -374,35 +353,6 @@ const CampeonatoPage: React.FC = () => {
               )}
             </div>
           )}
-        </div>
-        <div className="content-container">
-          <section className="championships-section">
-            <h2 className="section-title">Listado de Campeonatos</h2>
-            <div className="championships-grid">
-              {loading ? (
-                <IonSpinner name="crescent" />
-              ) : error ? (
-                <p style={{ color: 'red' }}>{error}</p>
-              ) : campeonatos.length === 0 ? (
-                <p>No hay campeonatos registrados.</p>
-              ) : (
-                campeonatos.map((c: any) => (
-                  <div className="championship-card" key={c.id}>
-                    <IonIcon icon={trophyOutline} size="large" />
-                    <h3>{c.nombre}</h3>
-                    <p>{c.descripcion}</p>
-                    <p>
-                      <b>Fecha inicio:</b> {c.fecha_inicio ? c.fecha_inicio : 'Sin definir'}<br />
-                      <b>Fecha fin:</b> {c.fecha_fin ? c.fecha_fin : 'Sin definir'}
-                    </p>
-                    <IonButton fill="outline" size="small">
-                      Ver detalles
-                    </IonButton>
-                  </div>
-                ))
-              )}
-            </div>
-          </section>
         </div>
         <Footer />
       </IonContent>
