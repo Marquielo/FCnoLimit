@@ -17,7 +17,7 @@ import AuthPageMobile from './pages/home/auth/AuthPageMobile';
 import CampeonatosPage from './pages/home/campeonato/CampeonatoPage';
 import NoticiasPage  from './pages/home/noticias/NoticiasPage';
 import AdminDashboard from './pages/home/admin/AdminDashboard';
-import PerfilPage from './pages/home/perfil/PerfilPage';
+import PerfilUsuario from './pages/home/usuario/PerfilUsuario';
 import ProtectedRoute from './components/ProtectedRoute';
 import React, { useEffect, useState } from 'react';
 import { useDeviceDetection, generateResponsiveCSS } from './utils/deviceDetection';
@@ -171,6 +171,13 @@ const App: React.FC = () => {
             </ProtectedRoute>
           )} />
 
+          {/* Ruta de perfil de usuario general */}
+          <Route exact path="/perfil" render={() => (
+            <ProtectedRoute>
+              <PerfilUsuario />
+            </ProtectedRoute>
+          )} />
+
           {/* Rutas de Jugador */}
           <Route exact path="/jugador/perfil" render={() => (
             <ProtectedRoute>
@@ -299,11 +306,6 @@ const App: React.FC = () => {
           <Route exact path="/noticias" render={() => (
             <ProtectedRoute>
               <NoticiasPage />
-            </ProtectedRoute>
-          )} />
-          <Route exact path="/perfil" render={() => (
-            <ProtectedRoute>
-              <PerfilPage />
             </ProtectedRoute>
           )} />
 

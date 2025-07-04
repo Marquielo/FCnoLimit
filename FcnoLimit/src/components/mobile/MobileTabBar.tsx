@@ -323,20 +323,20 @@ const MobileTabBar: React.FC = () => {
                         target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(equipo.nombre.charAt(0))}&background=ff9800&color=fff&size=40`;
                       }}
                     />
-                    <span className="equipo-nombre">{equipo.nombre}</span>
+                    <span 
+                      style={{ 
+                        color: '#FFE600', 
+                        fontWeight: '700', 
+                        fontSize: '16px',
+                        textShadow: '0 2px 4px rgba(0,0,0,0.8)'
+                      }}
+                    >
+                      {equipo.nombre}
+                    </span>
                   </button>
                 ))
               )}
               
-              <button
-                className="ver-todos-equipos"
-                onClick={() => {
-                  setShowEquiposDropdown(false);
-                  history.push("/equipos");
-                }}
-              >
-                Ver todos los equipos
-              </button>
             </div>
           </div>
         </div>

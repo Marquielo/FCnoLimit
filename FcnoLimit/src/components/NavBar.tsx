@@ -262,6 +262,17 @@ const NavBar: React.FC = () => {
     
     // Elementos comunes para todos los usuarios autenticados
     items.push(
+      <a key="perfil" href="#" className="user-menu-item" onClick={(e) => {
+        e.preventDefault();
+        setShowUserMenu(false);
+        history.push("/perfil");
+      }}>
+        <IonIcon icon={personCircleOutline} />
+        Mi Perfil
+      </a>
+    );
+    
+    items.push(
       <a key="config" href="#" className="user-menu-item" onClick={(e) => {
         e.preventDefault();
         setShowUserMenu(false);
