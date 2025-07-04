@@ -659,3 +659,32 @@
     cursor: grabbing !important;
   }
 }
+
+/* Mejoras específicas para desktop - Posicionamiento del chat */
+@media (min-width: 769px) {
+  .chatbot-window {
+    width: 380px !important;
+    max-width: 380px !important;
+    /* Evitar que se salga de la pantalla */
+    max-height: calc(100vh - 120px);
+    /* Asegurar que esté pegado a la burbuja */
+    transform: none !important;
+    /* Posicionamiento fijo desde la esquina */
+    right: 70px !important;
+    bottom: 80px !important;
+    left: auto !important;
+  }
+}
+
+/* Mejoras adicionales para evitar que el chat se descuadre */
+.chatbot-window {
+  /* Evitar desbordamiento */
+  max-height: calc(100vh - 120px);
+  overflow: hidden;
+}
+
+.chatbot-container {
+  /* Asegurar que el contenido no se salga */
+  max-height: 100%;
+  overflow: hidden;
+}

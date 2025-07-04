@@ -399,13 +399,13 @@ const FloatingChatbot: React.FC<FloatingChatbotProps> = ({ showWelcome = false }
             position: 'fixed',
             left: window.innerWidth <= 768 ? 
               (chatbotSide === 'left' ? '70px' : 'auto') : 
-              (chatbotSide === 'left' ? position.x + 70 : 'auto'),
+              (chatbotSide === 'left' ? `${position.x + 80}px` : 'auto'),
             right: window.innerWidth <= 768 ? 
               (chatbotSide === 'right' ? '70px' : 'auto') : 
-              (chatbotSide === 'right' ? window.innerWidth - position.x : 'auto'),
+              (chatbotSide === 'right' ? '70px' : 'auto'),
             bottom: window.innerWidth <= 768 ? 
               `${window.innerHeight - position.y}px` : 
-              '70px',
+              '80px',
             zIndex: 1001
           }}
         >
