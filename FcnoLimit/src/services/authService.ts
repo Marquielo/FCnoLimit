@@ -217,6 +217,7 @@ class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
     localStorage.removeItem('tokenExpiresAt');
+    localStorage.removeItem('hasShownWelcomeChatbot'); // Para mostrar bienvenida en próximo login
     
     console.log('🔓 Sesión cerrada');
   }

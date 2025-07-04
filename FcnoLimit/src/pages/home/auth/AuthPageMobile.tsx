@@ -435,7 +435,7 @@ const AuthPageMobile: React.FC = () => {
     });
   }, []);
 
-  // Verificar si ya hay una sesión activa
+  // Verificar si ya hay una sesión activa y redirigir
   useEffect(() => {
     const userJSON = localStorage.getItem('usuario');
     const accessToken = localStorage.getItem('accessToken');
@@ -460,13 +460,27 @@ const AuthPageMobile: React.FC = () => {
         }
         
         console.log("👤 Datos del usuario:", userData);
+        
+        // Redirigir según el rol del usuario
+        switch (userData.rol) {
+          case 'jugador':
+            history.push('/jugador/perfil');
+            break;
+          case 'entrenador':
+            history.push('/entrenador/perfil');
+            break;
+          case 'persona_natural':
+          default:
+            history.push('/inicio');
+            break;
+        }
       } catch (error) {
         console.error("Error al leer datos de usuario del localStorage:", error);
       }
     } else {
       console.log("🔒 No hay sesión de usuario activa");
     }
-  }, []);
+  }, [history]);
 
   return (
     <IonPage className="auth-page mobile-auth-page">

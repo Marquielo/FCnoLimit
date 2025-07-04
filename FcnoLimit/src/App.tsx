@@ -90,11 +90,31 @@ const App: React.FC = () => {
     shouldShowDesktopNavBar 
   } = useDeviceDetection();
 
+  // Estado para detectar primera carga después del login
+  const [isFirstLoadAfterLogin, setIsFirstLoadAfterLogin] = useState(false);
+
   useEffect(() => {
     const stopParticles = startGlobalParticlesEffect();
     return () => {
       if (typeof stopParticles === 'function') stopParticles();
     };
+  }, []);
+
+  // Efecto para detectar si es la primera carga después del login
+  useEffect(() => {
+    const checkFirstLogin = () => {
+      const userJSON = localStorage.getItem('usuario');
+      const accessToken = localStorage.getItem('accessToken') || localStorage.getItem('token');
+      const hasShownWelcome = localStorage.getItem('hasShownWelcomeChatbot');
+      
+      // Si hay usuario autenticado pero no se ha mostrado el welcome
+      if (userJSON && accessToken && !hasShownWelcome) {
+        setIsFirstLoadAfterLogin(true);
+        localStorage.setItem('hasShownWelcomeChatbot', 'true');
+      }
+    };
+
+    checkFirstLogin();
   }, []);
 
   // Renderizar componente de navegación basado en el tipo de dispositivo
@@ -114,6 +134,19 @@ const App: React.FC = () => {
       return <NavBar />;
     }
     return null;
+  };
+
+  // Renderizar chatbot solo si no estamos en rutas de autenticación
+  const renderChatbot = () => {
+    const noChatbotRoutes = ['/auth'];
+    const currentPath = window.location.pathname;
+    const shouldHideChatbot = noChatbotRoutes.includes(currentPath);
+
+    if (shouldHideChatbot) {
+      return null; // No mostrar chatbot en rutas de autenticación
+    }
+    
+    return <FloatingChatbot showWelcome={isFirstLoadAfterLogin} />;
   };
   return (
     <IonApp className={`light-theme ${deviceType}-app`}>
@@ -286,14 +319,15 @@ const App: React.FC = () => {
           </Route>
 
           <Route exact path="/">
-            <Redirect to="/inicio" />
+            <Redirect to="/auth" />
           </Route>
         </IonRouterOutlet>
         
         {/* Renderizar navegación condicional */}
         {renderNavigation()}
       </IonReactRouter>
-      <FloatingChatbot />
+      {/* Renderizar chatbot condicional */}
+      {renderChatbot()}
     </IonApp>
   );
 };

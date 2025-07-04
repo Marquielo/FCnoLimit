@@ -27,7 +27,11 @@ interface Position {
   y: number;
 }
 
-const FloatingChatbot: React.FC = () => {
+interface FloatingChatbotProps {
+  showWelcome?: boolean;
+}
+
+const FloatingChatbot: React.FC<FloatingChatbotProps> = ({ showWelcome = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [showFloatingSuggestion, setShowFloatingSuggestion] = useState(true);
@@ -289,13 +293,34 @@ const FloatingChatbot: React.FC = () => {
     const randomSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
     setCurrentSuggestion(randomSuggestion);
     
-    // Ocultar la sugerencia después de 6 segundos
+    // Si es primera carga después del login, mostrar por más tiempo
+    const displayTime = showWelcome ? 10000 : 6000; // 10 segundos para bienvenida, 6 para normal
+    
+    // Ocultar la sugerencia después del tiempo especificado
     const timer = setTimeout(() => {
       setShowFloatingSuggestion(false);
-    }, 6000);
+    }, displayTime);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [showWelcome]);
+
+  // Efecto adicional para mostrar mensaje de bienvenida especial
+  useEffect(() => {
+    if (showWelcome) {
+      // Consejos especiales de bienvenida
+      const welcomeSuggestions = [
+        "🎉 ¡Bienvenido a FC No Limit! Aquí tienes tu primer consejo profesional",
+        "⚽ ¡Genial que te hayas unido! Empecemos con un tip para mejorar tu juego",
+        "🏆 ¡Excelente elección registrarte! Te comparto un secreto del fútbol profesional",
+        "💪 ¡Qué bueno tenerte aquí! Comencemos con un consejo que usan los pros",
+        "🌟 ¡Bienvenido al equipo! Aquí tienes tu primera lección de fútbol"
+      ];
+      
+      const randomWelcome = welcomeSuggestions[Math.floor(Math.random() * welcomeSuggestions.length)];
+      setCurrentSuggestion(randomWelcome);
+      setShowFloatingSuggestion(true);
+    }
+  }, [showWelcome]);
 
   // Efecto para scroll automático
   useEffect(() => {
