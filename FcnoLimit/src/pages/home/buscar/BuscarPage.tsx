@@ -150,34 +150,35 @@ const BuscarPage: React.FC = () => {
     <IonPage>
       <NavBar />
       <IonContent fullscreen className="buscar-content">
-        <div className="buscar-minimal-container">
-          <div className="buscar-title">Buscar equipos y jugadores</div>
-          <div className="buscar-subtitle">Encuentra tu club o jugador favorito en segundos.</div>
-          <div className="buscar-bar">
-            {/* Solo la barra de búsqueda, sin selector */}
-            <SearchBar
-              placeholder="Buscar equipo o jugador..."
-              value={search}
-              onChange={setSearch}
-              onSearch={() => {}}
-            />
-          </div>
-          <div className="buscar-results-list">
-            {loading && (
-              <div className="buscar-loading">Buscando...</div>
-            )}
-            {error && (
-              <div className="buscar-error">{error}</div>
-            )}
-            {results && results.length > 0 && (
-              <>
-                {results.map((item: any, idx: number) => (
-                  <div
-                    key={item.id || item.usuario_id || idx}
-                    className="buscar-result-card"
-                    onClick={() => handleResultClick(item)}
-                    tabIndex={0}
-                  >
+        <div className="buscar-main-content">
+          <div className="buscar-minimal-container">
+            <div className="buscar-title">Buscar equipos y jugadores</div>
+            <div className="buscar-subtitle">Encuentra tu club o jugador favorito en segundos.</div>
+            <div className="buscar-bar">
+              {/* Solo la barra de búsqueda, sin selector */}
+              <SearchBar
+                placeholder="Buscar equipo o jugador..."
+                value={search}
+                onChange={setSearch}
+                onSearch={() => {}}
+              />
+            </div>
+            <div className="buscar-results-list">
+              {loading && (
+                <div className="buscar-loading">Buscando...</div>
+              )}
+              {error && (
+                <div className="buscar-error">{error}</div>
+              )}
+              {results && results.length > 0 && (
+                <>
+                  {results.map((item: any, idx: number) => (
+                    <div
+                      key={item.id || item.usuario_id || idx}
+                      className="buscar-result-card"
+                      onClick={() => handleResultClick(item)}
+                      tabIndex={0}
+                    >
                     <div className="buscar-result-img">
                       {item._type === "equipo" ? (
                         <img
@@ -219,6 +220,7 @@ const BuscarPage: React.FC = () => {
               </>
             )}
           </div>
+        </div>
         </div>
         <Footer />
       </IonContent>

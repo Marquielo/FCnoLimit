@@ -1,12 +1,19 @@
 /* (Archivo vacío, comenzamos desde cero) */
 
 .buscar-content {
-  --background: #fff;
-  background: #fff;
+  --background: transparent;
+  background: transparent;
   min-height: 100vh;
   padding: 0 !important;
   display: flex;
   flex-direction: column;
+}
+
+.buscar-main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 120px); /* Altura mínima menos navbar y footer aproximados */
 }
 
 .buscar-minimal-container {
@@ -16,7 +23,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #fff;
+  background: transparent;
+  flex: 1; /* Esto hace que el contenedor principal ocupe el espacio disponible */
 }
 
 .buscar-title {
@@ -56,19 +64,21 @@
 .buscar-result-card {
   display: flex;
   align-items: center;
-  background: #FFA726;
+  background: rgba(255, 167, 38, 0.95);
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(255,167,38,0.08);
+  box-shadow: 0 4px 20px rgba(255,167,38,0.15);
   padding: 0.7rem 1.2rem;
   cursor: pointer;
   gap: 18px;
   transition: all 0.3s;
-  border: 1.5px solid #fff;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
 }
 .buscar-result-card:focus,
 .buscar-result-card:hover {
   border: 1.5px solid #FFA726;
-  background: #fff3e0;
+  background: rgba(255, 243, 224, 0.95);
+  box-shadow: 0 6px 25px rgba(255,167,38,0.2);
 }
 
 .buscar-result-img {
@@ -140,21 +150,23 @@
 }
 
 .clean-card {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.95);
   border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   padding: 1.2rem 1.5rem;
   display: flex;
   align-items: center;
   min-width: 260px;
   max-width: 340px;
-  transition: box-shadow 0.2s, transform 0.2s;
+  transition: all 0.3s ease;
   cursor: pointer;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
 }
 .clean-card:hover {
-  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
   transform: translateY(-2px) scale(1.02);
+  background: rgba(255, 255, 255, 1);
 }
 
 .clean-img img {
@@ -195,5 +207,8 @@
   }
   .buscar-bar {
     margin-bottom: 1.2rem;
+  }
+  .buscar-main-content {
+    min-height: calc(100vh - 140px); /* Ajuste para móvil */
   }
 }

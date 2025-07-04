@@ -158,12 +158,18 @@ const App: React.FC = () => {
       <IonReactRouter>
         <IonRouterOutlet>
           {/* Rutas públicas */}
-            <Route exact path="/inicio" component={InicioPage} />
             <Route exact path="/auth" render={() => 
               isMobile ? <AuthPageMobile /> : <AuthPage />
             } />
             <Route exact path="/google-test" component={SimpleGoogleAuth} />
             <Route exact path="/player-cards" component={PlayerCardsDemo} />
+            
+          {/* Ruta de inicio protegida */}
+          <Route exact path="/inicio" render={() => (
+            <ProtectedRoute>
+              <InicioPage />
+            </ProtectedRoute>
+          )} />
 
           {/* Rutas de Jugador */}
           <Route exact path="/jugador/perfil" render={() => (
